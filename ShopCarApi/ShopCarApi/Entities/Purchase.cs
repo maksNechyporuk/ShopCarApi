@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp5.Entities
+namespace  ShopCarApi.Entities
 {
     [Table("tblPurchase")]
 public    class Purchase

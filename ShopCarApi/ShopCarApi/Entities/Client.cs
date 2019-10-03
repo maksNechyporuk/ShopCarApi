@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp5.Entities
+namespace  ShopCarApi.Entities
 {
     [Table("tblClients")]
     public class Client
@@ -19,7 +19,6 @@ namespace ConsoleApp5.Entities
         public string Image { get; set; }
         [Required]
         public string Phone { get; set; }
-
         public float Total_price { get; set; }
     }
 }
