@@ -34,9 +34,13 @@ namespace ShopCarApi
         {
             services.AddCors();
 
-            services.AddDbContext<EFDbContext>(opt =>
-                opt.UseSqlServer(Configuration
-                    .GetConnectionString("DefaultConnection")));
+            //services.AddDbContext<EFDbContext>(opt =>
+            //    opt.UseSqlServer(Configuration
+            //        .GetConnectionString("DefaultConnection")));
+            // Add framework services.
+            services.AddDbContext<EFDbContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+
 
             services.AddIdentity<DbUser, DbRole>(options => options.Stores.MaxLengthForKeys = 128)
                 .AddEntityFrameworkStores<EFDbContext>()
