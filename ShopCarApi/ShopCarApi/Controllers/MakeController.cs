@@ -19,6 +19,20 @@ namespace ShopCarApi.Controllers
         private readonly EFDbContext _context;
         private readonly IConfiguration _configuration;
         private readonly IHostingEnvironment _env;
+
+        [HttpGet]
+        public IActionResult MakeList()
+        {
+            var model = _context.Makes.Select(
+                p => new MakeVM
+                {
+                    Id = p.Id,
+                    Name = p.Name         
+                }).ToList();
+            return Ok(model);
+        }
+
+
         [HttpPost]
         public IActionResult Create([FromBody]MakeAddVM model)
         {
@@ -50,20 +64,34 @@ namespace ShopCarApi.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete([FromBody]ProductDeleteVM model)
+        public IActionResult Delete([FromBody]MakeDeleteVM model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            var prod = _context.Products.SingleOrDefault(p => p.Id == model.Id);
-            if (prod != null)
+            var make = _context.Makes.SingleOrDefault(p => p.Id == model.Id);
+            if (make != null)
             {
-                _context.Products.Remove(prod);
+                _context.Makes.Remove(make);
                 _context.SaveChanges();
             }
-            return BadRequest();
+            return Ok();
         }
-
+        [HttpPut]
+        public IActionResult Update([FromBody]MakeVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var prod = _context.Makes.SingleOrDefault(p => p.Id == model.Id);
+            if (prod != null)
+            {
+                prod.Name = model.Name;
+                _context.SaveChanges();
+            }
+            return Ok();
+        }
     }
 }

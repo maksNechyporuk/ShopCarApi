@@ -5,21 +5,18 @@ using System.Threading.Tasks;
 
 namespace ShopCarApi.ViewModels
 {
-
-    public class MakeVM
+    public class ModelVM
     {
         public int Id { get; set; }
 
         public string Name { get; set; }
     }
-    public class MakeAddVM
+    public class ModelAddVM
     {
         public string Name { get; set; }
     }
-    public class MakeDeleteVM
+    public class ModelDeleteVM
     {
         public int Id { get; set; }
     }
-
-
 }
