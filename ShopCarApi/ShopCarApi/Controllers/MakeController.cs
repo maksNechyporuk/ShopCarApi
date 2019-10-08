@@ -10,6 +10,9 @@ using ShopCarApi.Entities;
 using ShopCarApi.ViewModels;
 using WebElectra.Entities;
 
+using Microsoft.AspNetCore.Mvc;
+using ShopCarApi.ViewModels;
+
 namespace ShopCarApi.Controllers
 {
     [Produces("application/json")]
@@ -52,16 +55,16 @@ namespace ShopCarApi.Controllers
             //var imageName = Path.GetRandomFileName() + ".jpg";
             //string fileSave = Path.Combine(dirPathSave, $"{imageName}");
 
-            //bmp.Save(fileSave, ImageFormat.Jpeg);
+//            //bmp.Save(fileSave, ImageFormat.Jpeg);
 
-            Make m = new Make
-            {
-                Name = model.Name                            
-            };
-            _context.Makes.Add(m);
-            _context.SaveChanges();
-            return Ok(m.Id);
-        }
+//            Make m = new Make
+//            {
+//                Name = model.Name                            
+//            };
+//            _context.Makes.Add(m);
+//            _context.SaveChanges();
+//            return Ok(m.Id);
+//        }
 
         [HttpDelete]
         public IActionResult Delete([FromBody]MakeDeleteVM model)
