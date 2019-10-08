@@ -218,7 +218,7 @@ namespace ShopCarApi.Entities
                 makes = new Make
                 {
                     Id = 16,
-                    Name = "Skoda"  
+                    Name = "Skoda"
                 };
                 context.Makes.Add(makes);
                 context.SaveChanges();
@@ -227,6 +227,8 @@ namespace ShopCarApi.Entities
                     Id = 17,
                     Name = "Honda"
                 };
+                context.Makes.Add(makes);
+                context.SaveChanges();
                 makes = new Make
                 {
                     Id = 18,
@@ -477,7 +479,7 @@ namespace ShopCarApi.Entities
                     Name = "FOCUS RS"
                 };
                 context.Models.Add(models);
-                context.SaveChanges();            
+                context.SaveChanges();
                 models = new Model
                 {
                     Id = 31,
@@ -517,7 +519,7 @@ namespace ShopCarApi.Entities
                     Name = "PEUGEOT 1007"
                 };
                 context.Models.Add(models);
-                context.SaveChanges();             
+                context.SaveChanges();
                 models = new Model
                 {
                     Id = 36,
@@ -557,7 +559,7 @@ namespace ShopCarApi.Entities
                     Name = "MOBI"
                 };
                 context.Models.Add(models);
-                context.SaveChanges();              
+                context.SaveChanges();
                 models = new Model
                 {
                     Id = 41,
@@ -597,7 +599,7 @@ namespace ShopCarApi.Entities
                     Name = "LAFESTA"
                 };
                 context.Models.Add(models);
-                context.SaveChanges();              
+                context.SaveChanges();
                 models = new Model
                 {
                     Id = 46,
@@ -637,7 +639,7 @@ namespace ShopCarApi.Entities
                     Name = "TERRACAN"
                 };
                 context.Models.Add(models);
-                context.SaveChanges();               
+                context.SaveChanges();
                 models = new Model
                 {
                     Id = 51,
@@ -838,7 +840,7 @@ namespace ShopCarApi.Entities
                 };
                 context.Models.Add(models);
                 context.SaveChanges();
-                models = new Model
+                 models = new Model
                 {
                     Id = 76,
                     MakeId = 16,
@@ -846,7 +848,7 @@ namespace ShopCarApi.Entities
                 };
                 context.Models.Add(models);
                 context.SaveChanges();
-                models = new Model
+                 models = new Model
                 {
                     Id = 77,
                     MakeId = 17,
