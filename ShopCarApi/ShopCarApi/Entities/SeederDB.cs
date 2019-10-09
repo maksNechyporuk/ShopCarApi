@@ -1026,6 +1026,38 @@ namespace ShopCarApi.Entities
                 context.Cars.Add(cars);
                 context.SaveChanges();
                 #endregion
+
+                #region Clients
+                context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
+                var clients = new Client
+                {
+                    Id = 1,
+                    Name = "Zahar",
+                    Phone = "+380(68)238-80-01",
+                    Image = "https://mystatfiles.itstep.org/index.php?view_key=rtILv2awXkYrSQ7WVzOr0G9F1kZwIdRQC03dLrvYiKeqOlHfVfWihS/QG/11CgvGz2Oj7lb/U37S6VWM25ADRgZpjRgGmn2pOd45FJeYozc="
+                };
+                context.Clients.Add(clients);
+                context.SaveChanges();
+                clients = new Client
+                {
+                    Id = 2,
+                    Name = "Yuri",
+                    Phone = "+380(68)278-55-22",
+                    Image = "https://mystatfiles.itstep.org/index.php?view_key=rtILv2awXkYrSQ7WVzOr0G9F1kZwIdRQC03dLrvYiKeqOlHfVfWihS/QG/11CgvGz2Oj7lb/U37S6VWM25ADRgZpjRgGmn2pOd45FJeYozc="
+                };
+                context.Clients.Add(clients);
+                context.SaveChanges();
+                clients = new Client
+                {
+                    Id = 3,
+                    Name = "Maxim",
+                    Phone = "+380(97)888-15-97",
+                    Image = "https://mystatfiles.itstep.org/index.php?view_key=rtILv2awXkYrSQ7WVzOr0G9F1kZwIdRQC03dLrvYiKeqOlHfVfWihS/QG/11CgvGz2Oj7lb/U37S6VWM25ADRgZpjRgGmn2pOd45FJeYozc="
+                };
+                context.Clients.Add(clients);
+                context.SaveChanges();
+                #endregion
+
             }
         }
     }
