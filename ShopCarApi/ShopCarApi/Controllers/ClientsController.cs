@@ -68,7 +68,7 @@ namespace ShopCarApi.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete([FromBody]MakeDeleteVM client)
+        public IActionResult Delete([FromBody]ClientDeleteVM client)
         {
             if (!ModelState.IsValid)
             {
@@ -83,7 +83,7 @@ namespace ShopCarApi.Controllers
             return Ok();
         }
         [HttpPut]
-        public IActionResult Update([FromBody]MakeVM client)
+        public IActionResult Update([FromBody]ClientVM client)
         {
             if (!ModelState.IsValid)
             {
