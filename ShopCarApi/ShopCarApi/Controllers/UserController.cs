@@ -39,6 +39,10 @@ namespace ShopCarApi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody]UserLoginVM model)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Model is not valid!");
+            }
             var result = await _signInManager
                 .PasswordSignInAsync(model.Email, model.Password,
                 false, false);
