@@ -14,16 +14,15 @@ namespace ShopCarApi.Controllers
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
-    public class MakeController : ControllerBase
+    public class ColorController : ControllerBase
     {
-
         private readonly EFDbContext _context;
         private readonly IConfiguration _configuration;
         private readonly IHostingEnvironment _env;
 
+ 
 
-
-        public MakeController(IHostingEnvironment env,
+        public ColorController(IHostingEnvironment env,
             IConfiguration configuration,
             EFDbContext context)
         {
@@ -32,72 +31,57 @@ namespace ShopCarApi.Controllers
             _context = context;
         }
 
+
         [HttpGet]
         public IActionResult MakeList()
         {
-            var model = _context.Makes.Select(
-                p => new MakeVM
+            var model = _context.Colors.Select(
+                p => new ColorVM
                 {
                     Id = p.Id,
-                    Name = p.Name         
+                    Name = p.Name
                 }).ToList();
             return Ok(model);
         }
-
-
         [HttpPost]
-        public IActionResult Create([FromBody]MakeAddVM model)
+        public IActionResult Create([FromBody]ColorAddVM model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            //var fileDestDir = _env.ContentRootPath;
-            //string dirName = _configuration.GetValue<string>("ImagesPath");
-            ////Папка де зберігаються фотки
-            //string dirPathSave = Path.Combine(fileDestDir, dirName);
-            //if (!Directory.Exists(dirPathSave))
-            //{
-            //    Directory.CreateDirectory(dirPathSave);
-            //}
-            //var bmp = model.Image.FromBase64StringToImage();
-            //var imageName = Path.GetRandomFileName() + ".jpg";
-            //string fileSave = Path.Combine(dirPathSave, $"{imageName}");
-
-            //bmp.Save(fileSave, ImageFormat.Jpeg);
-
-            Make m = new Make
+            Colors m = new Colors
             {
                 Name = model.Name
             };
-            _context.Makes.Add(m);
+            _context.Colors.Add(m);
             _context.SaveChanges();
             return Ok(m.Id);
-            }
+        }
 
         [HttpDelete]
-        public IActionResult Delete([FromBody]MakeDeleteVM model)
+        public IActionResult Delete([FromBody]ColorDeleteVM model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            var make = _context.Makes.SingleOrDefault(p => p.Id == model.Id);
-            if (make != null)
+            var color = _context.Colors.SingleOrDefault(p => p.Id == model.Id);
+            if (color != null)
             {
-                _context.Makes.Remove(make);
+                _context.Colors.Remove(color);
                 _context.SaveChanges();
             }
             return Ok();
         }
         [HttpPut]
-        public IActionResult Update([FromBody]MakeVM model)
+        public IActionResult Update([FromBody]ColorVM model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            var prod = _context.Makes.SingleOrDefault(p => p.Id == model.Id);
+            var prod = _context.Colors.SingleOrDefault(p => p.Id == model.Id);
             if (prod != null)
             {
                 prod.Name = model.Name;
@@ -105,5 +89,6 @@ namespace ShopCarApi.Controllers
             }
             return Ok();
         }
+
     }
 }
