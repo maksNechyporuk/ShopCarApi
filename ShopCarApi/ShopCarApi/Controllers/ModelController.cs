@@ -51,19 +51,7 @@ namespace ShopCarApi.Controllers
                 {
                     return BadRequest();
                 }
-                //var fileDestDir = _env.ContentRootPath;
-                //string dirName = _configuration.GetValue<string>("ImagesPath");
-                ////Папка де зберігаються фотки
-                //string dirPathSave = Path.Combine(fileDestDir, dirName);
-                //if (!Directory.Exists(dirPathSave))
-                //{
-                //    Directory.CreateDirectory(dirPathSave);
-                //}
-                //var bmp = model.Image.FromBase64StringToImage();
-                //var imageName = Path.GetRandomFileName() + ".jpg";
-                //string fileSave = Path.Combine(dirPathSave, $"{imageName}");
 
-                //bmp.Save(fileSave, ImageFormat.Jpeg);
 
                 Model m = new Model
                 {
