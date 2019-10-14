@@ -20,6 +20,17 @@ namespace ShopCarApi.Controllers
         private readonly IConfiguration _configuration;
         private readonly IHostingEnvironment _env;
 
+
+
+        public ClientsController(IHostingEnvironment env,
+            IConfiguration configuration,
+            EFDbContext context)
+        {
+            _configuration = configuration;
+            _env = env;
+            _context = context;
+        }
+
         [HttpGet]
         public IActionResult ClientList()
         {

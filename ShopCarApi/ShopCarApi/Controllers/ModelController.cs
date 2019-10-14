@@ -16,12 +16,21 @@ namespace ShopCarApi.Controllers
     [Route("api/[controller]")]
     public class ModelController : ControllerBase
     {
-        public class MakeController : ControllerBase
-        {
+        
             private readonly EFDbContext _context;
             private readonly IConfiguration _configuration;
             private readonly IHostingEnvironment _env;
 
+
+
+            public ModelController(IHostingEnvironment env,
+                IConfiguration configuration,
+                EFDbContext context)
+            {
+                _configuration = configuration;
+                _env = env;
+                _context = context;
+            }
             [HttpGet]
             public IActionResult MakeList()
             {
@@ -97,4 +106,3 @@ namespace ShopCarApi.Controllers
             }
         }
     }
-}
