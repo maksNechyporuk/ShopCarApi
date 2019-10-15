@@ -22,7 +22,6 @@ namespace ShopCarApi.Entities
 
         public virtual Colors Color { get; set; }
 
-
         [ForeignKey("Model")]
         public int ModelId { get; set; }
 
