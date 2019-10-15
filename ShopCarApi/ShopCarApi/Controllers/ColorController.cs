@@ -39,7 +39,11 @@ namespace ShopCarApi.Controllers
                 p => new ColorVM
                 {
                     Id = p.Id,
-                    Name = p.Name
+                    Name = p.Name,
+                    A=p.A,
+                    B=p.B,
+                    G=p.G,
+                    R=p.R
                 }).ToList();
             return Ok(model);
         }
@@ -50,13 +54,21 @@ namespace ShopCarApi.Controllers
             {
                 return BadRequest();
             }
-            Colors m = new Colors
+            var color = _context.Colors.SingleOrDefault(p => p.Name == model.Name);
+            if (color != null)
             {
-                Name = model.Name
-            };
-            _context.Colors.Add(m);
-            _context.SaveChanges();
-            return Ok(m.Id);
+                Colors m = new Colors
+                {
+                    Name = model.Name,
+                    A = model.A,
+                    B = model.B,
+                    G = model.G,
+                    R = model.R
+                };
+                _context.Colors.Add(m);
+                _context.SaveChanges();
+            }
+                return Ok();
         }
 
         [HttpDelete]
