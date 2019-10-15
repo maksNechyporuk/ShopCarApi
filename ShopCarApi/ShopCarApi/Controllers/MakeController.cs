@@ -21,8 +21,6 @@ namespace ShopCarApi.Controllers
         private readonly IConfiguration _configuration;
         private readonly IHostingEnvironment _env;
 
-
-
         public MakeController(IHostingEnvironment env,
             IConfiguration configuration,
             EFDbContext context)
