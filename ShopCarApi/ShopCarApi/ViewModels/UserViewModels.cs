@@ -5,6 +5,15 @@ using System.Threading.Tasks;
 
 namespace ShopCarApi.ViewModels
 {
+
+    public class UserVM
+    {
+        public string Name { get; set; }
+
+        public string Email { get; set; }
+
+    }
+
     public class UserLoginVM
     {
         public string Email { get; set; }
