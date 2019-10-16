@@ -15,8 +15,12 @@ namespace ShopCarApi.Entities
         public static void SeedData(IServiceProvider services, IHostingEnvironment env,
             IConfiguration config)
         {
+
             using (var scope = services.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
+                var managerUser = scope.ServiceProvider.GetRequiredService<UserManager<DbUser>>();
+                var managerRole = scope.ServiceProvider.GetRequiredService<RoleManager<DbRole>>();
+
                 #region Colors
                 var context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
                 List<Colors> listColors = new List<Colors>
@@ -405,7 +409,7 @@ namespace ShopCarApi.Entities
                 }
                 #endregion
 
-              
+                SeedUsers(managerUser, managerRole);
             }
         }
         public static void SeedUsers(UserManager<DbUser> userManager,RoleManager<DbRole> roleManager)
