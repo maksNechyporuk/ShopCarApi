@@ -50,27 +50,19 @@ namespace ShopCarApi.Controllers
             {
                 return BadRequest();
             }
-            //var fileDestDir = _env.ContentRootPath;
-            //string dirName = _configuration.GetValue<string>("ImagesPath");
-            ////Папка де зберігаються фотки
-            //string dirPathSave = Path.Combine(fileDestDir, dirName);
-            //if (!Directory.Exists(dirPathSave))
-            //{
-            //    Directory.CreateDirectory(dirPathSave);
-            //}
-            //var bmp = model.Image.FromBase64StringToImage();
-            //var imageName = Path.GetRandomFileName() + ".jpg";
-            //string fileSave = Path.Combine(dirPathSave, $"{imageName}");
-
-            //bmp.Save(fileSave, ImageFormat.Jpeg);
-
-            Make m = new Make
+            var make = _context.Makes.SingleOrDefault(p => p.Name == model.Name);
+            if (make == null)
             {
-                Name = model.Name
-            };
-            _context.Makes.Add(m);
-            _context.SaveChanges();
-            return Ok(m.Id);
+                Make m = new Make
+                {
+                    Name = model.Name
+                };
+                _context.Makes.Add(m);
+                _context.SaveChanges();
+                return Ok(m.Id);
+            }
+            return BadRequest();
+         
             }
 
         [HttpDelete]
