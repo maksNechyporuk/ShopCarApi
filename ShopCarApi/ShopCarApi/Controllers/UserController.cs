@@ -36,6 +36,19 @@ namespace ShopCarApi.Controllers
             _roleManager = roleManager;
         }
 
+        [HttpGet]
+        public IActionResult UserList()
+        {
+            var users = _context.Users.Select(
+                p => new UserVM
+                {
+                    Email = p.Email,
+                    Name = p.UserName,
+                    
+                }).ToList();
+            return Ok(users);
+        }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody]UserLoginVM model)
         {
