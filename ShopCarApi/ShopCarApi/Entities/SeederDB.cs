@@ -83,7 +83,7 @@ namespace ShopCarApi.Entities
                 };
                 foreach (var item in listMake)
                 {
-                    var make = context.Colors.SingleOrDefault(c => c.Name == item.Name);
+                    var make = context.Makes.SingleOrDefault(c => c.Name == item.Name);
                     if (make == null)
                     {
                         context.Makes.Add(item);
@@ -335,7 +335,7 @@ namespace ShopCarApi.Entities
                 };
                 foreach (var item in listModel)
                 {
-                    var model = context.Colors.SingleOrDefault(c => c.Name == item.Name);
+                    var model = context.Models.SingleOrDefault(c => c.Name == item.Name);
                     if (model == null)
                     {
                         context.Models.Add(item);
@@ -356,7 +356,7 @@ namespace ShopCarApi.Entities
 
                 foreach (var item in listTypesCar)
                 {
-                    var type_car = context.Colors.SingleOrDefault(c => c.Name == item.Name);
+                    var type_car = context.TypeCars.SingleOrDefault(c => c.Name == item.Name);
                     if (type_car == null)
                     {
                         context.TypeCars.Add(item);
@@ -369,70 +369,126 @@ namespace ShopCarApi.Entities
                 context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
                 List<Car> listCar = new List<Car>
                 {
-                    new Car{ Id = 1,TypeId = 1,ModelId = 1, FuelTypeId = 3,Date = DateTime.Now,ColorId = 1,Image = "https://inlviv.in.ua/wp-content/uploads/2018/02/74_main.jpg", Price = 50000},
-                    new Car{ Id = 2,TypeId = 1,ModelId = 4,Date = DateTime.Now,FuelTypeId = 4,ColorId = 4,Image = "https://inlviv.in.ua/wp-content/uploads/2018/02/74_main.jpg",Price = 26000},
-                    new Car{ Id = 3,TypeId = 1,ModelId = 2,FuelTypeId = 2,Date = DateTime.Now,ColorId = 1,Image = "https://inlviv.in.ua/wp-content/uploads/2018/02/74_main.jpg",Price = 15000},
-                //    new Car{ Id = 4,Name = "Moto"}
-                //};           
-                //context.Cars.Add(cars);
-                //context.SaveChanges();
-                //cars = new Car
-                //{
-                //    Id = 4,
-                //    TypeId = 1,
-                //    ModelId = 3,
-                //    FuelTypeId = 2,
-                //    Date = DateTime.Now,
-                //    ColorId = 3,
-                //    Price = 40000
-                //};
-                //context.Cars.Add(cars);
-                //context.SaveChanges();
-                //cars = new Car
-                //{
-                //    Id = 5,
-                //    TypeId = 1,
-                //    ModelId = 2,
-                //    FuelTypeId = 4,
-                //    ColorId = 3,
-                //    Date = DateTime.Now,
-                //    Price = 10000
-                //};
-                //context.Cars.Add(cars);
-                //context.SaveChanges();
-                //#endregion
+                    new Car{ Id = 1,TypeId = 1,ModelId = 1,FuelTypeId = 3,Date = DateTime.Now,ColorId = 1,Image = "https://inlviv.in.ua/wp-content/uploads/2018/02/74_main.jpg",Price = 500000},
+                    new Car{ Id = 2,TypeId = 1,ModelId = 4,FuelTypeId = 4,Date = DateTime.Now,ColorId = 4,Image = "https://inlviv.in.ua/wp-content/uploads/2018/02/74_main.jpg",Price = 260000},
+                    new Car{ Id = 3,TypeId = 1,ModelId = 2,FuelTypeId = 2,Date = DateTime.Now,ColorId = 1,Image = "https://inlviv.in.ua/wp-content/uploads/2018/02/74_main.jpg",Price = 150000},
+                    new Car{ Id = 4,TypeId = 1,ModelId = 3,FuelTypeId = 2,Date = DateTime.Now,ColorId = 3,Image = "https://inlviv.in.ua/wp-content/uploads/2018/02/74_main.jpg",Price = 400000},
+                    new Car{ Id = 5,TypeId = 1,ModelId = 2,FuelTypeId = 4,Date = DateTime.Now,ColorId = 2,Image = "https://inlviv.in.ua/wp-content/uploads/2018/02/74_main.jpg",Price = 700000}
+                };
+                foreach (var item in listCar)
+                {
+                    var car = context.Cars.SingleOrDefault(c => c.Id== item.Id);
+                    if (car == null)
+                    {
+                        context.Cars.Add(item);
+                        context.SaveChanges();
+                    }
+                }
+                #endregion
 
-                //#region Clients
-                //context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
-                //var clients = new Client
-                //{
-                //    Id = 1,
-                //    Name = "Zahar",
-                //    Phone = "+380(68)238-80-01",
-                //    Image = "https://mystatfiles.itstep.org/index.php?view_key=rtILv2awXkYrSQ7WVzOr0G9F1kZwIdRQC03dLrvYiKeqOlHfVfWihS/QG/11CgvGz2Oj7lb/U37S6VWM25ADRgZpjRgGmn2pOd45FJeYozc="
-                //};
-                //context.Clients.Add(clients);
-                //context.SaveChanges();
-                //clients = new Client
-                //{
-                //    Id = 2,
-                //    Name = "Yuri",
-                //    Phone = "+380(68)278-55-22",
-                //    Image = "https://mystatfiles.itstep.org/index.php?view_key=rtILv2awXkYrSQ7WVzOr0G9F1kZwIdRQC03dLrvYiKeqOlHfVfWihS/QG/11CgvGz2Oj7lb/U37S6VWM25ADRgZpjRgGmn2pOd45FJeYozc="
-                //};
-                //context.Clients.Add(clients);
-                //context.SaveChanges();
-                //clients = new Client
-                //{
-                //    Id = 3,
-                //    Name = "Maxim",
-                //    Phone = "+380(97)888-15-97",
-                //    Image = "https://mystatfiles.itstep.org/index.php?view_key=rtILv2awXkYrSQ7WVzOr0G9F1kZwIdRQC03dLrvYiKeqOlHfVfWihS/QG/11CgvGz2Oj7lb/U37S6VWM25ADRgZpjRgGmn2pOd45FJeYozc="
-                //};
-                //context.Clients.Add(clients);
-                //context.SaveChanges();
-                //#endregion
+                #region Clients
+                context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
+                List<Client> listClient = new List<Client>
+                {
+                    new Client{ Id = 1,Name = "Zahar",Phone = "+380(68)238-80-01",Image = "https://mystatfiles.itstep.org/index.php?view_key=rtILv2awXkYrSQ7WVzOr0G9F1kZwIdRQC03dLrvYiKeqOlHfVfWihS/QG/11CgvGz2Oj7lb/U37S6VWM25ADRgZpjRgGmn2pOd45FJeYozc="},
+                    new Client{ Id = 2,Name = "Yuri",Phone = "+380(68)278-55-22",Image = "https://mystatfiles.itstep.org/index.php?view_key=rtILv2awXkYrSQ7WVzOr0G9F1kZwIdRQC03dLrvYiKeqOlHfVfWihS/QG/11CgvGz2Oj7lb/U37S6VWM25ADRgZpjRgGmn2pOd45FJeYozc="},
+                    new Client{ Id = 3,Name = "Maxim", Phone = "+380(97)888-15-97",Image = "https://mystatfiles.itstep.org/index.php?view_key=rtILv2awXkYrSQ7WVzOr0G9F1kZwIdRQC03dLrvYiKeqOlHfVfWihS/QG/11CgvGz2Oj7lb/U37S6VWM25ADRgZpjRgGmn2pOd45FJeYozc="}
+                };
+                foreach (var item in listClient)
+                {
+                    var client = context.Clients.SingleOrDefault(c => c.Name == item.Name);
+                    if (client == null)
+                    {
+                        context.Clients.Add(item);
+                        context.SaveChanges();
+                    }
+                }
+                #endregion
 
+              
+            }
+        }
+        public static void SeedUsers(UserManager<DbUser> userManager,RoleManager<DbRole> roleManager)
+        {
+            string roleName = "Admin";
+            var role = roleManager.FindByNameAsync(roleName).Result;
+            if (role == null)
+            {
+                role = new DbRole
+                {
+                    Name = roleName
+                };
+                var addRoleResult = roleManager.CreateAsync(role).Result;
+            }
+            roleName = "Employee";
+            role = roleManager.FindByNameAsync(roleName).Result;
+            if (role == null)
+            {
+                role = new DbRole
+                {
+                    Name = roleName
+                };
+                var addRoleResult = roleManager.CreateAsync(role).Result;
+            }
+            var userEmail = "admin@gmail.com";
+            var user = userManager.FindByEmailAsync(userEmail).Result;
+            if (user == null)
+            {
+                user = new DbUser
+                {
+                    Email = userEmail,
+                    UserName = "Yura"
+                };
+                var result = userManager.CreateAsync(user, "Qwerty1-").Result;
+                if (result.Succeeded)
+                {
+                    result = userManager.AddToRoleAsync(user, roleName).Result;
+                }
+            }
+            userEmail = "maks123@gmail.com";
+            user = userManager.FindByEmailAsync(userEmail).Result;
+            if (user == null)
+            {
+                user = new DbUser
+                {
+                    Email = userEmail,
+                    UserName = "Maksim"
+                };
+                var result = userManager.CreateAsync(user, "max12478-Q").Result;
+                if (result.Succeeded)
+                {
+                    result = userManager.AddToRoleAsync(user, roleName).Result;
+                }
+            }
+            userEmail = "zaharjoker@gmail.com";
+            user = userManager.FindByEmailAsync(userEmail).Result;
+            if (user == null)
+            {
+                user = new DbUser
+                {
+                    Email = userEmail,
+                    UserName = "Zahar"
+                };
+                var result = userManager.CreateAsync(user, "zahardeadinside!39-R").Result;
+                if (result.Succeeded)
+                {
+                    result = userManager.AddToRoleAsync(user, roleName).Result;
+                }
+            }
+            userEmail = "invoker@ukr.net";
+            user = userManager.FindByEmailAsync(userEmail).Result;
+            if (user == null)
+            {
+                user = new DbUser
+                {
+                    Email = userEmail,
+                    UserName = "Carl"
+                };
+                var result = userManager.CreateAsync(user, "quaswexQ-11").Result;
+                if (result.Succeeded)
+                {
+                    result = userManager.AddToRoleAsync(user, roleName).Result;
+                }
             }
         }
     }
