@@ -77,7 +77,7 @@ namespace ShopCarApi.Entities
                     new Make{ Id = 9,Name = "Peugeot"},
                     new Make{ Id = 10,Name = "Fiat"},
                     new Make{ Id = 11,Name = "Nissan"},
-                    new Make{ Id = 12,Name = "Mersedes-Benz"},
+                    new Make{ Id = 12,Name = "Hyundai"},
                     new Make{ Id = 13,Name = "Opel"},
                     new Make{ Id = 14,Name = "Renault"},
                     new Make{ Id = 15,Name = "Subaru"},

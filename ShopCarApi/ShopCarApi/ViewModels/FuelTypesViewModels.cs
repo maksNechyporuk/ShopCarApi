@@ -9,9 +9,7 @@ namespace ShopCarApi.ViewModels
     {
         public int Id { get; set; }
 
-        public string Type { get; set; }
-
-       
+        public string Type { get; set; }     
 
     }
     public class FuelTypeAddVM
