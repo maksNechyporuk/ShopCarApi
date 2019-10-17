@@ -68,13 +68,12 @@ namespace ShopCarApi
                     ValidateIssuer = false,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    // set ClockSkew is zero
+                    //set ClockSkew is zero
                     ClockSkew = TimeSpan.Zero
                 };
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -88,7 +87,7 @@ namespace ShopCarApi
             }
             app.UseHttpsRedirection();
             app.UseMvc();
-            SeederDB.SeedData(app.ApplicationServices, env, this.Configuration);
+           //SeederDB.SeedData(app.ApplicationServices, env, this.Configuration);
         }
     }
 }
