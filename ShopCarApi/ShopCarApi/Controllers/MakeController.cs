@@ -59,9 +59,9 @@ namespace ShopCarApi.Controllers
                 };
                 _context.Makes.Add(m);
                 _context.SaveChanges();
-                return Ok(m.Id);
+                return Ok("Дані добалено");
             }
-            return BadRequest();         
+            return Ok("Дана марка вже добалена");         
             }
 
         [HttpDelete]
@@ -74,6 +74,15 @@ namespace ShopCarApi.Controllers
             var make = _context.Makes.SingleOrDefault(p => p.Id == model.Id);
             if (make != null)
             {
+                var list= _context.Models.Where(p => p.MakeId == model.Id).ToList();
+                if(list!=null)
+                {
+                    foreach (var item in list)
+                    {
+                        _context.Models.Remove(item);
+                        _context.SaveChanges();
+                    }
+                }
                 _context.Makes.Remove(make);
                 _context.SaveChanges();
             }
