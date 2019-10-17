@@ -57,7 +57,7 @@ namespace ShopCarApi.Controllers
                 return BadRequest("Model is not valid!");
             }
             var result = await _signInManager
-                .PasswordSignInAsync(model.Email, model.Password,
+                .PasswordSignInAsync(model.Name, model.Password,
                 false, false);
 
             if (!result.Succeeded)
@@ -65,7 +65,7 @@ namespace ShopCarApi.Controllers
                 return BadRequest(new { invalid = "Не правильно введені дані!" });
             }
 
-            var user = await _userManager.FindByEmailAsync(model.Email);
+            var user = await _userManager.FindByNameAsync(model.Name);
             await _signInManager.SignInAsync(user, isPersistent: false);
 
             return Ok(
