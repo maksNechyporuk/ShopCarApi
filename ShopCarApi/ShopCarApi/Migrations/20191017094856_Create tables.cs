@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ShopCarApi.Migrations
 {
-    public partial class Addalltbls : Migration
+    public partial class Createtables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

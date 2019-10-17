@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using ShopCarApi.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -31,6 +32,19 @@ namespace WebElectra.Entities
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            //builder.Entity<Make>()
+            //.Property(f => f.Id)
+            //.ValueGeneratedOnAdd();
+            //builder.ForNpgsqlUseIdentityColumns();
+
+            //builder.Entity<Make>()
+            // .Property(b => b.Id)
+            //.ValueGeneratedOnAdd();
+
+            // builder.Entity<Make>()
+            //.HasKey(p => new { p.Name, p.Id });
+
 
             builder.Entity<DbUserRole>(userRole =>
             {
