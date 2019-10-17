@@ -88,7 +88,7 @@ namespace ShopCarApi
             }
             app.UseHttpsRedirection();
             app.UseMvc();
-           // SeederDB.SeedData(app.ApplicationServices, env, this.Configuration);
+            SeederDB.SeedData(app.ApplicationServices, env, this.Configuration);
         }
     }
 }

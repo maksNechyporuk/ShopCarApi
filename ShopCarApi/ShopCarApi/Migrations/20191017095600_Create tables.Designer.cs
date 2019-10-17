@@ -10,7 +10,7 @@ using WebElectra.Entities;
 namespace ShopCarApi.Migrations
 {
     [DbContext(typeof(EFDbContext))]
-    [Migration("20191017094856_Create tables")]
+    [Migration("20191017095600_Create tables")]
     partial class Createtables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
