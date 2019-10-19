@@ -50,6 +50,9 @@ namespace ShopCarApi.Controllers
             {
                 return BadRequest();
             }
+            if(model.Name=="")
+                return Ok("Заповніть усі поля");
+
             var make = _context.Makes.SingleOrDefault(p => p.Name == model.Name);
             if (make == null)
             {
@@ -85,8 +88,10 @@ namespace ShopCarApi.Controllers
                 }
                 _context.Makes.Remove(make);
                 _context.SaveChanges();
+            return Ok("Дані видалено");
             }
-            return Ok();
+            return Ok("Помилка видалення");
+
         }
         [HttpPut]
         public IActionResult Update([FromBody]MakeVM model)
@@ -95,13 +100,15 @@ namespace ShopCarApi.Controllers
             {
                 return BadRequest();
             }
-            var prod = _context.Makes.SingleOrDefault(p => p.Id == model.Id);
-            if (prod != null)
+            var make = _context.Makes.SingleOrDefault(p => p.Id == model.Id);
+            if (make != null)
             {
-                prod.Name = model.Name;
+                make.Name = model.Name;
                 _context.SaveChanges();
+                return Ok("Дані оновлено");
+
             }
-            return Ok();
+            return Ok("Помилка оновлення");
         }
     }
 }
