@@ -34,12 +34,18 @@ namespace ShopCarApi.Controllers
             [HttpGet]
             public IActionResult MakeList()
             {
-                var model = _context.Models.Select(
-                    p => new ModelVM
-                    {
-                        Id = p.Id,
-                        Name = p.Name
-                    }).ToList();
+            var query = _context.Makes.AsQueryable();
+            var queryModels = _context.Models.AsQueryable();
+            var queryResult =( from u in query
+                              join a in queryModels on u.Id equals a.MakeId into ua
+                              from aEmp in ua.DefaultIfEmpty()
+                              select new ModelVM
+                              {
+                                  Id = aEmp.Id,
+                                  Name = aEmp.Name,                                 
+                               Make=new MakeVM {Id=u.Id,Name=u.Name }
+                              }).OrderBy(r=>r.Id);
+            var model = queryResult.ToList();       
                 return Ok(model);
             }
 
@@ -52,14 +58,19 @@ namespace ShopCarApi.Controllers
                     return BadRequest();
                 }
 
-
-                Model m = new Model
+            var make = _context.Makes.SingleOrDefault(p => p.Id == model.Make.Id);
+            if(make!=null)
+            {
+            Model m = new Model
                 {
-                    Name = model.Name
+                    Name = model.Name,
+                    MakeId =model.Make.Id
                 };
                 _context.Models.Add(m);
                 _context.SaveChanges();
-                return Ok(m.Id);
+
+            }
+                return Ok();
             }
 
             [HttpDelete]
