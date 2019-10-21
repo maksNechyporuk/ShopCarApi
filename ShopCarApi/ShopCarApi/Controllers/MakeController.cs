@@ -31,18 +31,29 @@ namespace ShopCarApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult MakeList()
+        public IActionResult MakeList(string Name)
         {
-            var model = _context.Makes.Select(
-                p => new MakeVM
-                {
-                    Id = p.Id,
-                    Name = p.Name         
-                }).ToList();
-            return Ok(model);
+            if (Name == null)
+            {
+                var model = _context.Makes.Select(
+                    p => new MakeVM
+                    {
+                        Id = p.Id,
+                        Name = p.Name
+                    }).ToList();
+                return Ok(model);
+            }
+            else
+            {
+                var model = _context.Makes.AsQueryable();
+                var queryResult = (from make in model
+                                   where make.Name.Contains(Name)
+                                   select new MakeVM { Id = make.Id, Name = make.Name }).ToList();
+                return Ok(queryResult);
+            }
         }
 
-
+        
         [HttpPost]
         public IActionResult Create([FromBody]MakeAddVM model)
         {
@@ -102,10 +113,13 @@ namespace ShopCarApi.Controllers
             var make = _context.Makes.SingleOrDefault(p => p.Id == model.Id);
             if (make != null)
             {
-                make.Name = model.Name;
-                _context.SaveChanges();
-                return Ok("Дані оновлено");
-
+                make = _context.Makes.SingleOrDefault(p => p.Name == model.Name);
+                if (make == null)
+                {
+                    make.Name = model.Name;
+                    _context.SaveChanges();
+                    return Ok("Дані оновлено");
+                }
             }
             return BadRequest(new { name = "Помилка оновлення" });
         }
