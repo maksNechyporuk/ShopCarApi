@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -48,11 +49,10 @@ namespace ShopCarApi.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                var errors = CustomValidator.GetErrorsByModel(ModelState);
+                return BadRequest(errors);
             }
-            if(model.Name=="")
-                return Ok("Заповніть усі поля");
-
+           
             var make = _context.Makes.SingleOrDefault(p => p.Name == model.Name);
             if (make == null)
             {
@@ -64,9 +64,8 @@ namespace ShopCarApi.Controllers
                 _context.SaveChanges();
                 return Ok("Дані добалено");
             }
-            return Ok("Дана марка вже добалена");         
-            }
-
+            return BadRequest(new { invalid = "Дана марка вже добалена" });         
+        }
         [HttpDelete]
         public IActionResult Delete([FromBody]MakeDeleteVM model)
         {
