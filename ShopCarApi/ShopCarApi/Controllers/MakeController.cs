@@ -17,7 +17,6 @@ namespace ShopCarApi.Controllers
     [Route("api/[controller]")]
     public class MakeController : ControllerBase
     {
-
         private readonly EFDbContext _context;
         private readonly IConfiguration _configuration;
         private readonly IHostingEnvironment _env;
@@ -51,8 +50,7 @@ namespace ShopCarApi.Controllers
             {
                 var errors = CustomValidator.GetErrorsByModel(ModelState);
                 return BadRequest(errors);
-            }
-           
+            }           
             var make = _context.Makes.SingleOrDefault(p => p.Name == model.Name);
             if (make == null)
             {
@@ -64,14 +62,15 @@ namespace ShopCarApi.Controllers
                 _context.SaveChanges();
                 return Ok("Дані добалено");
             }
-            return BadRequest(new { invalid = "Дана марка вже добалена" });         
+                return BadRequest(new { name = "Дана марка вже добалена" });         
         }
         [HttpDelete]
         public IActionResult Delete([FromBody]MakeDeleteVM model)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                var errors = CustomValidator.GetErrorsByModel(ModelState);
+                return BadRequest(errors);
             }
             var make = _context.Makes.SingleOrDefault(p => p.Id == model.Id);
             if (make != null)
@@ -89,7 +88,7 @@ namespace ShopCarApi.Controllers
                 _context.SaveChanges();
             return Ok("Дані видалено");
             }
-            return Ok("Помилка видалення");
+            return BadRequest(new { name = "Помилка видалення" });
 
         }
         [HttpPut]
@@ -97,7 +96,8 @@ namespace ShopCarApi.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                var errors = CustomValidator.GetErrorsByModel(ModelState);
+                return BadRequest(errors);
             }
             var make = _context.Makes.SingleOrDefault(p => p.Id == model.Id);
             if (make != null)
@@ -107,7 +107,7 @@ namespace ShopCarApi.Controllers
                 return Ok("Дані оновлено");
 
             }
-            return Ok("Помилка оновлення");
+            return BadRequest(new { name = "Помилка оновлення" });
         }
     }
 }
