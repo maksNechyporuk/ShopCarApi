@@ -54,7 +54,7 @@ namespace ShopCarApi.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("Model is not valid!");
+                return BadRequest(new { invalid = "Model is not valid!" });
             }
             var result = await _signInManager
                 .PasswordSignInAsync(model.Name, model.Password,
@@ -80,15 +80,15 @@ namespace ShopCarApi.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("Model is not valid!");
+                return BadRequest(new { invalid = "Model is not valid!" });
             }
-            string roleName = "Client";
+            string roleName = "Employee";
             var role = _roleManager.FindByNameAsync(roleName).Result;
             var userEmail = model.Email;
             //var user = _userManager.FindByEmailAsync(userEmail).Result;
             if (_userManager.FindByEmailAsync(userEmail).Result != null)
             {
-                return BadRequest("Email is exist!");
+                return BadRequest(new { invalid = "Email is exist!" });
             }
             var user = new DbUser
             { 
