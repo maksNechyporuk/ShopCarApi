@@ -16,6 +16,7 @@ namespace ShopCarApi.ViewModels
     }
     public class ModelAddVM
     {
+        [Required(ErrorMessage = "Поле не може бути пустим")]
         public MakeVM Make { get; set; }
         [Required(ErrorMessage = "Поле не може бути пустим")]
         public string Name { get; set; }

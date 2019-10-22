@@ -29,7 +29,6 @@ namespace ShopCarApi.Controllers
             _env = env;
             _context = context;
         }
-
         [HttpGet]
         public IActionResult MakeList(string Name)
         {
@@ -45,10 +44,20 @@ namespace ShopCarApi.Controllers
             }
             else
             {
-                var model = _context.Makes.AsQueryable();
-                var queryResult = (from make in model
+                var query = _context.Makes.AsQueryable();
+                var queryResult = (from make in query
                                    where make.Name.Contains(Name)
                                    select new MakeVM { Id = make.Id, Name = make.Name }).ToList();
+
+                //var makes = query
+                //    .Where(m => m.Name.Contains(Name))
+                //    .Select(
+                //    p => new MakeVM
+                //    {
+                //        Id = p.Id,
+                //        Name = p.Name
+                //    }).ToList();
+
                 return Ok(queryResult);
             }
         }

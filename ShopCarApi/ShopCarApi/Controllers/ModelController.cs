@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,9 +35,9 @@ namespace ShopCarApi.Controllers
             [HttpGet]
             public IActionResult MakeList()
             {
-            var query = _context.Makes.AsQueryable();
-            var queryModels = _context.Models.AsQueryable();
-            var queryResult =( from u in query
+            var query = _context.Makes;
+            var queryModels = _context.Models;
+            var queryResult =(( from u in query
                               join a in queryModels on u.Id equals a.MakeId into ua
                               from aEmp in ua.DefaultIfEmpty()
                               select new ModelVM
@@ -44,34 +45,38 @@ namespace ShopCarApi.Controllers
                                   Id = aEmp.Id,
                                   Name = aEmp.Name,                                 
                                Make=new MakeVM {Id=u.Id,Name=u.Name }
-                              }).OrderBy(r=>r.Id);
-            var model = queryResult.ToList();       
-                return Ok(model);
+                              }).OrderBy(r=>r.Id)).ToList();
+            //var model = queryResult.ToList();       
+                return Ok(queryResult);
             }
 
 
             [HttpPost]
             public IActionResult Create([FromBody]ModelAddVM model)
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest();
-                }
-
+            if (!ModelState.IsValid)
+            {
+                var errors = CustomValidator.GetErrorsByModel(ModelState);
+                return BadRequest(errors);
+            }
             var make = _context.Makes.SingleOrDefault(p => p.Id == model.Make.Id);
             if(make!=null)
             {
-            Model m = new Model
+                var modelCar = _context.Models.SingleOrDefault(p => p.Name == model.Name);
+                if (modelCar == null)
                 {
-                    Name = model.Name,
-                    MakeId =model.Make.Id
-                };
-                _context.Models.Add(m);
-                _context.SaveChanges();
+                    Model m = new Model
+                    {
+                        Name = model.Name,
+                        MakeId = model.Make.Id
+                    };
 
+                    _context.Models.Add(m);
+                    return Ok("Дані добалено");
+                }
             }
-                return Ok();
-            }
+            return BadRequest(new { name = "Дана модель вже добалена" });
+        }
 
             [HttpDelete]
             public IActionResult Delete([FromBody]ModelDeleteVM model)
