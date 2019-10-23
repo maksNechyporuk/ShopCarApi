@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -54,7 +55,8 @@ namespace ShopCarApi.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(new { invalid = "Model is not valid!" });
+                var errors = CustomValidator.GetErrorsByModel(ModelState);
+                return BadRequest(errors);
             }
             var result = await _signInManager
                 .PasswordSignInAsync(model.Name, model.Password,
@@ -80,7 +82,8 @@ namespace ShopCarApi.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(new { invalid = "Model is not valid!" });
+                var errors = CustomValidator.GetErrorsByModel(ModelState);
+                return BadRequest(errors);
             }
             string roleName = "Employee";
             var role = _roleManager.FindByNameAsync(roleName).Result;
