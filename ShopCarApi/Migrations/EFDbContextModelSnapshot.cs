@@ -250,6 +250,66 @@ namespace ShopCarApi.Migrations
                     b.ToTable("AspNetUserRoles");
                 });
 
+            modelBuilder.Entity("ShopCarApi.Entities.Filter", b =>
+                {
+                    b.Property<int>("CarId");
+
+                    b.Property<int>("FilterValueId");
+
+                    b.Property<int>("FilterNameId");
+
+                    b.HasKey("CarId", "FilterValueId", "FilterNameId");
+
+                    b.HasAlternateKey("CarId", "FilterNameId", "FilterValueId");
+
+                    b.HasIndex("FilterNameId");
+
+                    b.HasIndex("FilterValueId");
+
+                    b.ToTable("tblFilters");
+                });
+
+            modelBuilder.Entity("ShopCarApi.Entities.FilterName", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tblFilterNames");
+                });
+
+            modelBuilder.Entity("ShopCarApi.Entities.FilterNameGroup", b =>
+                {
+                    b.Property<int>("FilterValueId");
+
+                    b.Property<int>("FilterNameId");
+
+                    b.HasKey("FilterValueId", "FilterNameId");
+
+                    b.HasAlternateKey("FilterNameId", "FilterValueId");
+
+                    b.ToTable("tblFilterNameGroups");
+                });
+
+            modelBuilder.Entity("ShopCarApi.Entities.FilterValue", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tblFilterValues");
+                });
+
             modelBuilder.Entity("ShopCarApi.Entities.FuelType", b =>
                 {
                     b.Property<int>("Id")
@@ -407,6 +467,37 @@ namespace ShopCarApi.Migrations
                     b.HasOne("ShopCarApi.Entities.DbUser", "User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ShopCarApi.Entities.Filter", b =>
+                {
+                    b.HasOne("ShopCarApi.Entities.Car", "CarOf")
+                        .WithMany("Filtres")
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ShopCarApi.Entities.FilterName", "FilterNameOf")
+                        .WithMany("Filtres")
+                        .HasForeignKey("FilterNameId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ShopCarApi.Entities.FilterValue", "FilterValueOf")
+                        .WithMany("Filtres")
+                        .HasForeignKey("FilterValueId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ShopCarApi.Entities.FilterNameGroup", b =>
+                {
+                    b.HasOne("ShopCarApi.Entities.FilterName", "FilterNameOf")
+                        .WithMany("FilterNameGroups")
+                        .HasForeignKey("FilterNameId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ShopCarApi.Entities.FilterValue", "FilterValueOf")
+                        .WithMany("FilterNameGroups")
+                        .HasForeignKey("FilterValueId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

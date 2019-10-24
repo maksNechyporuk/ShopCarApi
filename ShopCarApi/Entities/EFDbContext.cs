@@ -24,6 +24,15 @@ namespace WebElectra.Entities
         public DbSet<Purchase> Purchases { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Order> Orders { get; set; }
+
+        /// <summary>
+        /// Filter tables
+        /// </summary>
+        public DbSet<FilterName> FilterNames { get; set; }
+        public DbSet<FilterValue> FilterValues { get; set; }
+        public DbSet<FilterNameGroup> FilterNameGroups { get; set; }
+        public DbSet<Filter> Filters { get; set; }
+
         public EFDbContext(DbContextOptions<EFDbContext> options)
             : base(options)
         {
@@ -32,19 +41,6 @@ namespace WebElectra.Entities
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            //builder.Entity<Make>()
-            //.Property(f => f.Id)
-            //.ValueGeneratedOnAdd();
-            //builder.ForNpgsqlUseIdentityColumns();
-
-            //builder.Entity<Make>()
-            // .Property(b => b.Id)
-            //.ValueGeneratedOnAdd();
-
-            // builder.Entity<Make>()
-            //.HasKey(p => new { p.Name, p.Id });
-
 
             builder.Entity<DbUserRole>(userRole =>
             {
@@ -58,6 +54,41 @@ namespace WebElectra.Entities
                 userRole.HasOne(ur => ur.User)
                     .WithMany(r => r.UserRoles)
                     .HasForeignKey(ur => ur.UserId)
+                    .IsRequired();
+            });
+
+            builder.Entity<Filter>(filter =>
+            {
+                filter.HasKey(f => new { f.CarId, f.FilterValueId, f.FilterNameId });
+
+                filter.HasOne(ur => ur.FilterNameOf)
+                    .WithMany(r => r.Filtres)
+                    .HasForeignKey(ur => ur.FilterNameId)
+                    .IsRequired();
+
+                filter.HasOne(ur => ur.FilterValueOf)
+                    .WithMany(r => r.Filtres)
+                    .HasForeignKey(ur => ur.FilterValueId)
+                    .IsRequired();
+
+                filter.HasOne(ur => ur.CarOf)
+                    .WithMany(r => r.Filtres)
+                    .HasForeignKey(ur => ur.CarId)
+                    .IsRequired();
+            });
+
+            builder.Entity<FilterNameGroup>(filterNG =>
+            {
+                filterNG.HasKey(f => new { f.FilterValueId, f.FilterNameId });
+
+                filterNG.HasOne(ur => ur.FilterNameOf)
+                    .WithMany(r => r.FilterNameGroups)
+                    .HasForeignKey(ur => ur.FilterNameId)
+                    .IsRequired();
+
+                filterNG.HasOne(ur => ur.FilterValueOf)
+                    .WithMany(r => r.FilterNameGroups)
+                    .HasForeignKey(ur => ur.FilterValueId)
                     .IsRequired();
             });
         }

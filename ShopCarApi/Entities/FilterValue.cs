@@ -6,18 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace  ShopCarApi.Entities
+namespace ShopCarApi.Entities
 {
-    [Table("tblClients")]
-    public class Client
+    [Table("tblFilterValues")]
+    public class FilterValue
     {
         [Key]
         public int Id { get; set; }
-        [Required]
+
+        [Required, StringLength(maximumLength: 250)]
         public string Name { get; set; }
-        public string Image { get; set; }
-        [Required]
-        public string Phone { get; set; }
-        public float Total_price { get; set; }
+        public virtual ICollection<Filter> Filtres { get; set; }
+        public virtual ICollection<FilterNameGroup> FilterNameGroups { get; set; }
     }
 }
