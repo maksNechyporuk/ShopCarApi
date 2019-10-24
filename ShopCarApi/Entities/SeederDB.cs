@@ -12,6 +12,95 @@ namespace ShopCarApi.Entities
 {
     public class SeederDB
     {
+        private static void SeedFilters(EFDbContext context)
+        {
+            #region tblFilterNames - Назви фільтрів
+            string[] filterNames = { "Тип авто", "Пальне" };
+            foreach (var type in filterNames)
+            {
+                if (context.FilterNames.SingleOrDefault(f => f.Name == type) == null)
+                {
+                    context.FilterNames.Add(
+                        new Entities.FilterName
+                        {
+                            Name = type
+                        });
+                    context.SaveChanges();
+                }
+            }
+            #endregion
+
+            #region tblFilterValues - Значення фільтрів
+            List<string[]> filterValues = new List<string[]> { 
+                new string [] { "Кросовер", "Легковий", "Вантажний" },
+                new string [] { "Дизель", "Бензин", "Газ"}
+            };
+            //string t=filterNames[0];
+            foreach(var items in filterValues)
+            {
+                foreach(var value in items)
+                {
+                    if (context.FilterValues
+                        .SingleOrDefault(f => f.Name == value) == null)
+                    {
+                        context.FilterValues.Add(
+                            new Entities.FilterValue
+                            {
+                                Name = value
+                            });
+                        context.SaveChanges();
+                    }
+                }
+            }
+            #endregion
+
+            #region tblFilterNameGroups - Групування по групах фільтрів
+            //string t=filterNames[0];
+            for (int i = 0; i < filterNames.Length; i++)
+            {
+                foreach (var value in filterValues[i])
+                {
+                    var nId = context.FilterNames
+                        .SingleOrDefault(f => f.Name == filterNames[i]).Id;
+                    var vId = context.FilterValues
+                        .SingleOrDefault(f => f.Name == value).Id;
+                    if (context.FilterNameGroups
+                        .SingleOrDefault(f => f.FilterValueId == vId && 
+                        f.FilterNameId == nId) == null)
+                    {
+                        context.FilterNameGroups.Add(
+                            new Entities.FilterNameGroup
+                            {
+                                FilterNameId = nId,
+                                FilterValueId = vId
+                            });
+                        context.SaveChanges();
+                    }
+                }
+            }
+
+            #endregion
+
+            //#region tblCars - Автомобілі
+            //List<string[]>cars = new List<string[]>{
+            //    new string[] { "154muv2f.jpg", "154muv2f.jpg" }
+            //};
+            //foreach (var type in filterNames)
+            //{
+            //    if (context.FilterNames.SingleOrDefault(f => f.Name == type) == null)
+            //    {
+            //        context.FilterNames.Add(
+            //            new Entities.FilterName
+            //            {
+            //                Name = type
+            //            });
+            //        context.SaveChanges();
+            //    }
+            //}
+            //#endregion
+
+
+        }
         public static void SeedData(IServiceProvider services, IHostingEnvironment env,
             IConfiguration config)
         {
@@ -23,6 +112,8 @@ namespace ShopCarApi.Entities
 
                 #region Colors
                 var context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
+
+                SeedFilters(context);
                 List<Colors> listColors = new List<Colors>
                 {
                     new Colors {  Name = "Red",  R = 255, G = 0, B = 0, A = 1 },
