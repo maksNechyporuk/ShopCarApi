@@ -20,7 +20,6 @@ namespace ShopCarApi.Controllers
         private readonly EFDbContext _context;
         private readonly IConfiguration _configuration;
         private readonly IHostingEnvironment _env;
-
         public MakeController(IHostingEnvironment env,
             IConfiguration configuration,
             EFDbContext context)
@@ -29,6 +28,7 @@ namespace ShopCarApi.Controllers
             _env = env;
             _context = context;
         }
+
         [HttpGet]
         public IActionResult MakeList(string Name)
         {
@@ -48,7 +48,6 @@ namespace ShopCarApi.Controllers
                 var queryResult = (from make in query
                                    where make.Name.Contains(Name)
                                    select new MakeVM { Id = make.Id, Name = make.Name }).ToList();
-
                 //var makes = query
                 //    .Where(m => m.Name.Contains(Name))
                 //    .Select(
@@ -57,12 +56,9 @@ namespace ShopCarApi.Controllers
                 //        Id = p.Id,
                 //        Name = p.Name
                 //    }).ToList();
-
                 return Ok(queryResult);
             }
-        }
-
-        
+        }       
         [HttpPost]
         public IActionResult Create([FromBody]MakeAddVM model)
         {
@@ -95,10 +91,10 @@ namespace ShopCarApi.Controllers
             var make = _context.Makes.SingleOrDefault(p => p.Id == model.Id);
             if (make != null)
             {
-                var list= _context.Models.Where(p => p.MakeId == model.Id).ToList();
-                if(list!=null)
+                var models= _context.Models.Where(p => p.MakeId == model.Id).ToList();
+                if(models!=null)
                 {
-                    foreach (var item in list)
+                    foreach (var item in models)
                     {
                         _context.Models.Remove(item);
                         _context.SaveChanges();
@@ -109,7 +105,6 @@ namespace ShopCarApi.Controllers
             return Ok("Дані видалено");
             }
             return BadRequest(new { name = "Помилка видалення" });
-
         }
         [HttpPut]
         public IActionResult Update([FromBody]MakeVM model)
