@@ -22,8 +22,6 @@ namespace ShopCarApi.Controllers
             private readonly IConfiguration _configuration;
             private readonly IHostingEnvironment _env;
 
-
-
             public ModelController(IHostingEnvironment env,
                 IConfiguration configuration,
                 EFDbContext context)
@@ -33,24 +31,21 @@ namespace ShopCarApi.Controllers
                 _context = context;
             }
             [HttpGet]
-            public IActionResult MakeList()
+            public IActionResult ModelList()
             {
             var query = _context.Makes;
             var queryModels = _context.Models;
             var queryResult =(( from u in query
                               join a in queryModels on u.Id equals a.MakeId into ua
-                              from aEmp in ua.DefaultIfEmpty()
+                              from aEmp in ua.DefaultIfEmpty() where u.Id== aEmp.MakeId 
                               select new ModelVM
                               {
-                                  Id = aEmp.Id,
-                                  Name = aEmp.Name,                                 
-                               Make=new MakeVM {Id=u.Id,Name=u.Name }
+                               Id = aEmp.Id,
+                               Name = aEmp.Name,
+                               Make = new MakeVM { Id = aEmp.Make.Id, Name = aEmp.Make.Name }                           
                               }).OrderBy(r=>r.Id)).ToList();
-            //var model = queryResult.ToList();       
-                return Ok(queryResult);
+            return Ok(queryResult);
             }
-
-
             [HttpPost]
             public IActionResult Create([FromBody]ModelAddVM model)
             {
@@ -70,14 +65,13 @@ namespace ShopCarApi.Controllers
                         Name = model.Name,
                         MakeId = model.Make.Id
                     };
-
                     _context.Models.Add(m);
+                    _context.SaveChanges();
                     return Ok("Дані добалено");
                 }
             }
             return BadRequest(new { name = "Дана модель вже добалена" });
-        }
-
+            }
             [HttpDelete]
             public IActionResult Delete([FromBody]ModelDeleteVM model)
             {
@@ -85,28 +79,29 @@ namespace ShopCarApi.Controllers
                 {
                     return BadRequest();
                 }
-                var make = _context.Models.SingleOrDefault(p => p.Id == model.Id);
-                if (make != null)
+                var carModel = _context.Models.SingleOrDefault(p => p.Id == model.Id);
+                if (carModel != null)
                 {
-                    _context.Models.Remove(make);
+                    _context.Models.Remove(carModel);
                     _context.SaveChanges();
                 }
-                return Ok();
-            }
-            [HttpPut]
+            return Ok("Дані видалено");
+        }
+        [HttpPut]
             public IActionResult Update([FromBody]ModelVM model)
             {
                 if (!ModelState.IsValid)
                 {
                     return BadRequest();
                 }
-                var prod = _context.Models.SingleOrDefault(p => p.Id == model.Id);
-                if (prod != null)
+                var carModel = _context.Models.SingleOrDefault(p => p.Id == model.Id);
+                if (carModel != null)
                 {
-                    prod.Name = model.Name;
+                    carModel.Name = model.Name;
+                    carModel.MakeId = model.Make.Id;
                     _context.SaveChanges();
                 }
-                return Ok();
-            }
+            return Ok("Дані оновлено");
         }
     }
+}
