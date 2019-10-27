@@ -17,25 +17,8 @@ namespace ShopCarApi.Entities
         [Required]
         public DateTime Date { get; set; }
 
-        [ForeignKey("Color")]
-        public int ColorId { get; set; }
-
-        public virtual Colors Color { get; set; }
-
-        [ForeignKey("Model")]
-        public int ModelId { get; set; }
-
-        public virtual Model Model { get; set; }
-
-        [ForeignKey("FuelType")]
-        public int FuelTypeId { get; set; }
-
-        public virtual FuelType FuelType { get; set; }
-
-        [ForeignKey("Type")]
-        public int TypeId    { get; set; }
-
-        public virtual TypeCar Type { get; set; }
+        [Required]
+        public string UniqueName { get; set; }
 
         public string Image { get; set; }
 

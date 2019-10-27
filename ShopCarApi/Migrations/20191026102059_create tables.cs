@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ShopCarApi.Migrations
 {
-    public partial class Createtables : Migration
+    public partial class createtables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -50,13 +50,29 @@ namespace ShopCarApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "tblCars",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    Date = table.Column<DateTime>(nullable: false),
+                    UniqueName = table.Column<string>(nullable: false),
+                    Image = table.Column<string>(nullable: true),
+                    Price = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tblCars", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "tblClients",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     Name = table.Column<string>(nullable: false),
-                    Image = table.Column<string>(nullable: false),
+                    Image = table.Column<string>(nullable: true),
                     Phone = table.Column<string>(nullable: false),
                     Total_price = table.Column<float>(nullable: false)
                 },
@@ -80,6 +96,32 @@ namespace ShopCarApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tblColors", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "tblFilterNames",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    Name = table.Column<string>(maxLength: 250, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tblFilterNames", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "tblFilterValues",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    Name = table.Column<string>(maxLength: 250, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tblFilterValues", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -228,69 +270,6 @@ namespace ShopCarApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "tblModels",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Name = table.Column<string>(nullable: false),
-                    MakeId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_tblModels", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_tblModels_tblMakes_MakeId",
-                        column: x => x.MakeId,
-                        principalTable: "tblMakes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "tblCars",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Date = table.Column<DateTime>(nullable: false),
-                    ColorId = table.Column<int>(nullable: false),
-                    ModelId = table.Column<int>(nullable: false),
-                    FuelTypeId = table.Column<int>(nullable: false),
-                    TypeId = table.Column<int>(nullable: false),
-                    Image = table.Column<string>(nullable: true),
-                    Price = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_tblCars", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_tblCars_tblColors_ColorId",
-                        column: x => x.ColorId,
-                        principalTable: "tblColors",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_tblCars_tblFuelTypes_FuelTypeId",
-                        column: x => x.FuelTypeId,
-                        principalTable: "tblFuelTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_tblCars_tblModels_ModelId",
-                        column: x => x.ModelId,
-                        principalTable: "tblModels",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_tblCars_tblTypeCars_TypeId",
-                        column: x => x.TypeId,
-                        principalTable: "tblTypeCars",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "tblOrders",
                 columns: table => new
                 {
@@ -314,6 +293,83 @@ namespace ShopCarApi.Migrations
                         name: "FK_tblOrders_tblClients_ClientId",
                         column: x => x.ClientId,
                         principalTable: "tblClients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "tblFilterNameGroups",
+                columns: table => new
+                {
+                    FilterNameId = table.Column<int>(nullable: false),
+                    FilterValueId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tblFilterNameGroups", x => new { x.FilterValueId, x.FilterNameId });
+                    table.UniqueConstraint("AK_tblFilterNameGroups_FilterNameId_FilterValueId", x => new { x.FilterNameId, x.FilterValueId });
+                    table.ForeignKey(
+                        name: "FK_tblFilterNameGroups_tblFilterNames_FilterNameId",
+                        column: x => x.FilterNameId,
+                        principalTable: "tblFilterNames",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_tblFilterNameGroups_tblFilterValues_FilterValueId",
+                        column: x => x.FilterValueId,
+                        principalTable: "tblFilterValues",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "tblFilters",
+                columns: table => new
+                {
+                    FilterNameId = table.Column<int>(nullable: false),
+                    FilterValueId = table.Column<int>(nullable: false),
+                    CarId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tblFilters", x => new { x.CarId, x.FilterValueId, x.FilterNameId });
+                    table.UniqueConstraint("AK_tblFilters_CarId_FilterNameId_FilterValueId", x => new { x.CarId, x.FilterNameId, x.FilterValueId });
+                    table.ForeignKey(
+                        name: "FK_tblFilters_tblCars_CarId",
+                        column: x => x.CarId,
+                        principalTable: "tblCars",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_tblFilters_tblFilterNames_FilterNameId",
+                        column: x => x.FilterNameId,
+                        principalTable: "tblFilterNames",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_tblFilters_tblFilterValues_FilterValueId",
+                        column: x => x.FilterValueId,
+                        principalTable: "tblFilterValues",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "tblModels",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    Name = table.Column<string>(nullable: false),
+                    MakeId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tblModels", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_tblModels_tblMakes_MakeId",
+                        column: x => x.MakeId,
+                        principalTable: "tblMakes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -375,24 +431,14 @@ namespace ShopCarApi.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_tblCars_ColorId",
-                table: "tblCars",
-                column: "ColorId");
+                name: "IX_tblFilters_FilterNameId",
+                table: "tblFilters",
+                column: "FilterNameId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_tblCars_FuelTypeId",
-                table: "tblCars",
-                column: "FuelTypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_tblCars_ModelId",
-                table: "tblCars",
-                column: "ModelId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_tblCars_TypeId",
-                table: "tblCars",
-                column: "TypeId");
+                name: "IX_tblFilters_FilterValueId",
+                table: "tblFilters",
+                column: "FilterValueId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_tblModels_MakeId",
@@ -433,13 +479,40 @@ namespace ShopCarApi.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "tblColors");
+
+            migrationBuilder.DropTable(
+                name: "tblFilterNameGroups");
+
+            migrationBuilder.DropTable(
+                name: "tblFilters");
+
+            migrationBuilder.DropTable(
+                name: "tblFuelTypes");
+
+            migrationBuilder.DropTable(
+                name: "tblModels");
+
+            migrationBuilder.DropTable(
                 name: "tblPurchase");
+
+            migrationBuilder.DropTable(
+                name: "tblTypeCars");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "tblFilterNames");
+
+            migrationBuilder.DropTable(
+                name: "tblFilterValues");
+
+            migrationBuilder.DropTable(
+                name: "tblMakes");
 
             migrationBuilder.DropTable(
                 name: "tblOrders");
@@ -449,21 +522,6 @@ namespace ShopCarApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "tblClients");
-
-            migrationBuilder.DropTable(
-                name: "tblColors");
-
-            migrationBuilder.DropTable(
-                name: "tblFuelTypes");
-
-            migrationBuilder.DropTable(
-                name: "tblModels");
-
-            migrationBuilder.DropTable(
-                name: "tblTypeCars");
-
-            migrationBuilder.DropTable(
-                name: "tblMakes");
         }
     }
 }

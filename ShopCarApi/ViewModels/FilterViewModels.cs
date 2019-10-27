@@ -1,28 +1,28 @@
-﻿using ShopCarApi.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ShopCarApi.ViewModels
 {
-    public class CarGetVM
+    public class FValueViewModel
     {
         public int Id { get; set; }
-        public DateTime Date { get; set; }
-        public string Image { get; set; }
-        public int Price { get; set; }
-        public List<FNameViewModel> filters { get; set; }
+        public string Name { get; set; }
     }
-    public class CarVM
+    public class FNameViewModel
     {
         public int Id { get; set; }
-        public DateTime Date { get; set; }
-        public string Image { get; set; }
-        public int Price { get; set; }
-        public FNameViewModel filter { get; set; }
+        public string Name { get; set; }
+        public List<FValueViewModel> Children { get; set; }
     }
-    public class CarAddVM
+
+    public class FilterVM
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }     
+    }
+    public class FilterAddVM
     {
         public DateTime Date { get; set; }
         public ColorVM Color { get; set; }
@@ -32,7 +32,7 @@ namespace ShopCarApi.ViewModels
         public string Image { get; set; }
         public int Price { get; set; }
     }
-    public class CarDeleteVM
+    public class FilterDeleteVM
     {
         public int Id { get; set; }
     }
