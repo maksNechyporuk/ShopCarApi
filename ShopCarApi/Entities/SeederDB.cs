@@ -15,7 +15,7 @@ namespace ShopCarApi.Entities
         private static void SeedFilters(EFDbContext context)
         {
             #region tblFilterNames - Назви фільтрів
-            string[] filterNames = { "Тип авто", "Пальне" };
+            string[] filterNames = { "Тип авто", "Пальне","Марки","Колір" };
             foreach (var type in filterNames)
             {
                 if (context.FilterNames.SingleOrDefault(f => f.Name == type) == null)
@@ -33,7 +33,10 @@ namespace ShopCarApi.Entities
             #region tblFilterValues - Значення фільтрів
             List<string[]> filterValues = new List<string[]> { 
                 new string [] { "Кросовер", "Легковий", "Вантажний" },
-                new string [] { "Дизель", "Бензин", "Газ"}
+                new string [] { "Дизель", "Бензин", "Газ"},
+                new string [] {"BMW","Mazda","Audi","Mersedes-Benz","Toyota","Volkswagen","Chevrolet","Ford","Peugeot","Fiat","Nissan",
+                               "Hyundai","Opel","Renault","Subaru","Skoda","Honda","Citroen"},
+                new string []{"Зелений","Червоний","Синій","Чорний","Білий","Сірий"}
             };
             //string t=filterNames[0];
             foreach(var items in filterValues)
@@ -124,29 +127,6 @@ namespace ShopCarApi.Entities
                 var managerUser = scope.ServiceProvider.GetRequiredService<UserManager<DbUser>>();
                 var managerRole = scope.ServiceProvider.GetRequiredService<RoleManager<DbRole>>();
 
-                #region Colors
-                var context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
-
-                SeedFilters(context);
-                List<Colors> listColors = new List<Colors>
-                {
-                    new Colors {  Name = "Red",  R = 255, G = 0, B = 0, A = 1 },
-                    new Colors {  Name = "Green", R = 0, G = 115, B = 0, A = 1 },
-                    new Colors {  Name = "Dark Blue", R = 0, G = 0, B = 228, A = 1 },
-                    new Colors {  Name = "Black", R = 0, G = 0, B = 0, A = 1},
-                    new Colors {  Name = "White", R = 255, G = 255, B = 255, A = 1}
-                };
-                foreach(var item in listColors)
-                {
-                    var color = context.Colors.SingleOrDefault(c => c.Name == item.Name);
-                    if (color == null)
-                    {
-                        context.Colors.Add(item);
-                        context.SaveChanges();
-                    }
-                }                                         
-                #endregion
-
                 #region FuelType
                 context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
                 List<FuelType> listFuelType = new List<FuelType>
@@ -168,38 +148,7 @@ namespace ShopCarApi.Entities
                 #endregion
 
                 #region Make
-                context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
-                List<Make> listMake = new List<Make>
-                {
-                    new Make{ Name = "BMW"},
-                    new Make{ Name = "Mazda"},
-                    new Make{ Name = "Audi"},
-                    new Make{ Name = "Mersedes-Benz"},
-                    new Make{ Name = "Toyota"},
-                    new Make{ Name = "Volkswagen"},
-                    new Make{ Name = "Chevrolet"},
-                    new Make{ Name = "Ford"},
-                    new Make{ Name = "Peugeot"},
-                    new Make{ Name = "Fiat"},
-                    new Make{ Name = "Nissan"},
-                    new Make{ Name = "Hyundai"},
-                    new Make{ Name = "Opel"},
-                    new Make{ Name = "Renault"},
-                    new Make{ Name = "Subaru"},
-                    new Make{ Name = "Skoda"},
-                    new Make{ Name = "Honda"},
-                    new Make{ Name = "Citroen"}
-                };
-                foreach (var item in listMake)
-                {
-                    var make = context.Makes.SingleOrDefault(c => c.Name == item.Name);
-                    if (make == null)
-                    {
-                        context.Makes.Add(item);
-                        context.SaveChanges();
-                    }
-                }                    
-                #endregion
+                context = scope.ServiceProvider.GetRequiredService<EFDbContext>();               
 
                 #region Model
                 context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
@@ -451,28 +400,7 @@ namespace ShopCarApi.Entities
                         context.SaveChanges();
                     }
                 }
-                #endregion
-
-                #region TypesCar
-                context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
-                List<TypeCar> listTypesCar = new List<TypeCar>
-                {
-                    new TypeCar{ Name = "Passenger"},
-                    new TypeCar{ Name = "Crossover"},
-                    new TypeCar{ Name = "Truck"},
-                    new TypeCar{ Name = "Moto"}
-                };
-
-                foreach (var item in listTypesCar)
-                {
-                    var type_car = context.TypeCars.SingleOrDefault(c => c.Name == item.Name);
-                    if (type_car == null)
-                    {
-                        context.TypeCars.Add(item);
-                        context.SaveChanges();
-                    }
-                }
-                #endregion
+                #endregion              
 
                 #region Car
                 context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
@@ -600,5 +528,5 @@ namespace ShopCarApi.Entities
                 }
             }
         }
+        }
     }
-}
