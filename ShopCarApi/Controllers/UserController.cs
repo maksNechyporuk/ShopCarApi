@@ -64,7 +64,7 @@ namespace ShopCarApi.Controllers
 
             if (!result.Succeeded)
             {
-                return BadRequest(new { invalid = "Не правильно введені дані!" });
+                return BadRequest(new { Password = "Не правильно введені дані!" });
             }
 
             var user = await _userManager.FindByNameAsync(model.Name);
