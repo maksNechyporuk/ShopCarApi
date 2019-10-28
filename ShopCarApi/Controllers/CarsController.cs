@@ -79,36 +79,35 @@ namespace ShopCarApi.Controllers
 
             var filters = (from g in _context.Filters
                            select g).ToList();
-            //var valueFilters = (from g in _context.FilterValues
-            //                    select g).ToList();
-            //var nameFilters = (from g in _context.FilterNames
-            //                   select g).ToList();
+            var valueFilters = (from g in _context.FilterValues
+                                select g).ToList();
+            var nameFilters = (from g in _context.FilterNames
+                               select g).ToList();
             var cars = (from g in _context.Cars
                         select g).ToList();
-         
-   //var queryCar = (from v in valueFilters
-   //                          from n in nameFilters
-   //                          from c in cars
-   //                          from f in filters
-   //                          where f.FilterNameId == n.Id && f.FilterValueId == v.Id && f.CarId == c.Id
-   //                          select new CarVM
-   //                          {
-   //                              Id = c.Id,
-   //                              Price = c.Price,
-   //                              Image = c.Image,
-   //                              Date = c.Date,
-   //                              filter = new FNameViewModel
-   //                              {
-   //                                  Id = f.FilterNameId,
-   //                                  Name = f.FilterNameOf.Name,
-   //                                  Children = new List<FValueViewModel>
-   //                                                   {
-   //                                                       new FValueViewModel {Id=f.FilterValueId,Name=f.FilterValueOf.Name}
-   //                                                   }
-   //                              }
-   //                          }).ToList();
-             var resultCar = (from c in cars
-                              join g in filters on c.Id equals g.CarId into ua 
+            var queryCar = (from v in valueFilters
+                            from n in nameFilters
+                            from c in cars
+                            from f in filters
+                            where f.FilterNameId == n.Id && f.FilterValueId == v.Id && f.CarId == c.Id
+                            select new CarVM
+                            {
+                                Id = c.Id,
+                                Price = c.Price,
+                                Image = c.Image,
+                                Date = c.Date,
+                                filter = new FNameViewModel
+                                {
+                                    Id = f.FilterNameId,
+                                    Name = f.FilterNameOf.Name,
+                                    Children = new List<FValueViewModel>
+                                                      {
+                                                          new FValueViewModel {Id=f.FilterValueId,Name=f.FilterValueOf.Name}
+                                                      }
+                                }
+                            }).ToList();
+            var resultCar = (from c in queryCar
+                             join g in filters on c.Id equals g.CarId into ua 
              from aEmp  in ua.DefaultIfEmpty()
              group ua by
              new  CarGetVM
@@ -127,10 +126,10 @@ namespace ShopCarApi.Controllers
                                             select b.Key)
                                             .ToList()                                                                                                               
                              } into b
-                               select b.Key).Distinct(new CarComparer()).ToList();
-        //    var car = resultCar.Distinct(new CarComparer());
+                               select b.Key).ToList();
+         var car = resultCar.Distinct(new CarComparer());
             
-            return Ok(resultCar);
+            return Ok(car);
         }
         [HttpPost]
         public IActionResult Create([FromBody]CarAddVM model)
