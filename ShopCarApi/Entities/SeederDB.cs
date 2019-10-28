@@ -58,7 +58,7 @@ namespace ShopCarApi.Entities
             #endregion
 
             #region tblFilterNameGroups - Групування по групах фільтрів
-            //string t=filterNames[0];
+
             for (int i = 0; i < filterNames.Length; i++)
             {
                 foreach (var value in filterValues[i])
@@ -84,25 +84,39 @@ namespace ShopCarApi.Entities
 
             #endregion
 
-            //#region tblCars - Автомобілі
-            //List<string[]>cars = new List<string[]>{
-            //    new string[] { "154muv2f.jpg", "154muv2f.jpg" }
-            //};
-            //foreach (var type in filterNames)
-            //{
-            //    if (context.FilterNames.SingleOrDefault(f => f.Name == type) == null)
-            //    {
-            //        context.FilterNames.Add(
-            //            new Entities.FilterName
-            //            {
-            //                Name = type
-            //            });
-            //        context.SaveChanges();
-            //    }
-            //}
-            //#endregion
-
-
+            #region tblCars - Автомобілі
+            List<string> cars = new List<string>{
+             "154muv2f", "154m2fas" 
+            };
+            foreach (var item in cars)
+            {
+                if (context.Cars.SingleOrDefault(f => f.UniqueName == item) == null)
+                {
+                    context.Cars.Add(
+                        new Car
+                        {
+                            UniqueName=item,
+                            Date =DateTime.Now,
+                            Price=20000
+                        });
+                    context.SaveChanges();
+                }
+            }
+            #endregion
+            #region tblFilters -Фільтри
+            Filter[] filters =
+            {
+                new Filter { FilterNameId = 1, FilterValueId=1, CarId=1 },
+                new Filter { FilterNameId = 2, FilterValueId=5, CarId=1 },
+                new Filter { FilterNameId = 1, FilterValueId=2, CarId=2 },
+                new Filter { FilterNameId = 2, FilterValueId=6, CarId=2 }
+            };
+            foreach (var item in filters)
+            {
+            context.Filters.Add(new Filter{ FilterNameId=item.FilterNameId,FilterValueId= item.FilterValueId,CarId= item.CarId});
+                context.SaveChanges();
+            }
+            #endregion
         }
         public static void SeedData(IServiceProvider services, IHostingEnvironment env,
             IConfiguration config)
@@ -390,23 +404,23 @@ namespace ShopCarApi.Entities
 
                 #region Car
                 context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
-                List<Car> listCar = new List<Car>
-                {
-                    new Car{ TypeId = 1,ModelId = 1,FuelTypeId = 3,Date = DateTime.Now,ColorId = 1,Image = "https://inlviv.in.ua/wp-content/uploads/2018/02/74_main.jpg",Price = 500000},
-                    new Car{ TypeId = 1,ModelId = 4,FuelTypeId = 4,Date = DateTime.Now,ColorId = 4,Image = "https://inlviv.in.ua/wp-content/uploads/2018/02/74_main.jpg",Price = 260000},
-                    new Car{ TypeId = 1,ModelId = 2,FuelTypeId = 2,Date = DateTime.Now,ColorId = 1,Image = "https://inlviv.in.ua/wp-content/uploads/2018/02/74_main.jpg",Price = 150000},
-                    new Car{ TypeId = 1,ModelId = 3,FuelTypeId = 2,Date = DateTime.Now,ColorId = 3,Image = "https://inlviv.in.ua/wp-content/uploads/2018/02/74_main.jpg",Price = 400000},
-                    new Car{ TypeId = 1,ModelId = 2,FuelTypeId = 4,Date = DateTime.Now,ColorId = 2,Image = "https://inlviv.in.ua/wp-content/uploads/2018/02/74_main.jpg",Price = 700000}
-                };
-                foreach (var item in listCar)
-                {
-                    var car = context.Cars.SingleOrDefault(c => c.Id== item.Id);
-                    if (car == null)
-                    {
-                        context.Cars.Add(item);
-                        context.SaveChanges();
-                    }
-                }
+                //List<Car> listCar = new List<Car>
+                //{
+                //    new Car{ TypeId = 1,ModelId = 1,FuelTypeId = 3,Date = DateTime.Now,ColorId = 1,Image = "https://inlviv.in.ua/wp-content/uploads/2018/02/74_main.jpg",Price = 500000},
+                //    new Car{ TypeId = 1,ModelId = 4,FuelTypeId = 4,Date = DateTime.Now,ColorId = 4,Image = "https://inlviv.in.ua/wp-content/uploads/2018/02/74_main.jpg",Price = 260000},
+                //    new Car{ TypeId = 1,ModelId = 2,FuelTypeId = 2,Date = DateTime.Now,ColorId = 1,Image = "https://inlviv.in.ua/wp-content/uploads/2018/02/74_main.jpg",Price = 150000},
+                //    new Car{ TypeId = 1,ModelId = 3,FuelTypeId = 2,Date = DateTime.Now,ColorId = 3,Image = "https://inlviv.in.ua/wp-content/uploads/2018/02/74_main.jpg",Price = 400000},
+                //    new Car{ TypeId = 1,ModelId = 2,FuelTypeId = 4,Date = DateTime.Now,ColorId = 2,Image = "https://inlviv.in.ua/wp-content/uploads/2018/02/74_main.jpg",Price = 700000}
+                //};
+                //foreach (var item in listCar)
+                //{
+                //    var car = context.Cars.SingleOrDefault(c => c.Id== item.Id);
+                //    if (car == null)
+                //    {
+                //        context.Cars.Add(item);
+                //        context.SaveChanges();
+                //    }
+                //}
                 #endregion
 
                 #region Clients

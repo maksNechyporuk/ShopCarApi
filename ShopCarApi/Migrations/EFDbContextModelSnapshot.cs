@@ -96,29 +96,16 @@ namespace ShopCarApi.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("ColorId");
-
                     b.Property<DateTime>("Date");
-
-                    b.Property<int>("FuelTypeId");
 
                     b.Property<string>("Image");
 
-                    b.Property<int>("ModelId");
-
                     b.Property<int>("Price");
 
-                    b.Property<int>("TypeId");
+                    b.Property<string>("UniqueName")
+                        .IsRequired();
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ColorId");
-
-                    b.HasIndex("FuelTypeId");
-
-                    b.HasIndex("ModelId");
-
-                    b.HasIndex("TypeId");
 
                     b.ToTable("tblCars");
                 });
@@ -431,29 +418,6 @@ namespace ShopCarApi.Migrations
                     b.HasOne("ShopCarApi.Entities.DbUser")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ShopCarApi.Entities.Car", b =>
-                {
-                    b.HasOne("ShopCarApi.Entities.Colors", "Color")
-                        .WithMany()
-                        .HasForeignKey("ColorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ShopCarApi.Entities.FuelType", "FuelType")
-                        .WithMany()
-                        .HasForeignKey("FuelTypeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ShopCarApi.Entities.Model", "Model")
-                        .WithMany()
-                        .HasForeignKey("ModelId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ShopCarApi.Entities.TypeCar", "Type")
-                        .WithMany()
-                        .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
