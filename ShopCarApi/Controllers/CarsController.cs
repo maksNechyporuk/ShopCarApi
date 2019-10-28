@@ -120,8 +120,8 @@ namespace ShopCarApi.Controllers
                                             group f by new FNameViewModel                                         
                                            {   Id = f.Id,
                                                Name = f.Name,
-                                               Children = c.filter.Children.ke
-                                            } into g
+                                               Children = f.Children
+                                           } into g
                                             select g.Key)
                                          .OrderBy(l => l.Name).ToList()
                                  //Children = (from x in filters
