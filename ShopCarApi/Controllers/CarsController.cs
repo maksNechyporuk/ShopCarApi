@@ -50,8 +50,6 @@ namespace ShopCarApi.Controllers
                             FValueId = aEmp != null ? aEmp.FilterValueId : 0,
                             FValue = aEmp != null ? aEmp.FilterValueOf.Name : null,
                         };
-
-
             //Групуємо по іменам і сортуємо по спаданю імен
             var groupNames = (from f in query
                               group f by new
@@ -87,7 +85,8 @@ namespace ShopCarApi.Controllers
                                select g).ToList();
             var cars = (from g in _context.Cars
                         select g).ToList();
-            var queryCar = ((from v in valueFilters
+         
+   var queryCar = ((from v in valueFilters
                              from n in nameFilters
                              from c in cars
                              from f in filters
@@ -108,22 +107,30 @@ namespace ShopCarApi.Controllers
                                                       }
                                  }
                              })).ToList();
-
-            var resultCar = (from c in queryCar
-                             group c by new CarGetVM
+                             var resultCar = (from c in queryCar
+                             join g in filters on c.Id equals g.CarId into ua
+                             from aEmp in ua.DefaultIfEmpty()
+                             select new  CarGetVM
                              {
                                  Id = c.Id,
                                  Date = c.Date,
                                  Image = c.Image,
                                  Price = c.Price,
                                  filters = (from f in result
-                                            group f by new FNameViewModel                                         
-                                           {   Id = f.Id,
+                                            group f by new FNameViewModel
+                                            {
+                                               Id = f.Id,
                                                Name = f.Name,
-                                               Children = f.Children
-                                           } into g
-                                            select g.Key)
-                                         .OrderBy(l => l.Name).ToList()
+                                               Children = (from v in ua
+                                                           group v by new FValueViewModel
+                                                           {
+                                                               Id = v.FilterValueId,
+                                                               Name = v.FilterValueOf.Name
+                                                           } into y
+                                                           select y.Key).ToList()
+                                            } into b
+                                            select b.Key)
+                                         .ToList()
                                  //Children = (from x in filters
                                  //            group x by new FValueViewModel
                                  //            {
@@ -131,11 +138,6 @@ namespace ShopCarApi.Controllers
                                  //                Name = x.FilterValueOf.Name
                                  //            }).ToList()                                                                                                  
                              }).ToList();
-
-
-            var cty = resultCar;
-
-            int b=0;
             //  };
             //    }
             //    {
