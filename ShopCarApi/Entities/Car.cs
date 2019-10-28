@@ -25,6 +25,9 @@ namespace ShopCarApi.Entities
         [Required]
         public int Price { get; set; }
 
+        [Required]
+        public int Count { get; set; }
+
         public virtual ICollection<Filter> Filtres { get; set; }
 
 

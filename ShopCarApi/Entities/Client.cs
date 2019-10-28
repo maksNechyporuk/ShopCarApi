@@ -18,6 +18,10 @@ namespace  ShopCarApi.Entities
         public string Image { get; set; }
         [Required]
         public string Phone { get; set; }
+
+        [Required]
+        public string Email { get; set; }
+
         public float Total_price { get; set; }
     }
 }
