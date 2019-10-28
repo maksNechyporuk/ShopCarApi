@@ -149,7 +149,7 @@ namespace ShopCarApi.Entities
 
                 context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
   
-
+               
                 #region Model
                 context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
                 List<Model> listModel = new List<Model>
