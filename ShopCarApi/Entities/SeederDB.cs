@@ -113,7 +113,7 @@ namespace ShopCarApi.Entities
             foreach (var item in filters)
             {
             context.Filters.Add(new Filter{ FilterNameId=item.FilterNameId,FilterValueId= item.FilterValueId,CarId= item.CarId});
-                context.SaveChanges();
+            context.SaveChanges();
             }
             #endregion
         }
