@@ -81,7 +81,6 @@ namespace ShopCarApi.Entities
                     }
                 }
             }
-
             #endregion
 
             #region tblCars - Автомобілі
@@ -128,7 +127,7 @@ namespace ShopCarApi.Entities
                 var managerRole = scope.ServiceProvider.GetRequiredService<RoleManager<DbRole>>();
 
                 #region FuelType
-                context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
+           var   context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
                 List<FuelType> listFuelType = new List<FuelType>
                 {
                     new FuelType{ Id = 1,Type = "Electric"},
@@ -147,8 +146,9 @@ namespace ShopCarApi.Entities
                 }
                 #endregion
 
-                #region Make
-                context = scope.ServiceProvider.GetRequiredService<EFDbContext>();               
+
+                context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
+  
 
                 #region Model
                 context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
