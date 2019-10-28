@@ -96,7 +96,7 @@ namespace ShopCarApi.Entities
                         {
                             UniqueName=item,
                             Date =DateTime.Now,
-                            Price=20000
+                            Price=20000,Count=20
                         });
                     context.SaveChanges();
                 }
@@ -128,6 +128,7 @@ namespace ShopCarApi.Entities
 
                 #region FuelType
            var   context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
+                SeedFilters(context);
                 List<FuelType> listFuelType = new List<FuelType>
                 {
                     new FuelType{ Id = 1,Type = "Electric"},
@@ -150,257 +151,257 @@ namespace ShopCarApi.Entities
                 context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
   
                
-                #region Model
-                context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
-                List<Model> listModel = new List<Model>
-                {
-                    new Model{ MakeId = 1,Name = "3-series Coupe"},
-                    new Model{ MakeId = 1,Name = "750iL"},
-                    new Model{ MakeId = 1,Name = "X5"},
-                    new Model{ MakeId = 2,Name = "MX-5" },
-                    new Model{ MakeId = 2,Name = "Tribute"},
-                    new Model{ MakeId = 2,Name = "Axela"},
-                    new Model{ MakeId = 3,Name = "A5"},
-                    new Model{ MakeId = 3,Name = "Q2"},
-                    new Model{ MakeId = 3,Name = "S3"},
-                    new Model{ MakeId = 3,Name = "TTS"},
-                    new Model{ MakeId = 4,Name = "AMG GT S"},
-                    new Model{ 
-                    MakeId = 4,
-                    Name = "A SEDAN"},
-                    new Model{ 
-                    MakeId = 4,
-                    Name = "V-CLASS"},
-                    new Model{ 
-                    MakeId = 4,
-                    Name = "M-CLASS"},
-                    new Model{ 
-                    MakeId = 4,
-                    Name = "S-CLASS CABRIOLET"},
-                    new Model{ 
-                    MakeId = 5,
-                    Name = "GT 86"},
-                    new Model{ 
-                    MakeId = 5,
-                    Name = "SIENNA"},
-                    new Model{  
-                    MakeId = 5,
-                    Name = "CAMRY"},
-                    new Model{  
-                    MakeId = 6,
-                    Name = "GOLF"},
-                    new Model{ 
-                    MakeId = 6,
-                    Name = "ATLAS"},
-                    new Model{ 
-                    MakeId = 6,
-                    Name = "PASSAT"},
-                    new Model{ 
-                    MakeId = 6,
-                    Name = "TOURAN"},
-                    new Model{  
-                    MakeId = 7,
-                    Name = "COBALT"},
-                    new Model{
-                    MakeId = 7,
-                    Name = "CORVETTE"},
-                    new Model{  
-                    MakeId = 7,
-                    Name = "VIVA"},
-                    new Model{ 
-                    MakeId = 7,
-                    Name = "ORLANDO"},
-                    new Model{
-                    MakeId = 7,
-                    Name = "ALERO" },
-                    new Model{ 
-                    MakeId = 8,
-                    Name = "EXPLORER"},
-                    new Model{ 
-                    MakeId = 8,
-                    Name = "FIESTA"},
-                    new Model{
-                    MakeId = 8,
-                    Name = "FOCUS RS" },
-                    new Model{ 
-                    MakeId = 8,
-                    Name = "MUSTANG"},
-                    new Model{ 
-                    MakeId = 8,
-                    Name = "TAURUS"},
-                    new Model{
-                    MakeId = 9,
-                    Name = "EXPERT"},
-                    new Model{
-                    MakeId = 9,
-                    Name = "308 GT" },
-                    new Model{ 
-                    MakeId = 9,
-                    Name = "PEUGEOT 1007"},
-                    new Model{  
-                    MakeId = 9,
-                    Name = "208"},
-                    new Model{
-                    MakeId = 9,
-                    Name = "TRAVELLER" },
-                    new Model{ 
-                    MakeId = 9,
-                    Name = "508 RXH" },
-                    new Model{
-                    MakeId = 10,
-                    Name = "BRAVO" },
-                    new Model{
-                    MakeId = 10,
-                    Name = "MOBI" },
-                    new Model{ 
-                    MakeId = 10,
-                    Name = "PANDA" },
-                    new Model{ 
-                    MakeId = 10,
-                    Name = "TIPO" },
-                    new Model{ 
-                    MakeId = 10,
-                    Name = "TORO"},
-                    new Model{
-                    MakeId = 10,
-                    Name = "LINEA" },
-                    new Model{
-                    MakeId = 11,
-                    Name = "LAFESTA" },
-                    new Model{
-                    MakeId = 11,
-                    Name = "GT-R" },
-                    new Model{
-                    MakeId = 11,
-                    Name = "ALMERA" },
-                    new Model{
-                    MakeId = 11,
-                    Name = "PATROL" },
-                    new Model{
-                    MakeId = 11,
-                    Name = "SENTRA"},
-                    new Model{ 
-                    MakeId = 12,
-                    Name = "TERRACAN" },
-                    new Model{ 
-                    MakeId = 12,
-                    Name = "KONA" },
-                    new Model{
-                    MakeId = 12,
-                    Name = "GRANDEUR" },
-                    new Model{
-                    MakeId = 12,
-                    Name = "CRETA" },
-                    new Model{
-                    MakeId = 12,
-                    Name = "SONATA" },
-                    new Model{ 
-                    MakeId = 12,
-                    Name = "GENESIS"},
-                    new Model{ 
-                    MakeId = 13,
-                    Name = "ADAM"},
-                    new Model{ 
-                    MakeId = 13,
-                    Name = "ANTARA" },
-                    new Model{
-                    MakeId = 13,
-                    Name = "FRONTERA" },
-                    new Model{
-                    MakeId = 13,
-                    Name = "CORSA" },
-                    new Model{
-                    MakeId = 13,
-                    Name = "VIVARO" },
-                    new Model{ 
-                    MakeId = 14,
-                    Name = "ESPACE" },
-                    new Model{ 
-                    MakeId = 14,
-                    Name = "KOLEOS" },
-                    new Model{
-                    MakeId = 14,
-                    Name = "LATITUDE" },
-                    new Model{
-                    MakeId = 14,
-                    Name = "SANDERO" },
-                    new Model{ 
-                    MakeId = 14,
-                    Name = "TALISMAN" },
-                    new Model{
-                    MakeId = 14,
-                    Name = "TWINGO" },
-                    new Model{
-                    MakeId = 15,
-                    Name = "STELLA" },
-                    new Model{
-                    MakeId = 15,
-                    Name = "TRIBECA" },
-                    new Model{ 
-                    MakeId = 15,
-                    Name = "ASCENT" },
-                    new Model{
-                    MakeId = 15,
-                    Name = "JUSTY" },
-                    new Model{
-                    MakeId = 15,
-                    Name = "FORESTER" },
-                    new Model{
-                    MakeId = 16,
-                    Name = "CITIGO" },
-                    new Model{
-                    MakeId = 16,
-                    Name = "OCTAVIA" },
-                    new Model{
-                    MakeId = 16,
-                    Name = "ROOMSTER" },
-                    new Model{
-                    MakeId = 16,
-                    Name = "YETI" },
-                    new Model{
-                    MakeId = 16,
-                    Name = "KAMIQ" },
-                    new Model{
-                    MakeId = 17,
-                    Name = "ACCORD" },
-                    new Model{
-                    MakeId = 17,
-                    Name = "FIT" },
-                    new Model{
-                    MakeId = 17,
-                    Name = "PASSPORT" },
-                    new Model{
-                    MakeId = 17,
-                    Name = "PILOT" },
-                    new Model{ 
-                    MakeId = 17,
-                    Name = "CR-V" },
-                    new Model{
-                    MakeId = 18,
-                    Name = "C-CROSSER" },
-                    new Model{
-                    MakeId = 18,
-                    Name = "BERLINGO" },
-                    new Model{ 
-                    MakeId = 18,
-                    Name = "C4 SEDAN" },
-                    new Model{
-                    MakeId = 18,
-                    Name = "SPACETOURER" },
-                    new Model{
-                    MakeId = 18,
-                    Name = "C6" }                 
-                };
-                foreach (var item in listModel)
-                {
-                    var model = context.Models.SingleOrDefault(c => c.Name == item.Name);
-                    if (model == null)
-                    {
-                        context.Models.Add(item);
-                        context.SaveChanges();
-                    }
-                }
-                #endregion              
+                //#region Model
+                //context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
+                //List<Model> listModel = new List<Model>
+                //{
+                //    new Model{ MakeId = 1,Name = "3-series Coupe"},
+                //    new Model{ MakeId = 1,Name = "750iL"},
+                //    new Model{ MakeId = 1,Name = "X5"},
+                //    new Model{ MakeId = 2,Name = "MX-5" },
+                //    new Model{ MakeId = 2,Name = "Tribute"},
+                //    new Model{ MakeId = 2,Name = "Axela"},
+                //    new Model{ MakeId = 3,Name = "A5"},
+                //    new Model{ MakeId = 3,Name = "Q2"},
+                //    new Model{ MakeId = 3,Name = "S3"},
+                //    new Model{ MakeId = 3,Name = "TTS"},
+                //    new Model{ MakeId = 4,Name = "AMG GT S"},
+                //    new Model{ 
+                //    MakeId = 4,
+                //    Name = "A SEDAN"},
+                //    new Model{ 
+                //    MakeId = 4,
+                //    Name = "V-CLASS"},
+                //    new Model{ 
+                //    MakeId = 4,
+                //    Name = "M-CLASS"},
+                //    new Model{ 
+                //    MakeId = 4,
+                //    Name = "S-CLASS CABRIOLET"},
+                //    new Model{ 
+                //    MakeId = 5,
+                //    Name = "GT 86"},
+                //    new Model{ 
+                //    MakeId = 5,
+                //    Name = "SIENNA"},
+                //    new Model{  
+                //    MakeId = 5,
+                //    Name = "CAMRY"},
+                //    new Model{  
+                //    MakeId = 6,
+                //    Name = "GOLF"},
+                //    new Model{ 
+                //    MakeId = 6,
+                //    Name = "ATLAS"},
+                //    new Model{ 
+                //    MakeId = 6,
+                //    Name = "PASSAT"},
+                //    new Model{ 
+                //    MakeId = 6,
+                //    Name = "TOURAN"},
+                //    new Model{  
+                //    MakeId = 7,
+                //    Name = "COBALT"},
+                //    new Model{
+                //    MakeId = 7,
+                //    Name = "CORVETTE"},
+                //    new Model{  
+                //    MakeId = 7,
+                //    Name = "VIVA"},
+                //    new Model{ 
+                //    MakeId = 7,
+                //    Name = "ORLANDO"},
+                //    new Model{
+                //    MakeId = 7,
+                //    Name = "ALERO" },
+                //    new Model{ 
+                //    MakeId = 8,
+                //    Name = "EXPLORER"},
+                //    new Model{ 
+                //    MakeId = 8,
+                //    Name = "FIESTA"},
+                //    new Model{
+                //    MakeId = 8,
+                //    Name = "FOCUS RS" },
+                //    new Model{ 
+                //    MakeId = 8,
+                //    Name = "MUSTANG"},
+                //    new Model{ 
+                //    MakeId = 8,
+                //    Name = "TAURUS"},
+                //    new Model{
+                //    MakeId = 9,
+                //    Name = "EXPERT"},
+                //    new Model{
+                //    MakeId = 9,
+                //    Name = "308 GT" },
+                //    new Model{ 
+                //    MakeId = 9,
+                //    Name = "PEUGEOT 1007"},
+                //    new Model{  
+                //    MakeId = 9,
+                //    Name = "208"},
+                //    new Model{
+                //    MakeId = 9,
+                //    Name = "TRAVELLER" },
+                //    new Model{ 
+                //    MakeId = 9,
+                //    Name = "508 RXH" },
+                //    new Model{
+                //    MakeId = 10,
+                //    Name = "BRAVO" },
+                //    new Model{
+                //    MakeId = 10,
+                //    Name = "MOBI" },
+                //    new Model{ 
+                //    MakeId = 10,
+                //    Name = "PANDA" },
+                //    new Model{ 
+                //    MakeId = 10,
+                //    Name = "TIPO" },
+                //    new Model{ 
+                //    MakeId = 10,
+                //    Name = "TORO"},
+                //    new Model{
+                //    MakeId = 10,
+                //    Name = "LINEA" },
+                //    new Model{
+                //    MakeId = 11,
+                //    Name = "LAFESTA" },
+                //    new Model{
+                //    MakeId = 11,
+                //    Name = "GT-R" },
+                //    new Model{
+                //    MakeId = 11,
+                //    Name = "ALMERA" },
+                //    new Model{
+                //    MakeId = 11,
+                //    Name = "PATROL" },
+                //    new Model{
+                //    MakeId = 11,
+                //    Name = "SENTRA"},
+                //    new Model{ 
+                //    MakeId = 12,
+                //    Name = "TERRACAN" },
+                //    new Model{ 
+                //    MakeId = 12,
+                //    Name = "KONA" },
+                //    new Model{
+                //    MakeId = 12,
+                //    Name = "GRANDEUR" },
+                //    new Model{
+                //    MakeId = 12,
+                //    Name = "CRETA" },
+                //    new Model{
+                //    MakeId = 12,
+                //    Name = "SONATA" },
+                //    new Model{ 
+                //    MakeId = 12,
+                //    Name = "GENESIS"},
+                //    new Model{ 
+                //    MakeId = 13,
+                //    Name = "ADAM"},
+                //    new Model{ 
+                //    MakeId = 13,
+                //    Name = "ANTARA" },
+                //    new Model{
+                //    MakeId = 13,
+                //    Name = "FRONTERA" },
+                //    new Model{
+                //    MakeId = 13,
+                //    Name = "CORSA" },
+                //    new Model{
+                //    MakeId = 13,
+                //    Name = "VIVARO" },
+                //    new Model{ 
+                //    MakeId = 14,
+                //    Name = "ESPACE" },
+                //    new Model{ 
+                //    MakeId = 14,
+                //    Name = "KOLEOS" },
+                //    new Model{
+                //    MakeId = 14,
+                //    Name = "LATITUDE" },
+                //    new Model{
+                //    MakeId = 14,
+                //    Name = "SANDERO" },
+                //    new Model{ 
+                //    MakeId = 14,
+                //    Name = "TALISMAN" },
+                //    new Model{
+                //    MakeId = 14,
+                //    Name = "TWINGO" },
+                //    new Model{
+                //    MakeId = 15,
+                //    Name = "STELLA" },
+                //    new Model{
+                //    MakeId = 15,
+                //    Name = "TRIBECA" },
+                //    new Model{ 
+                //    MakeId = 15,
+                //    Name = "ASCENT" },
+                //    new Model{
+                //    MakeId = 15,
+                //    Name = "JUSTY" },
+                //    new Model{
+                //    MakeId = 15,
+                //    Name = "FORESTER" },
+                //    new Model{
+                //    MakeId = 16,
+                //    Name = "CITIGO" },
+                //    new Model{
+                //    MakeId = 16,
+                //    Name = "OCTAVIA" },
+                //    new Model{
+                //    MakeId = 16,
+                //    Name = "ROOMSTER" },
+                //    new Model{
+                //    MakeId = 16,
+                //    Name = "YETI" },
+                //    new Model{
+                //    MakeId = 16,
+                //    Name = "KAMIQ" },
+                //    new Model{
+                //    MakeId = 17,
+                //    Name = "ACCORD" },
+                //    new Model{
+                //    MakeId = 17,
+                //    Name = "FIT" },
+                //    new Model{
+                //    MakeId = 17,
+                //    Name = "PASSPORT" },
+                //    new Model{
+                //    MakeId = 17,
+                //    Name = "PILOT" },
+                //    new Model{ 
+                //    MakeId = 17,
+                //    Name = "CR-V" },
+                //    new Model{
+                //    MakeId = 18,
+                //    Name = "C-CROSSER" },
+                //    new Model{
+                //    MakeId = 18,
+                //    Name = "BERLINGO" },
+                //    new Model{ 
+                //    MakeId = 18,
+                //    Name = "C4 SEDAN" },
+                //    new Model{
+                //    MakeId = 18,
+                //    Name = "SPACETOURER" },
+                //    new Model{
+                //    MakeId = 18,
+                //    Name = "C6" }                 
+                //};
+                //foreach (var item in listModel)
+                //{
+                //    var model = context.Models.SingleOrDefault(c => c.Name == item.Name);
+                //    if (model == null)
+                //    {
+                //        context.Models.Add(item);
+                //        context.SaveChanges();
+                //    }
+                //}
+                //#endregion              
 
                 #region Car
                 context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
@@ -427,9 +428,9 @@ namespace ShopCarApi.Entities
                 context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
                 List<Client> listClient = new List<Client>
                 {
-                    new Client{Name = "Zahar",Phone = "+380(68)238-80-01"},
-                    new Client{Name = "Yuri",Phone = "+380(68)278-55-22"},
-                    new Client{Name = "Maxim", Phone = "+380(97)888-15-97"}
+                    new Client{Name = "Zahar",Phone = "+380(68)238-80-01",Email="bomba@gmail.com"},
+                    new Client{Name = "Yuri",Phone = "+380(68)278-55-22",Email="bomba@gmail.com"},
+                    new Client{Name = "Maxim", Phone = "+380(97)888-15-97",Email="bomba@gmail.com"}
                 };
                 foreach (var item in listClient)
                 {
