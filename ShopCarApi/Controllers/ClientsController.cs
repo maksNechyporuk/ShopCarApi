@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -40,7 +41,8 @@ namespace ShopCarApi.Controllers
                     Id = p.Id,
                     Name = p.Name,
                     Phone = p.Phone,
-                    Image = p.Image
+                    Image = p.Image,
+                    Email = p.Email                 
                 }).ToList();
             return Ok(client);
         }
@@ -51,7 +53,8 @@ namespace ShopCarApi.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                var errors = CustomValidator.GetErrorsByModel(ModelState);
+                return BadRequest(errors);
             }
             //var fileDestDir = _env.ContentRootPath;
             //string dirName = _configuration.GetValue<string>("ImagesPath");
@@ -71,7 +74,8 @@ namespace ShopCarApi.Controllers
             {
                 Name = client.Name,
                 Phone = client.Phone,
-                Image = client.Image
+                Image = client.Image,
+                Email = client.Email
             };
             _context.Clients.Add(c);
             _context.SaveChanges();
