@@ -102,6 +102,7 @@ namespace ShopCarApi.Entities
                 }
             }
             #endregion
+
             #region tblFilters -Фільтри
             Filter[] filters =
             {
@@ -120,7 +121,6 @@ namespace ShopCarApi.Entities
         public static void SeedData(IServiceProvider services, IHostingEnvironment env,
             IConfiguration config)
         {
-
             using (var scope = services.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 var managerUser = scope.ServiceProvider.GetRequiredService<UserManager<DbUser>>();
@@ -146,8 +146,6 @@ namespace ShopCarApi.Entities
                     }
                 }
                 #endregion
-
-
                 context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
   
                

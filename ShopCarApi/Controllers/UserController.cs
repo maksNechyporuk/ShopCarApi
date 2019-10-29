@@ -111,7 +111,7 @@ namespace ShopCarApi.Controllers
             });
         }
 
-
+      
         private string CreateTokenJwt(DbUser user)
         {
             var roles = _userManager.GetRolesAsync(user).Result;

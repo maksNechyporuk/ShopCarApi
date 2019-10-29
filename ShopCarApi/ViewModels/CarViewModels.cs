@@ -9,18 +9,15 @@ namespace ShopCarApi.ViewModels
 {
    public class CarComparer : IEqualityComparer<CarGetVM>
     {
-        // Products are equal if their names and product numbers are equal.
+        
 
         bool IEqualityComparer<CarGetVM>.Equals(CarGetVM x, CarGetVM y)
         {
-            //Check whether the compared objects reference the same data.
             if (Object.ReferenceEquals(x, y)) return true;
 
-            //Check whether any of the compared objects is null.
             if (Object.ReferenceEquals(x, null) || Object.ReferenceEquals(y, null))
                 return false;
 
-            //Check whether the products' properties are equal.
             return x.Id == y.Id;
         }
 
