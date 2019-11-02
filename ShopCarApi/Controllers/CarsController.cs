@@ -57,6 +57,7 @@ namespace ShopCarApi.Controllers
                                  Date = c.Date,
                                  Image = c.Image,
                                  Price = c.Price,
+                                 UniqueName=c.UniqueName,
                                  filters = (from f in ua
                                             group f by new FNameGetViewModel
                                             {
@@ -120,7 +121,7 @@ namespace ShopCarApi.Controllers
             return result.ToList();
         }
 
-        private List<CarVM> GetCarsByFilter(int[] values, List<FNameViewModel> filtersList)
+        private List<CarGetVM> GetCarsByFilter(int[] values, List<FNameViewModel> filtersList)
         {
             int[] filterValueSearchList = values;
             var query = _context
@@ -148,10 +149,13 @@ namespace ShopCarApi.Controllers
                 if (count != 0)
                     query = query.Where(predicate);
             }
-            var listProductSearch = query.Select(p => new CarVM
+            var listProductSearch = query.Select(p => new CarGetVM
             {
                 Id = p.Id,
-                Price = p.Price
+                Price = p.Price,
+                UniqueName=p.UniqueName,
+                Date=p.Date,
+                Image=p.Image
             }).ToList();
             return listProductSearch;
 
@@ -179,6 +183,7 @@ namespace ShopCarApi.Controllers
                                  Date = c.Date,
                                  Image = c.Image,
                                  Price = c.Price,
+                                 UniqueName=c.UniqueName,
                                  filters = (from f in ua
                                             group f by new FNameGetViewModel
                                             {
