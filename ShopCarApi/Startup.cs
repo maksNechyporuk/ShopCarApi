@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -87,7 +90,24 @@ namespace ShopCarApi
             }
             app.UseHttpsRedirection();
             app.UseMvc();
-           // SeederDB.SeedData(app.ApplicationServices, env, this.Configuration);
+            //шлях на сервері
+            var fileDestDir = env.ContentRootPath;
+            string dirName = this.Configuration.GetValue<string>("ImagesPath");
+            //Папка де зберігаються фотки
+            string dirPathSave = Path.Combine(fileDestDir, dirName);
+            if (!Directory.Exists(dirPathSave))
+            {
+                Directory.CreateDirectory(dirPathSave);
+            }
+            string imageUrl = "/images";
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(dirPathSave),
+                RequestPath = new PathString(imageUrl)
+            });
+            app.UseMvc();
+
+            //SeederDB.SeedData(app.ApplicationServices, env, this.Configuration);
         }
     }
 }

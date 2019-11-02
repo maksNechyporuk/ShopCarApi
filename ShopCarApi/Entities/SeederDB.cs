@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using WebElectra.Entities;
@@ -12,7 +13,8 @@ namespace ShopCarApi.Entities
 {
     public class SeederDB
     {
-        private static void SeedFilters(EFDbContext context)
+        private static void SeedFilters(EFDbContext context, IHostingEnvironment _env,
+            IConfiguration _config)
         {
             #region tblFilterNames - Назви фільтрів
             string[] filterNames = { "Тип авто", "Пальне","Марки","Колір" };
@@ -38,7 +40,7 @@ namespace ShopCarApi.Entities
                                "Hyundai","Opel","Renault","Subaru","Skoda","Honda","Citroen"},
                 new string []{"Зелений","Червоний","Синій","Чорний","Білий","Сірий"}
             };
-            //string t=filterNames[0];
+            
             foreach(var items in filterValues)
             {
                 foreach(var value in items)
@@ -87,14 +89,26 @@ namespace ShopCarApi.Entities
             List<string> cars = new List<string>{
              "154muv2f", "154m2fas" 
             };
+            var fileDestDir = _env.ContentRootPath;
+            string dirName = _config.GetValue<string>("ImagesPath");
+            
             foreach (var item in cars)
             {
                 if (context.Cars.SingleOrDefault(f => f.UniqueName == item) == null)
                 {
+                    string dirPathSave = Path.Combine(fileDestDir, dirName,item);
+                    if (!Directory.Exists(dirPathSave))
+                    {
+                        Directory.CreateDirectory(dirPathSave);
+                    }
+                   
+                    //var imageName = Path.GetRandomFileName() + ".jpg";
+                    //string fileSave = Path.Combine(dirPathSave, $"{imageName}");
                     context.Cars.Add(
                         new Car
                         {
                             UniqueName=item,
+                            Image= dirPathSave,
                             Date =DateTime.Now,
                             Price=20000,Count=20
                         });
@@ -108,8 +122,13 @@ namespace ShopCarApi.Entities
             {
                 new Filter { FilterNameId = 1, FilterValueId=1, CarId=1 },
                 new Filter { FilterNameId = 2, FilterValueId=5, CarId=1 },
+                new Filter { FilterNameId = 3, FilterValueId=7, CarId=1 },
+                new Filter { FilterNameId = 4, FilterValueId=27, CarId=1 },
+
                 new Filter { FilterNameId = 1, FilterValueId=2, CarId=2 },
-                new Filter { FilterNameId = 2, FilterValueId=6, CarId=2 }
+                new Filter { FilterNameId = 2, FilterValueId=6, CarId=2 },
+                new Filter { FilterNameId = 3, FilterValueId=8, CarId=2 },
+                new Filter { FilterNameId = 4, FilterValueId=28, CarId=2 }
             };
             foreach (var item in filters)
             {
@@ -125,10 +144,11 @@ namespace ShopCarApi.Entities
             {
                 var managerUser = scope.ServiceProvider.GetRequiredService<UserManager<DbUser>>();
                 var managerRole = scope.ServiceProvider.GetRequiredService<RoleManager<DbRole>>();
+         
 
                 #region FuelType
            var   context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
-                SeedFilters(context);
+                SeedFilters(context, env, config);
                 List<FuelType> listFuelType = new List<FuelType>
                 {
                     new FuelType{ Id = 1,Type = "Electric"},
