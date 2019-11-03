@@ -33,6 +33,45 @@ namespace ShopCarApi.Controllers
             _env = env;
             _context = context;
         }
+        [HttpGet("CarsByName")]
+        public IActionResult GetCarsByName(string Name)
+        {
+       
+            var _filters = (from g in _context.Filters
+                            select g);
+            var valueFilters = (from g in _context.FilterValues
+                                select g);
+            var nameFilters = (from g in _context.FilterNames
+                               select g);
+            var cars = (from g in _context.Cars
+                        where g.UniqueName == Name
+                        select g);
+            var resultCar = (from c in cars
+                             join g in _filters on c.Id equals g.CarId into ua
+                             from aEmp in ua.DefaultIfEmpty()                          
+                             group ua by
+                             new CarGetVM
+                             {
+                                 Id = c.Id,
+                                 Date = c.Date,
+                                 Image = c.Image,
+                                 Price = c.Price,
+                                 UniqueName = c.UniqueName,
+                                 filters = (from f in ua
+                                            group f by new FNameGetViewModel
+                                            {
+                                                Id = f.FilterNameId,
+                                                Name = f.FilterNameOf.Name,
+                                                Children = f.FilterValueOf.Name
+                                            } into b
+                                            select b.Key)
+                                                            .ToList()
+                             } into b
+                             select b.Key).LastOrDefault();
+          //  var GetCars = resultCar.Distinct(new CarComparer());
+            return Ok(resultCar);
+        }
+
         [HttpGet("CarsByFilter")]
         public IActionResult FilterData(int [] value)
         {
@@ -141,6 +180,7 @@ namespace ShopCarApi.Controllers
                         {
                             predicate = predicate
                                 .Or(p => p.Filtres
+
                                     .Any(f => f.FilterValueId == idV));
                             count++;
                         }
