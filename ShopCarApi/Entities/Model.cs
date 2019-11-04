@@ -18,10 +18,9 @@ namespace  ShopCarApi.Entities
 
         public string Name { get; set; }
 
-        [ForeignKey("Make")]
-        public int MakeId { get; set; }
+        [ForeignKey("ValueId")]
+        public int ValueId { get; set; }
 
-        public virtual Make Make { get; set; }
-
+        public virtual FilterValue Value { get; set; }
     }
 }

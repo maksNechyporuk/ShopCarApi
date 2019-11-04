@@ -83,27 +83,27 @@ namespace ShopCarApi.Controllers
         [HttpDelete]
         public IActionResult Delete([FromBody]MakeDeleteVM model)
         {
-            if (!ModelState.IsValid)
-            {
-                var errors = CustomValidator.GetErrorsByModel(ModelState);
-                return BadRequest(errors);
-            }
-            var make = _context.Makes.SingleOrDefault(p => p.Id == model.Id);
-            if (make != null)
-            {
-                var models= _context.Models.Where(p => p.MakeId == model.Id).ToList();
-                if(models!=null)
-                {
-                    foreach (var item in models)
-                    {
-                        _context.Models.Remove(item);
-                        _context.SaveChanges();
-                    }
-                }
-                _context.Makes.Remove(make);
-                _context.SaveChanges();
+            //if (!ModelState.IsValid)
+            //{
+            //    var errors = CustomValidator.GetErrorsByModel(ModelState);
+            //    return BadRequest(errors);
+            //}
+            //var make = _context.Makes.SingleOrDefault(p => p.Id == model.Id);
+            //if (make != null)
+            //{
+            //    var models= _context.Models.Where(p => p.MakeId == model.Id).ToList();
+            //    if(models!=null)
+            //    {
+            //        foreach (var item in models)
+            //        {
+            //            _context.Models.Remove(item);
+            //            _context.SaveChanges();
+            //        }
+            //    }
+            //    _context.Makes.Remove(make);
+            //    _context.SaveChanges();
             return Ok("Дані видалено");
-            }
+            //}
             return BadRequest(new { name = "Помилка видалення" });
         }
         [HttpPut]

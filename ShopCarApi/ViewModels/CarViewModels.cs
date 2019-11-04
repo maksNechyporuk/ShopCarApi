@@ -7,11 +7,11 @@ using static ShopCarApi.ViewModels.CarComparer;
 
 namespace ShopCarApi.ViewModels
 {
-   public class CarComparer : IEqualityComparer<CarGetVM>
+   public class CarComparer : IEqualityComparer<CarVM>
     {
         
 
-        bool IEqualityComparer<CarGetVM>.Equals(CarGetVM x, CarGetVM y)
+        bool IEqualityComparer<CarVM>.Equals(CarVM x, CarVM y)
         {
             if (Object.ReferenceEquals(x, y)) return true;
 
@@ -21,7 +21,7 @@ namespace ShopCarApi.ViewModels
             return x.Id == y.Id;
         }
 
-        int IEqualityComparer<CarGetVM>.GetHashCode(CarGetVM obj)
+        int IEqualityComparer<CarVM>.GetHashCode(CarVM obj)
         { //Check whether the object is null
             if (Object.ReferenceEquals(obj, null)) return 0;
 
@@ -35,24 +35,24 @@ namespace ShopCarApi.ViewModels
             return hashProductName ^ hashProductCode;
         }
     }
-        public class CarGetVM
+        public class CarVM
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
         public string Image { get; set; }
         public int Price { get; set; }
         public string UniqueName { get; set; }
-
+        public string Name { get; set; }
         public List<FNameGetViewModel> filters { get; set; }
     }
-    public class CarVM
-    {
-        public int Id { get; set; }
-        public DateTime Date { get; set; }
-        public string Image { get; set; }
-        public int Price { get; set; }
-        public FNameViewModel filter { get; set; }
-    }
+    //public class CarVM
+    //{
+    //    public int Id { get; set; }
+    //    public DateTime Date { get; set; }
+    //    public string Image { get; set; }
+    //    public int Price { get; set; }
+    //    public FNameViewModel filter { get; set; }
+    //}
     public class CarAddVM
     {
         public DateTime Date { get; set; }
