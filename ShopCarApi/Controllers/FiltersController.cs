@@ -87,7 +87,7 @@ namespace ShopCarApi.Controllers
             return result.ToList();
         }
 
-        private List<CarGetVM> GetCarsByFilter(int[] values, List<FNameViewModel> filtersList)
+        private List<CarVM> GetCarsByFilter(int[] values, List<FNameViewModel> filtersList)
         {
             int[] filterValueSearchList = values;
             var query = _context
@@ -115,12 +115,13 @@ namespace ShopCarApi.Controllers
                 if (count != 0)
                     query = query.Where(predicate);
             }
-            var listProductSearch = query.Select(p => new CarGetVM
+            var listProductSearch = query.Select(p => new CarVM
             {
                 Id = p.Id,
                 Price = p.Price,
                 Date =p.Date,
                 UniqueName=p.UniqueName,
+                Name=p.Name
 
             }).ToList();
             return listProductSearch;

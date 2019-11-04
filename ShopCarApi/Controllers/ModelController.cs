@@ -33,18 +33,18 @@ namespace ShopCarApi.Controllers
             [HttpGet]
             public IActionResult ModelList()
             {
-            var query = _context.Makes;
-            var queryModels = _context.Models;
-            var queryResult =(( from u in query
-                              join a in queryModels on u.Id equals a.MakeId into ua
-                              from aEmp in ua.DefaultIfEmpty() where u.Id== aEmp.MakeId 
-                              select new ModelVM
-                              {
-                               Id = aEmp.Id,
-                               Name = aEmp.Name,
-                               Make = new MakeVM { Id = aEmp.Make.Id, Name = aEmp.Make.Name }                           
-                              }).OrderBy(r=>r.Id)).ToList();
-            return Ok(queryResult);
+            //var query = _context.Makes;
+            //var queryModels = _context.Models;
+            //var queryResult =(( from u in query
+            //                  join a in queryModels on u.Id equals a.MakeId into ua
+            //                  from aEmp in ua.DefaultIfEmpty() where u.Id== aEmp.MakeId 
+            //                  select new ModelVM
+            //                  {
+            //                   Id = aEmp.Id,
+            //                   Name = aEmp.Name,
+            //                   Make = new MakeVM { Id = aEmp.Make.Id, Name = aEmp.Make.Name }                           
+            //                  }).OrderBy(r=>r.Id)).ToList();
+            return Ok();
             }
             [HttpPost]
             public IActionResult Create([FromBody]ModelAddVM model)
@@ -63,7 +63,7 @@ namespace ShopCarApi.Controllers
                     Model m = new Model
                     {
                         Name = model.Name,
-                        MakeId = model.Make.Id
+                        //MakeId = model.Make.Id
                     };
                     _context.Models.Add(m);
                     _context.SaveChanges();
@@ -90,18 +90,18 @@ namespace ShopCarApi.Controllers
         [HttpPut]
             public IActionResult Update([FromBody]ModelVM model)
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest();
-                }
-                var carModel = _context.Models.SingleOrDefault(p => p.Id == model.Id);
-                if (carModel != null)
-                {
-                    carModel.Name = model.Name;
-                    carModel.MakeId = model.Make.Id;
-                    _context.SaveChanges();
-                }
-            return Ok("Дані оновлено");
+            //    if (!ModelState.IsValid)
+            //    {
+            //        return BadRequest();
+            //    }
+            //    var carModel = _context.Models.SingleOrDefault(p => p.Id == model.Id);
+            //    if (carModel != null)
+            //    {
+            //        carModel.Name = model.Name;
+            //        carModel.MakeId = model.Make.Id;
+            //        _context.SaveChanges();
+            //    }
+            return Ok();
         }
     }
 }
