@@ -89,7 +89,7 @@ namespace ShopCarApi.Entities
             List<string> cars = new List<string>{
              "154muv2f", "154m2fas" 
             };
-            var fileDestDir = _env.ContentRootPath;
+            var fileDestDir = _env.WebRootPath;
             string dirName = _config.GetValue<string>("ImagesPath");
             
             foreach (var item in cars)

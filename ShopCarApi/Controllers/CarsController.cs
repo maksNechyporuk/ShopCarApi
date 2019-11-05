@@ -46,6 +46,7 @@ namespace ShopCarApi.Controllers
             var cars = (from g in _context.Cars
                         where g.UniqueName == Name
                         select g);
+            string path = "Uploaded";
             var resultCar = (from c in cars
                              join g in _filters on c.Id equals g.CarId into ua
                              from aEmp in ua.DefaultIfEmpty()                          
@@ -54,7 +55,7 @@ namespace ShopCarApi.Controllers
                              {
                                  Id = c.Id,
                                  Date = c.Date,
-                                 Image = c.Image,
+                                 Image = $"{path}/{c.UniqueName}/Photo",
                                  Price = c.Price,
                                  Name=c.Name,
                                  UniqueName = c.UniqueName,
@@ -87,6 +88,7 @@ namespace ShopCarApi.Controllers
                                select g).ToList();
             var cars = (from g in _context.Cars
                         select g).ToList();
+            string path = "images";
             var resultCar = (from c in list
                              join g in _filters on c.Id equals g.CarId into ua
                              from aEmp in ua.DefaultIfEmpty()
@@ -95,7 +97,7 @@ namespace ShopCarApi.Controllers
                              {
                                  Id = c.Id,
                                  Date = c.Date,
-                                 Image = c.Image,
+                                 Image = $"{path}/{c.UniqueName}/300_{c.UniqueName}.jpg",
                                  Price = c.Price,
                                  Name=c.Name,
                                  UniqueName=c.UniqueName,
@@ -191,13 +193,14 @@ namespace ShopCarApi.Controllers
                 if (count != 0)
                     query = query.Where(predicate);
             }
+            string path = "images";
             var listProductSearch = query.Select(p => new CarVM
             {
                 Id = p.Id,
                 Price = p.Price,
                 UniqueName=p.UniqueName,
                 Date=p.Date,
-                Image=p.Image,
+                Image = $"{path}/{p.UniqueName}/300_{p.UniqueName}.jpg",
                 Name=p.Name
             }).ToList();
             return listProductSearch;
@@ -208,6 +211,7 @@ namespace ShopCarApi.Controllers
         [HttpGet]
         public IActionResult MakeList()
         {
+            string path = "images";
             var filters = (from g in _context.Filters
                            select g).ToList();
             var valueFilters = (from g in _context.FilterValues
@@ -224,8 +228,8 @@ namespace ShopCarApi.Controllers
              {
                                  Id = c.Id,
                                  Date = c.Date,
-                                 Image = c.Image,
-                                 Price = c.Price,
+                                 Image = $"{path}/{c.UniqueName}/300_{c.UniqueName}.jpg",
+                 Price = c.Price,
                                  Name=c.Name,
                                  UniqueName=c.UniqueName,
                                  filters = (from f in ua
