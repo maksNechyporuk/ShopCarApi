@@ -24,6 +24,7 @@ namespace WebElectra.Entities
         public DbSet<Purchase> Purchases { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<MakesAndModels> MakesAndModels { get; set; }
 
         /// <summary>
         /// Filter tables
@@ -74,6 +75,21 @@ namespace WebElectra.Entities
                 filter.HasOne(ur => ur.CarOf)
                     .WithMany(r => r.Filtres)
                     .HasForeignKey(ur => ur.CarId)
+                    .IsRequired();
+            });
+
+            builder.Entity<MakesAndModels>(make_and_models =>
+            {
+                make_and_models.HasKey(f => new { f.FilterValueId, f.FilterMakeId });
+
+                make_and_models.HasOne(ur => ur.FilterMakeOf)
+                    .WithMany(r => r.MakesAndModels)
+                    .HasForeignKey(ur => ur.FilterMakeId)
+                    .IsRequired();
+
+                make_and_models.HasOne(ur => ur.FilterValueOf)
+                    .WithMany(r => r.MakesAndModels)
+                    .HasForeignKey(ur => ur.FilterValueId)
                     .IsRequired();
             });
 

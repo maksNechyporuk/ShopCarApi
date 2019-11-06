@@ -16,8 +16,8 @@ namespace  ShopCarApi.Entities
 
         [Required]
         public string Name { get; set; }
+        public virtual ICollection<MakesAndModels> MakesAndModels { get; set; }
 
-        public virtual ICollection<Model> ModelCar { get; set; }
 
     }
 }
