@@ -10,8 +10,8 @@ using WebElectra.Entities;
 namespace ShopCarApi.Migrations
 {
     [DbContext(typeof(EFDbContext))]
-    [Migration("20191106082854_add tbl models adn makes")]
-    partial class addtblmodelsadnmakes
+    [Migration("20191106160548_delete cars img")]
+    partial class deletecarsimg
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -101,8 +101,6 @@ namespace ShopCarApi.Migrations
                     b.Property<int>("Count");
 
                     b.Property<DateTime>("Date");
-
-                    b.Property<string>("Image");
 
                     b.Property<string>("Name")
                         .IsRequired();

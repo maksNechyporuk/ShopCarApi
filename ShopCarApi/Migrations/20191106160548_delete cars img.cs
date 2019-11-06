@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ShopCarApi.Migrations
 {
-    public partial class addtblmodelsadnmakes : Migration
+    public partial class deletecarsimg : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -58,7 +58,6 @@ namespace ShopCarApi.Migrations
                     Date = table.Column<DateTime>(nullable: false),
                     UniqueName = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
-                    Image = table.Column<string>(nullable: true),
                     Price = table.Column<int>(nullable: false),
                     Count = table.Column<int>(nullable: false)
                 },

@@ -100,8 +100,6 @@ namespace ShopCarApi.Migrations
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<string>("Image");
-
                     b.Property<string>("Name")
                         .IsRequired();
 
