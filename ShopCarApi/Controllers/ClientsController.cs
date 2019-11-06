@@ -60,7 +60,7 @@ namespace ShopCarApi.Controllers
             var str = client.Phone;
             var regex = @"\+38\d{1}\(\d{2}\)\d{3}\-\d{2}\-\d{2}";
             var str2 = client.Name;
-            var regex2 = @"^[A-Za-z]+$";
+            var regex2 = @"^[A-Za-z-а-яА-Я]+$";
             var str3 = client.Email;
             var regex3 = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
             var match = Regex.Match(str, regex);
