@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ShopCarApi.Migrations
 {
-    public partial class createtables : Migration
+    public partial class addtblmodelsadnmakes : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -57,8 +57,10 @@ namespace ShopCarApi.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     Date = table.Column<DateTime>(nullable: false),
                     UniqueName = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
                     Image = table.Column<string>(nullable: true),
-                    Price = table.Column<int>(nullable: false)
+                    Price = table.Column<int>(nullable: false),
+                    Count = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,6 +76,7 @@ namespace ShopCarApi.Migrations
                     Name = table.Column<string>(nullable: false),
                     Image = table.Column<string>(nullable: true),
                     Phone = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: false),
                     Total_price = table.Column<float>(nullable: false)
                 },
                 constraints: table =>
@@ -148,6 +151,19 @@ namespace ShopCarApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tblMakes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "tblModels",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    Name = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tblModels", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -355,21 +371,26 @@ namespace ShopCarApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "tblModels",
+                name: "tblMakesAndModels",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Name = table.Column<string>(nullable: false),
-                    MakeId = table.Column<int>(nullable: false)
+                    FilterMakeId = table.Column<int>(nullable: false),
+                    FilterValueId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_tblModels", x => x.Id);
+                    table.PrimaryKey("PK_tblMakesAndModels", x => new { x.FilterValueId, x.FilterMakeId });
+                    table.UniqueConstraint("AK_tblMakesAndModels_FilterMakeId_FilterValueId", x => new { x.FilterMakeId, x.FilterValueId });
                     table.ForeignKey(
-                        name: "FK_tblModels_tblMakes_MakeId",
-                        column: x => x.MakeId,
+                        name: "FK_tblMakesAndModels_tblMakes_FilterMakeId",
+                        column: x => x.FilterMakeId,
                         principalTable: "tblMakes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_tblMakesAndModels_tblFilterValues_FilterValueId",
+                        column: x => x.FilterValueId,
+                        principalTable: "tblFilterValues",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -441,11 +462,6 @@ namespace ShopCarApi.Migrations
                 column: "FilterValueId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_tblModels_MakeId",
-                table: "tblModels",
-                column: "MakeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_tblOrders_CarId",
                 table: "tblOrders",
                 column: "CarId");
@@ -491,6 +507,9 @@ namespace ShopCarApi.Migrations
                 name: "tblFuelTypes");
 
             migrationBuilder.DropTable(
+                name: "tblMakesAndModels");
+
+            migrationBuilder.DropTable(
                 name: "tblModels");
 
             migrationBuilder.DropTable(
@@ -509,10 +528,10 @@ namespace ShopCarApi.Migrations
                 name: "tblFilterNames");
 
             migrationBuilder.DropTable(
-                name: "tblFilterValues");
+                name: "tblMakes");
 
             migrationBuilder.DropTable(
-                name: "tblMakes");
+                name: "tblFilterValues");
 
             migrationBuilder.DropTable(
                 name: "tblOrders");

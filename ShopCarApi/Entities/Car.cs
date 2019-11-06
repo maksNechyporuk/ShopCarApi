@@ -23,7 +23,6 @@ namespace ShopCarApi.Entities
         [Required]
         public string Name { get; set; }
 
-
         public string Image { get; set; }
 
         [Required]
@@ -33,7 +32,5 @@ namespace ShopCarApi.Entities
         public int Count { get; set; }
 
         public virtual ICollection<Filter> Filtres { get; set; }
-
-
     }
 }
