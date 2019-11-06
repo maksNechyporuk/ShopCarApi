@@ -32,7 +32,5 @@ namespace ShopCarApi.Entities
         public int Count { get; set; }
 
         public virtual ICollection<Filter> Filtres { get; set; }
-
-
     }
 }
