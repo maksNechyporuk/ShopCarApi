@@ -38,16 +38,66 @@ namespace ShopCarApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult UserList()
+        public IActionResult UserList(string Name)
         {
-            var users = _context.Users.Select(
-                p => new UserVM
-                {
-                    Email = p.Email,
-                    Name = p.UserName,
-                    
-                }).ToList();
-            return Ok(users);
+            if (Name == null)
+            {
+                var user = _context.Users.Select(
+                    p => new UserVM
+                    {
+                        Name = p.UserName,
+                        Email = p.Email
+                        
+                    }).ToList();
+                return Ok(user);
+            }
+            else
+            {
+                var query = _context.Users.AsQueryable();
+                var queryResult = (from user in query
+                                   where user.UserName.Contains(Name)
+                                   select new UserVM { Name = user.UserName, Email = user.Email }).ToList();
+                //var makes = query
+                //    .Where(m => m.Name.Contains(Name))
+                //    .Select(
+                //    p => new MakeVM
+                //    {
+                //        Id = p.Id,
+                //        Name = p.Name
+                //    }).ToList();
+                return Ok(queryResult);
+            }
+        }
+
+        public IActionResult Delete([FromBody] UserDeleteVM duser)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var user = _context.Users.SingleOrDefault(p => p.Id == duser.Id);
+            if (user != null)
+            {
+                _context.Users.Remove(user);
+                _context.SaveChanges();
+            }
+            return Ok();
+        }
+
+        public IActionResult Update([FromBody] UserUpdateVM user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var prod = _context.Users.SingleOrDefault(p => p.Id == user.Id);
+            if (prod != null)
+            {
+                prod.UserName = user.Name;
+                prod.Email = user.Email
+                _context.SaveChanges();
+            }
+            return Ok();
         }
 
         [HttpPost("login")]
