@@ -60,12 +60,12 @@ namespace ShopCarApi.Controllers
             var str = client.Phone;
             var regex = @"\+38\d{1}\(\d{2}\)\d{3}\-\d{2}\-\d{2}";
             var str2 = client.Name;
-            var regex2 = @"[^A-za-z]";
+            var regex2 = @"^[A-Za-z]+$";
             var str3 = client.Email;
-            //var regex3 = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+            var regex3 = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
             var match = Regex.Match(str, regex);
             var match2 = Regex.Match(str2, regex2);
-            //var match3 = Regex.Match(str3, regex3);
+            var match3 = Regex.Match(str3, regex3);
             if (!match.Success)
             {
                return BadRequest(new { Phone = "issue" });
@@ -74,10 +74,10 @@ namespace ShopCarApi.Controllers
             {
                 return BadRequest(new { Name = "issue" });
             }
-            //if (!match3.Success)
-            //{
-            //    return BadRequest(new { Email = "issue" });
-            //}
+            if (!match3.Success)
+            {
+                return BadRequest(new { Email = "issue" });
+            }
 
             //var fileDestDir = _env.ContentRootPath;
             //string dirName = _configuration.GetValue<string>("ImagesPath");
