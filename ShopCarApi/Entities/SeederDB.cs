@@ -41,14 +41,14 @@ namespace ShopCarApi.Entities
                 new string [] { "Кросовер", "Легковий", "Вантажний" },
                 new string [] { "Дизель", "Бензин", "Газ"},
                 new string [] {"C6","SPACETOURER","C4 SEDAN","BERLINGO","C-CROSSER","CR-V","PILOT","PASSPORT","FIT","ACCORD","KAMIQ",
-                               "YETI","ROOMSTER","OCTAVIA","CITIGO","FORESTER","JUSTY","ASCENT",
-                    "TRIBECA","STELLA","TWINGO","TALISMAN","SANDERO","LATITUDE","KOLEOS","ESPACE","VIVARO","CORSA","FRONTERA",
-                               "ANTARA","ADAM","GENESIS","SONATA","CRETA","GRANDEUR","KONA","TERRACAN","SENTRA",
+                 "YETI","ROOMSTER","OCTAVIA","CITIGO","FORESTER","JUSTY","ASCENT",
+                 "TRIBECA","STELLA","TWINGO","TALISMAN","SANDERO","LATITUDE","KOLEOS","ESPACE","VIVARO","CORSA","FRONTERA",
+                 "ANTARA","ADAM","GENESIS","SONATA","CRETA","GRANDEUR","KONA","TERRACAN","SENTRA",
                  "PATROL","ALMERA","GT-R","LAFESTA","LINEA","TORO","TIPO","PANDA","MOBI","BRAVO",
-                               "508 RXH","TRAVELLER","208","PEUGEOT 1007","308 GT","EXPERT","TAURUS",
-                                 "MUSTANG","FOCUS RS","FIESTA","EXPLORER","ALERO","ORLANDO","VIVA","CORVETTE","COBALT","TOURAN","PASSAT",
-                               "ATLAS","GOLF","CAMRY","SIENNA","GT 86","S-CLASS CABRIOLET","M-CLASS","V-CLASS","A SEDAN",
-                    "AMG GT S","TTS","S3","Q2","A5","Axela","Tribute","MX-5","X5","750iL","3-series Coupe"},
+                 "508 RXH","TRAVELLER","208","PEUGEOT 1007","308 GT","EXPERT","TAURUS",
+                 "MUSTANG","FOCUS RS","FIESTA","EXPLORER","ALERO","ORLANDO","VIVA","CORVETTE","COBALT","TOURAN","PASSAT",
+                 "ATLAS","GOLF","CAMRY","SIENNA","GT 86","S-CLASS CABRIOLET","M-CLASS","V-CLASS","A SEDAN",
+                 "AMG GT S","TTS","S3","Q2","A5","Axela","Tribute","MX-5","X5","750iL","3-series Coupe"},
                  new string []{"Зелений","Червоний","Синій","Чорний","Білий","Сірий"}
             };
             
@@ -255,10 +255,11 @@ namespace ShopCarApi.Entities
             };
             foreach (var item in makesAndModels)
             {
+                var f = context.MakesAndModels.SingleOrDefault(p => p == item);
+                if (f == null)
                 context.MakesAndModels.Add(new MakesAndModels { FilterMakeId = item.FilterMakeId, FilterValueId = item.FilterValueId });
                 context.SaveChanges();
             }
-
         }
         public static void SeedData(IServiceProvider services, IHostingEnvironment env,
             IConfiguration config)
