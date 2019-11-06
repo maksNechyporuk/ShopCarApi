@@ -331,23 +331,28 @@ namespace ShopCarApi.Migrations
                     b.ToTable("tblMakes");
                 });
 
+            modelBuilder.Entity("ShopCarApi.Entities.MakesAndModels", b =>
+                {
+                    b.Property<int>("FilterValueId");
+
+                    b.Property<int>("FilterMakeId");
+
+                    b.HasKey("FilterValueId", "FilterMakeId");
+
+                    b.HasAlternateKey("FilterMakeId", "FilterValueId");
+
+                    b.ToTable("tblMakesAndModels");
+                });
+
             modelBuilder.Entity("ShopCarApi.Entities.Model", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("MakeId");
-
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<int>("ValueId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("MakeId");
-
-                    b.HasIndex("ValueId");
 
                     b.ToTable("tblModels");
                 });
@@ -477,15 +482,16 @@ namespace ShopCarApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("ShopCarApi.Entities.Model", b =>
+            modelBuilder.Entity("ShopCarApi.Entities.MakesAndModels", b =>
                 {
-                    b.HasOne("ShopCarApi.Entities.Make")
-                        .WithMany("ModelCar")
-                        .HasForeignKey("MakeId");
+                    b.HasOne("ShopCarApi.Entities.Make", "FilterMakeOf")
+                        .WithMany("MakesAndModels")
+                        .HasForeignKey("FilterMakeId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("ShopCarApi.Entities.FilterValue", "Value")
-                        .WithMany()
-                        .HasForeignKey("ValueId")
+                    b.HasOne("ShopCarApi.Entities.FilterValue", "FilterValueOf")
+                        .WithMany("MakesAndModels")
+                        .HasForeignKey("FilterValueId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

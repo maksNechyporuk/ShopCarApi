@@ -17,7 +17,7 @@ namespace ShopCarApi.Entities
             IConfiguration _config)
         {
             #region tblFilterNames - Назви фільтрів
-            string[] filterNames = { "Тип авто", "Пальне","Марки","Колір" };
+            string[] filterNames = { "Тип авто", "Пальне","Модель","Колір" };
             foreach (var type in filterNames)
             {
                 if (context.FilterNames.SingleOrDefault(f => f.Name == type) == null)
@@ -31,14 +31,24 @@ namespace ShopCarApi.Entities
                 }
             }
             #endregion
+            List<Model> listModel = new List<Model>
+                {
+                    //new Model{ ValueId = 7,Name = "3-series Coupe"},
 
+             };
             #region tblFilterValues - Значення фільтрів
             List<string[]> filterValues = new List<string[]> { 
                 new string [] { "Кросовер", "Легковий", "Вантажний" },
                 new string [] { "Дизель", "Бензин", "Газ"},
-                new string [] {"BMW","Mazda","Audi","Mersedes-Benz","Toyota","Volkswagen","Chevrolet","Ford","Peugeot","Fiat","Nissan",
-                               "Hyundai","Opel","Renault","Subaru","Skoda","Honda","Citroen"},
-                new string []{"Зелений","Червоний","Синій","Чорний","Білий","Сірий"}
+                new string [] {"C6","SPACETOURER","C4 SEDAN","BERLINGO","C-CROSSER","CR-V","PILOT","PASSPORT","FIT","ACCORD","KAMIQ",
+                               "YETI","ROOMSTER","OCTAVIA","CITIGO","FORESTER","JUSTY","ASCENT",
+                    "TRIBECA","STELLA","TWINGO","TALISMAN","SANDERO","LATITUDE","KOLEOS","ESPACE","VIVARO","CORSA","FRONTERA",
+                               "ANTARA","SONATA","CRETA","GRANDEUR","KONA","TERRACAN","SENTRA",
+                 "PATROL","ALMERA","GT-R","LAFESTA","LINEA","LINEA","TORO","TIPO","PANDA","MOBI","BRAVO",
+                               "508 RXH","TRAVELLER","208","PEUGEOT 1007","308 GT","EXPERT","TAURUS",
+                                 "MUSTANG","FOCUS RS","FIESTA","EXPLORER","ALERO","ORLANDO","VIVA","CORVETTE","COBALT","TOURAN","PASSAT",
+                               "ATLAS","GOLF","CAMRY","SIENNA","GT 86","S-CLASS CABRIOLET","M-CLASS","V-CLASS","A SEDAN",
+                    "AMG GT S","TTS","Q2","A5","Axela","Tribute","MX-5","X5","3-series Coupe"}
             };
             
             foreach(var items in filterValues)
@@ -171,254 +181,254 @@ namespace ShopCarApi.Entities
                 context = scope.ServiceProvider.GetRequiredService<EFDbContext>();         
                 #region Model
                 context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
-                List<Model> listModel = new List<Model>
-                {
-                    new Model{ ValueId = 7,Name = "3-series Coupe"},
-                    new Model{ ValueId = 7,Name = "750iL"},
-                    new Model{ ValueId = 7,Name = "X5"},
-                    new Model{ ValueId = 8,Name = "MX-5" },
-                    new Model{ ValueId = 8,Name = "Tribute"},
-                    new Model{ ValueId = 8,Name = "Axela"},
-                    new Model{ ValueId = 9,Name = "A5"},
-                    new Model{ ValueId = 9,Name = "Q2"},
-                    new Model{ ValueId = 9,Name = "S3"},
-                    new Model{ ValueId = 9,Name = "TTS"},
-                    new Model{ ValueId = 10,Name = "AMG GT S"},
-                    new Model{
-                    ValueId = 10,
-                    Name = "A SEDAN"},
-                    new Model{
-                    ValueId = 10,
-                    Name = "V-CLASS"},
-                    new Model{
-                    ValueId = 10,
-                    Name = "M-CLASS"},
-                    new Model{
-                    ValueId = 10,
-                    Name = "S-CLASS CABRIOLET"},
-                    new Model{
-                    ValueId = 11,
-                    Name = "GT 86"},
-                    new Model{
-                    ValueId = 11,
-                    Name = "SIENNA"},
-                    new Model{
-                    ValueId = 11,
-                    Name = "CAMRY"},
-                    new Model{
-                    ValueId =11,
-                    Name = "GOLF"},
-                    new Model{
-                    ValueId = 11,
-                    Name = "ATLAS"},
-                    new Model{
-                    ValueId = 11,
-                    Name = "PASSAT"},
-                    new Model{
-                    ValueId = 11,
-                    Name = "TOURAN"},
-                    new Model{
-                    ValueId = 13,
-                    Name = "COBALT"},
-                    new Model{
-                    ValueId = 13,
-                    Name = "CORVETTE"},
-                    new Model{
-                    ValueId = 13,
-                    Name = "VIVA"},
-                    new Model{
-                    ValueId = 13,
-                    Name = "ORLANDO"},
-                    new Model{
-                    ValueId = 13,
-                    Name = "ALERO" },
-                    new Model{
-                    ValueId = 14,
-                    Name = "EXPLORER"},
-                    new Model{
-                    ValueId =14,
-                    Name = "FIESTA"},
-                    new Model{
-                    ValueId = 14,
-                    Name = "FOCUS RS" },
-                    new Model{
-                    ValueId = 14,
-                    Name = "MUSTANG"},
-                    new Model{
-                    ValueId = 14,
-                    Name = "TAURUS"},
-                    new Model{
-                    ValueId = 15,
-                    Name = "EXPERT"},
-                    new Model{
-                    ValueId = 15,
-                    Name = "308 GT" },
-                    new Model{
-                    ValueId = 15,
-                    Name = "PEUGEOT 1007"},
-                    new Model{
-                    ValueId = 15,
-                    Name = "208"},
-                    new Model{
-                    ValueId = 15,
-                    Name = "TRAVELLER" },
-                    new Model{
-                    ValueId = 15,
-                    Name = "508 RXH" },
-                    new Model{
-                    ValueId = 16,
-                    Name = "BRAVO" },
-                    new Model{
-                    ValueId = 16,
-                    Name = "MOBI" },
-                    new Model{
-                    ValueId = 16,
-                    Name = "PANDA" },
-                    new Model{
-                    ValueId = 16,
-                    Name = "TIPO" },
-                    new Model{
-                    ValueId = 16,
-                    Name = "TORO"},
-                    new Model{
-                    ValueId = 16,
-                    Name = "LINEA" },
-                    new Model{
-                    ValueId = 17,
-                    Name = "LAFESTA" },
-                    new Model{
-                    ValueId = 17,
-                    Name = "GT-R" },
-                    new Model{
-                    ValueId = 17,
-                    Name = "ALMERA" },
-                    new Model{
-                    ValueId = 17,
-                    Name = "PATROL" },
-                    new Model{
-                    ValueId = 17,
-                    Name = "SENTRA"},
-                    new Model{
-                    ValueId = 12,
-                    Name = "TERRACAN" },
-                    new Model{
-                    ValueId = 12,
-                    Name = "KONA" },
-                    new Model{
-                    ValueId = 10,
-                    Name = "GRANDEUR" },
-                    new Model{
-                    ValueId = 10,
-                    Name = "CRETA" },
-                    new Model{
-                    ValueId = 10,
-                    Name = "SONATA" },
-                    new Model{
-                    ValueId = 10,
-                    Name = "GENESIS"},
-                    new Model{
-                    ValueId = 19,
-                    Name = "ADAM"},
-                    new Model{
-                    ValueId = 19,
-                    Name = "ANTARA" },
-                    new Model{
-                    ValueId = 19,
-                    Name = "FRONTERA" },
-                    new Model{
-                    ValueId = 19,
-                    Name = "CORSA" },
-                    new Model{
-                    ValueId = 19,
-                    Name = "VIVARO" },
-                    new Model{
-                    ValueId = 20,
-                    Name = "ESPACE" },
-                    new Model{
-                    ValueId = 20,
-                    Name = "KOLEOS" },
-                    new Model{
-                    ValueId = 20,
-                    Name = "LATITUDE" },
-                    new Model{
-                    ValueId = 20,
-                    Name = "SANDERO" },
-                    new Model{
-                    ValueId = 20,
-                    Name = "TALISMAN" },
-                    new Model{
-                    ValueId = 20,
-                    Name = "TWINGO" },
-                    new Model{
-                    ValueId = 21,
-                    Name = "STELLA" },
-                    new Model{
-                    ValueId = 21,
-                    Name = "TRIBECA" },
-                    new Model{
-                    ValueId = 21,
-                    Name = "ASCENT" },
-                    new Model{
-                    ValueId = 21,
-                    Name = "JUSTY" },
-                    new Model{
-                    ValueId = 21,
-                    Name = "FORESTER" },
-                    new Model{
-                    ValueId = 22,
-                    Name = "CITIGO" },
-                    new Model{
-                    ValueId = 22,
-                    Name = "OCTAVIA" },
-                    new Model{
-                    ValueId = 22,
-                    Name = "ROOMSTER" },
-                    new Model{
-                    ValueId = 22,
-                    Name = "YETI" },
-                    new Model{
-                    ValueId = 22,
-                    Name = "KAMIQ" },
-                    new Model{
-                    ValueId = 23,
-                    Name = "ACCORD" },
-                    new Model{
-                    ValueId = 23,
-                    Name = "FIT" },
-                    new Model{
-                    ValueId = 23,
-                    Name = "PASSPORT" },
-                    new Model{
-                    ValueId = 23,
-                    Name = "PILOT" },
-                    new Model{
-                    ValueId = 23,
-                    Name = "CR-V" },
-                    new Model{
-                    ValueId = 24,
-                    Name = "C-CROSSER" },
-                    new Model{
-                    ValueId = 24,
-                    Name = "BERLINGO" },
-                    new Model{
-                    ValueId = 24,
-                    Name = "C4 SEDAN" },
-                    new Model{
-                    ValueId = 24,
-                    Name = "SPACETOURER" },
-                    new Model{
-                    ValueId = 24,
-                    Name = "C6" }
-                };
-                foreach (var item in listModel)
-                {
-                    var model = context.Models.SingleOrDefault(c => c.Name == item.Name);
-                    if (model == null)
-                    {
-                        context.Models.Add(item);
-                        context.SaveChanges();
-                    }
-                }
+                //List<Model> listModel = new List<Model>
+                //{
+                //    new Model{ ValueId = 7,Name = "3-series Coupe"},
+                //    new Model{ ValueId = 7,Name = "750iL"},
+                //    new Model{ ValueId = 7,Name = "X5"},
+                //    new Model{ ValueId = 8,Name = "MX-5" },
+                //    new Model{ ValueId = 8,Name = "Tribute"},
+                //    new Model{ ValueId = 8,Name = "Axela"},
+                //    new Model{ ValueId = 9,Name = "A5"},
+                //    new Model{ ValueId = 9,Name = "Q2"},
+                //    new Model{ ValueId = 9,Name = "S3"},
+                //    new Model{ ValueId = 9,Name = "TTS"},
+                //    new Model{ ValueId = 10,Name = "AMG GT S"},
+                //    new Model{
+                //    ValueId = 10,
+                //    Name = "A SEDAN"},
+                //    new Model{
+                //    ValueId = 10,
+                //    Name = "V-CLASS"},
+                //    new Model{
+                //    ValueId = 10,
+                //    Name = "M-CLASS"},
+                //    new Model{
+                //    ValueId = 10,
+                //    Name = "S-CLASS CABRIOLET"},
+                //    new Model{
+                //    ValueId = 11,
+                //    Name = "GT 86"},
+                //    new Model{
+                //    ValueId = 11,
+                //    Name = "SIENNA"},
+                //    new Model{
+                //    ValueId = 11,
+                //    Name = "CAMRY"},
+                //    new Model{
+                //    ValueId =11,
+                //    Name = "GOLF"},
+                //    new Model{
+                //    ValueId = 11,
+                //    Name = "ATLAS"},
+                //    new Model{
+                //    ValueId = 11,
+                //    Name = "PASSAT"},
+                //    new Model{
+                //    ValueId = 11,
+                //    Name = "TOURAN"},
+                //    new Model{
+                //    ValueId = 13,
+                //    Name = "COBALT"},
+                //    new Model{
+                //    ValueId = 13,
+                //    Name = "CORVETTE"},
+                //    new Model{
+                //    ValueId = 13,
+                //    Name = "VIVA"},
+                //    new Model{
+                //    ValueId = 13,
+                //    Name = "ORLANDO"},
+                //    new Model{
+                //    ValueId = 13,
+                //    Name = "ALERO" },
+                //    new Model{
+                //    ValueId = 14,
+                //    Name = "EXPLORER"},
+                //    new Model{
+                //    ValueId =14,
+                //    Name = "FIESTA"},
+                //    new Model{
+                //    ValueId = 14,
+                //    Name = "FOCUS RS" },
+                //    new Model{
+                //    ValueId = 14,
+                //    Name = "MUSTANG"},
+                //    new Model{
+                //    ValueId = 14,
+                //    Name = "TAURUS"},
+                //    new Model{
+                //    ValueId = 15,
+                //    Name = "EXPERT"},
+                //    new Model{
+                //    ValueId = 15,
+                //    Name = "308 GT" },
+                //    new Model{
+                //    ValueId = 15,
+                //    Name = "PEUGEOT 1007"},
+                //    new Model{
+                //    ValueId = 15,
+                //    Name = "208"},
+                //    new Model{
+                //    ValueId = 15,
+                //    Name = "TRAVELLER" },
+                //    new Model{
+                //    ValueId = 15,
+                //    Name = "508 RXH" },
+                //    new Model{
+                //    ValueId = 16,
+                //    Name = "BRAVO" },
+                //    new Model{
+                //    ValueId = 16,
+                //    Name = "MOBI" },
+                //    new Model{
+                //    ValueId = 16,
+                //    Name = "PANDA" },
+                //    new Model{
+                //    ValueId = 16,
+                //    Name = "TIPO" },
+                //    new Model{
+                //    ValueId = 16,
+                //    Name = "TORO"},
+                //    new Model{
+                //    ValueId = 16,
+                //    Name = "LINEA" },
+                //    new Model{
+                //    ValueId = 17,
+                //    Name = "LAFESTA" },
+                //    new Model{
+                //    ValueId = 17,
+                //    Name = "GT-R" },
+                //    new Model{
+                //    ValueId = 17,
+                //    Name = "ALMERA" },
+                //    new Model{
+                //    ValueId = 17,
+                //    Name = "PATROL" },
+                //    new Model{
+                //    ValueId = 17,
+                //    Name = "SENTRA"},
+                //    new Model{
+                //    ValueId = 12,
+                //    Name = "TERRACAN" },
+                //    new Model{
+                //    ValueId = 12,
+                //    Name = "KONA" },
+                //    new Model{
+                //    ValueId = 10,
+                //    Name = "GRANDEUR" },
+                //    new Model{
+                //    ValueId = 10,
+                //    Name = "CRETA" },
+                //    new Model{
+                //    ValueId = 10,
+                //    Name = "SONATA" },
+                //    new Model{
+                //    ValueId = 10,
+                //    Name = "GENESIS"},
+                //    new Model{
+                //    ValueId = 19,
+                //    Name = "ADAM"},
+                //    new Model{
+                //    ValueId = 19,
+                //    Name = "ANTARA" },
+                //    new Model{
+                //    ValueId = 19,
+                //    Name = "FRONTERA" },
+                //    new Model{
+                //    ValueId = 19,
+                //    Name = "CORSA" },
+                //    new Model{
+                //    ValueId = 19,
+                //    Name = "VIVARO" },
+                //    new Model{
+                //    ValueId = 20,
+                //    Name = "ESPACE" },
+                //    new Model{
+                //    ValueId = 20,
+                //    Name = "KOLEOS" },
+                //    new Model{
+                //    ValueId = 20,
+                //    Name = "LATITUDE" },
+                //    new Model{
+                //    ValueId = 20,
+                //    Name = "SANDERO" },
+                //    new Model{
+                //    ValueId = 20,
+                //    Name = "TALISMAN" },
+                //    new Model{
+                //    ValueId = 20,
+                //    Name = "TWINGO" },
+                //    new Model{
+                //    ValueId = 21,
+                //    Name = "STELLA" },
+                //    new Model{
+                //    ValueId = 21,
+                //    Name = "TRIBECA" },
+                //    new Model{
+                //    ValueId = 21,
+                //    Name = "ASCENT" },
+                //    new Model{
+                //    ValueId = 21,
+                //    Name = "JUSTY" },
+                //    new Model{
+                //    ValueId = 21,
+                //    Name = "FORESTER" },
+                //    new Model{
+                //    ValueId = 22,
+                //    Name = "CITIGO" },
+                //    new Model{
+                //    ValueId = 22,
+                //    Name = "OCTAVIA" },
+                //    new Model{
+                //    ValueId = 22,
+                //    Name = "ROOMSTER" },
+                //    new Model{
+                //    ValueId = 22,
+                //    Name = "YETI" },
+                //    new Model{
+                //    ValueId = 22,
+                //    Name = "KAMIQ" },
+                //    new Model{
+                //    ValueId = 23,
+                //    Name = "ACCORD" },
+                //    new Model{
+                //    ValueId = 23,
+                //    Name = "FIT" },
+                //    new Model{
+                //    ValueId = 23,
+                //    Name = "PASSPORT" },
+                //    new Model{
+                //    ValueId = 23,
+                //    Name = "PILOT" },
+                //    new Model{
+                //    ValueId = 23,
+                //    Name = "CR-V" },
+                //    new Model{
+                //    ValueId = 24,
+                //    Name = "C-CROSSER" },
+                //    new Model{
+                //    ValueId = 24,
+                //    Name = "BERLINGO" },
+                //    new Model{
+                //    ValueId = 24,
+                //    Name = "C4 SEDAN" },
+                //    new Model{
+                //    ValueId = 24,
+                //    Name = "SPACETOURER" },
+                //    new Model{
+                //    ValueId = 24,
+                //    Name = "C6" }
+                //};
+                //foreach (var item in listModel)
+                //{
+                //    var model = context.Models.SingleOrDefault(c => c.Name == item.Name);
+                //    if (model == null)
+                //    {
+                //        context.Models.Add(item);
+                //        context.SaveChanges();
+                //    }
+                //}
                 #endregion              
 
                 #region Car
