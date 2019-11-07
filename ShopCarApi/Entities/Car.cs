@@ -23,8 +23,6 @@ namespace ShopCarApi.Entities
         [Required]
         public string Name { get; set; }
 
-        public string Image { get; set; }
-
         [Required]
         public int Price { get; set; }
 

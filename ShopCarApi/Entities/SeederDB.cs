@@ -128,19 +128,21 @@ namespace ShopCarApi.Entities
                 new Filter { FilterNameId = 1, FilterValueId=1, CarId=1 },
                 new Filter { FilterNameId = 2, FilterValueId=5, CarId=1 },
                 new Filter { FilterNameId = 3, FilterValueId=7, CarId=1 },
-                new Filter { FilterNameId = 4, FilterValueId=27, CarId=1 },
+                new Filter { FilterNameId = 4, FilterValueId=93, CarId=1 },
 
                 new Filter { FilterNameId = 1, FilterValueId=2, CarId=2 },
                 new Filter { FilterNameId = 2, FilterValueId=6, CarId=2 },
                 new Filter { FilterNameId = 3, FilterValueId=8, CarId=2 },
-                new Filter { FilterNameId = 4, FilterValueId=28, CarId=2 }
+                new Filter { FilterNameId = 4, FilterValueId=94, CarId=2 }
             };
             foreach (var item in filters)
             {
-                var f = context.Filters.SingleOrDefault(p=>p==item);
-                if(f==null)
-            context.Filters.Add(new Filter{ FilterNameId=item.FilterNameId,FilterValueId= item.FilterValueId,CarId= item.CarId});
-            context.SaveChanges();
+                var f = context.Filters.SingleOrDefault(p => p == item);
+                if (f == null)
+                {
+                    context.Filters.Add(new Filter { FilterNameId = item.FilterNameId, FilterValueId = item.FilterValueId, CarId = item.CarId });
+                    context.SaveChanges();
+                }
             }
             #endregion
 
@@ -257,8 +259,10 @@ namespace ShopCarApi.Entities
             {
                 var f = context.MakesAndModels.SingleOrDefault(p => p == item);
                 if (f == null)
-                context.MakesAndModels.Add(new MakesAndModels { FilterMakeId = item.FilterMakeId, FilterValueId = item.FilterValueId });
-                context.SaveChanges();
+                {
+                    context.MakesAndModels.Add(new MakesAndModels { FilterMakeId = item.FilterMakeId, FilterValueId = item.FilterValueId });
+                    context.SaveChanges();
+                }
             }
         }
         public static void SeedData(IServiceProvider services, IHostingEnvironment env,
@@ -273,7 +277,6 @@ namespace ShopCarApi.Entities
 
                 #region Make
                 var context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
-                SeedFilters(context, env, config);
                 List<Make> listMake = new List<Make>
                 {
                     new Make{ Name = "BMW"},
@@ -305,6 +308,8 @@ namespace ShopCarApi.Entities
                     }
                 }
                 #endregion
+                SeedFilters(context, env, config);
+
                 #region Model
                 List<MakesAndModels> listModel = new List<MakesAndModels>
                 {

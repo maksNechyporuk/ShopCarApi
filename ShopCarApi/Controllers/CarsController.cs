@@ -40,12 +40,12 @@ namespace ShopCarApi.Controllers
             var _filters = (from g in _context.Filters
                             select g);
             var valueFilters = (from g in _context.FilterValues
-                                select g);
+                                select g).AsQueryable();
             var nameFilters = (from g in _context.FilterNames
-                               select g);
+                               select g).AsQueryable();
             var cars = (from g in _context.Cars
                         where g.UniqueName == Name
-                        select g);
+                        select g).AsQueryable();
             string path = "Uploaded";
             var resultCar = (from c in cars
                              join g in _filters on c.Id equals g.CarId into ua
@@ -64,13 +64,20 @@ namespace ShopCarApi.Controllers
                                             {
                                                 Id = f.FilterNameId,
                                                 Name = f.FilterNameOf.Name,
-                                                Children = f.FilterValueOf.Name
+                                                Children = new FValueViewModel { Id = f.FilterValueId, Name = f.FilterValueOf.Name }
                                             } into b
                                             select b.Key)
                                                             .ToList()
                              } into b
                              select b.Key).LastOrDefault();
-          //  var GetCars = resultCar.Distinct(new CarComparer());
+
+            int i = resultCar.filters.Where(p => p.Name == "Модель").Select(p => p.Children.Id).SingleOrDefault();
+                    var m = GetMakes(i);
+                    if (m != null)
+                     resultCar.filters.Add(m);
+                        
+
+            //  var GetCars = resultCar.Distinct(new CarComparer());
             return Ok(resultCar);
         }
 
@@ -79,41 +86,7 @@ namespace ShopCarApi.Controllers
         {
             var filters = GetListFilters(_context);
             var list = GetCarsByFilter(value, filters);
-
-            var _filters = (from g in _context.Filters
-                           select g).ToList();
-            var valueFilters = (from g in _context.FilterValues
-                                select g).ToList();
-            var nameFilters = (from g in _context.FilterNames
-                               select g).ToList();
-            var cars = (from g in _context.Cars
-                        select g).ToList();
-            string path = "images";
-            var resultCar = (from c in list
-                             join g in _filters on c.Id equals g.CarId into ua
-                             from aEmp in ua.DefaultIfEmpty()
-                             group ua by
-                             new CarVM
-                             {
-                                 Id = c.Id,
-                                 Date = c.Date,
-                                 Image = $"{path}/{c.UniqueName}/300_{c.UniqueName}.jpg",
-                                 Price = c.Price,
-                                 Name=c.Name,
-                                 UniqueName=c.UniqueName,
-                                 filters = (from f in ua
-                                            group f by new FNameGetViewModel
-                                            {
-                                                Id = f.FilterNameId,
-                                                Name = f.FilterNameOf.Name,
-                                                Children = f.FilterValueOf.Name
-                                            } into b
-                                            select b.Key)
-                                                            .ToList()
-                             } into b
-                             select b.Key).ToList();
-            var GetCars = resultCar.Distinct(new CarComparer());
-            return Ok(GetCars);
+            return Ok(list);
         }
         private List<FNameViewModel> GetListFilters(EFDbContext context)
         {
@@ -163,8 +136,7 @@ namespace ShopCarApi.Controllers
 
             return result.ToList();
         }
-
-        private List<CarVM> GetCarsByFilter(int[] values, List<FNameViewModel> filtersList)
+        private List<CarsByFilterVM> GetCarsByFilter(int[] values, List<FNameViewModel> filtersList)
         {
             int[] filterValueSearchList = values;
             var query = _context
@@ -194,12 +166,11 @@ namespace ShopCarApi.Controllers
                     query = query.Where(predicate);
             }
             string path = "images";
-            var listProductSearch = query.Select(p => new CarVM
+            var listProductSearch = query.Select(p => new CarsByFilterVM
             {
                 Id = p.Id,
                 Price = p.Price,
                 UniqueName=p.UniqueName,
-                Date=p.Date,
                 Image = $"{path}/{p.UniqueName}/300_{p.UniqueName}.jpg",
                 Name=p.Name
             }).ToList();
@@ -216,36 +187,40 @@ namespace ShopCarApi.Controllers
                            select g).ToList();
             var valueFilters = (from g in _context.FilterValues
                                 select g).ToList();
+            var make = (from g in _context.Makes
+                                select g).ToList();
             var nameFilters = (from g in _context.FilterNames
                                select g).ToList();
+            var makeAdnmodel = (from g in _context.MakesAndModels
+                                select g).ToList();
             var cars = (from g in _context.Cars
                         select g).ToList();
-            var resultCar = (from c in cars
-                             join g in filters on c.Id equals g.CarId into ua 
-             from aEmp  in ua.DefaultIfEmpty()
-             group ua by
-             new CarVM
+            var resultCar = (from c in cars                            
+             select
+             new CarsByFilterVM
              {
                                  Id = c.Id,
-                                 Date = c.Date,
                                  Image = $"{path}/{c.UniqueName}/300_{c.UniqueName}.jpg",
-                 Price = c.Price,
+                                 Price = c.Price,
                                  Name=c.Name,
                                  UniqueName=c.UniqueName,
-                                 filters = (from f in ua
-                                            group f by new FNameGetViewModel
-                                            {
-                                               Id = f.FilterNameId,
-                                               Name = f.FilterNameOf.Name,
-                                               Children =f.FilterValueOf.Name
-                                            } into b
-                                            select b.Key)
-                                            .ToList()                                                                                                               
-                             } into b
-                               select b.Key).ToList();
-         var GetCars = resultCar.Distinct(new CarComparer());           
-         return Ok(GetCars);
+                                                                                                                                    
+                             } ).ToList();                     
+            return Ok(resultCar);
         }
+
+        public FNameGetViewModel GetMakes(int id)
+        {
+            var make = _context.MakesAndModels.Where(p => p.FilterValueId == id).Select(f => new FNameGetViewModel
+            {
+                Id = f.FilterMakeId, Name = "Марка",
+              Children = new FValueViewModel { Id = f.FilterMakeId, Name = f.FilterMakeOf.Name }
+            }).SingleOrDefault();
+            if(make!=null)
+            return make;
+            return null;
+        }
+
         [HttpPost]
         public IActionResult Create([FromBody]CarAddVM model)
         {

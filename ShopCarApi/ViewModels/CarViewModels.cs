@@ -45,14 +45,17 @@ namespace ShopCarApi.ViewModels
         public string Name { get; set; }
         public List<FNameGetViewModel> filters { get; set; }
     }
-    //public class CarVM
-    //{
-    //    public int Id { get; set; }
-    //    public DateTime Date { get; set; }
-    //    public string Image { get; set; }
-    //    public int Price { get; set; }
-    //    public FNameViewModel filter { get; set; }
-    //}
+
+    public class CarsByFilterVM
+    {
+        public int Id { get; set; }     
+        public int Price { get; set; }
+        public string Image { get; set; }
+
+        public string UniqueName { get; set; }
+        public string Name { get; set; }
+    }
+    
     public class CarAddVM
     {
         public DateTime Date { get; set; }
