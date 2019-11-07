@@ -33,8 +33,7 @@ namespace ShopCarApi.Controllers
         }
         [HttpGet("CarsByName")]
         public IActionResult GetCarsByName(string Name)
-        {
-       
+        {       
             var _filters = (from g in _context.Filters
                             select g);
             var valueFilters = (from g in _context.FilterValues
@@ -72,10 +71,8 @@ namespace ShopCarApi.Controllers
             int i = resultCar.filters.Where(p => p.Name == "Модель").Select(p => p.Children.Id).SingleOrDefault();
                     var m = GetMakes(i);
                     if (m != null)
-                     resultCar.filters.Add(m);
-                        
-
-            //  var GetCars = resultCar.Distinct(new CarComparer());
+                     resultCar.filters.Add(m);                        
+            //var GetCars = resultCar.Distinct(new CarComparer());
             return Ok(resultCar);
         }
 
@@ -194,9 +191,9 @@ namespace ShopCarApi.Controllers
             var cars = (from g in _context.Cars
                         select g).ToList();
             var resultCar = (from c in cars                            
-             select
-             new CarsByFilterVM
-             {
+            select
+            new CarsByFilterVM
+            {
                                  Id = c.Id,
                                  Image = $"{path}/{c.UniqueName}/300_{c.UniqueName}.jpg",
                                  Price = c.Price,

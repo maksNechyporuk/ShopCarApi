@@ -104,7 +104,6 @@ namespace ShopCarApi.Controllers
             //    _context.SaveChanges();
             return Ok("Дані видалено");
             //}
-            return BadRequest(new { name = "Помилка видалення" });
         }
         [HttpPut]
         public IActionResult Update([FromBody]MakeVM model)
