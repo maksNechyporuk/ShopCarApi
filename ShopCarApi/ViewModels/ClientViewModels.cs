@@ -11,12 +11,12 @@ namespace ShopCarApi.ViewModels
 
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Поле не може бути пустим")]
         public string Name { get; set; }
-
+        [Required(ErrorMessage = "Поле не може бути пустим")]
         public string Phone { get; set; }
-
         public string Image { get; set; }
-
+        [Required(ErrorMessage = "Поле не може бути пустим")]
         public string Email { get; set; }
 
     }
