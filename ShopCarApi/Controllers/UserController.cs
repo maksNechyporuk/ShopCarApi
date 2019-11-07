@@ -38,35 +38,44 @@ namespace ShopCarApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult UserList(string Name)
+        public IActionResult UserList()
         {
-            if (Name == null)
+
+            var _user = _context.Users.Select(
+                p => new UserVM
+                {
+                    Name = p.UserName,
+                    Email = p.Email
+
+                }).ToList();
+            return Ok(_user);
+        }
+        [HttpGet("search")]
+        public IActionResult UserList(UserVM employee)
+        {
+            var queryUsers = _context.Users.AsQueryable();
+
+            var query = _context.Users.AsQueryable();
+            if(!String.IsNullOrEmpty(employee.Email))
             {
-                var user = _context.Users.Select(
-                    p => new UserVM
-                    {
-                        Name = p.UserName,
-                        Email = p.Email
-                        
-                    }).ToList();
-                return Ok(user);
+                query = query.Where(e => e.Email.Contains(employee.Email));
             }
-            else
+            if (!String.IsNullOrEmpty(employee.Name))
             {
-                var query = _context.Users.AsQueryable();
-                var queryResult = (from user in query
-                                   where user.UserName.Contains(Name)
-                                   select new UserVM { Name = user.UserName, Email = user.Email }).ToList();
-                //var makes = query
-                //    .Where(m => m.Name.Contains(Name))
-                //    .Select(
-                //    p => new MakeVM
-                //    {
-                //        Id = p.Id,
-                //        Name = p.Name
-                //    }).ToList();
-                return Ok(queryResult);
+                query= query.Where(e => e.UserName.Contains(employee.Name));
             }
+            //var queryResult = (from user in query
+            //                   where user.UserName.Contains(employee.Name)
+            //                   where user.Email.Contains(employee.Email)
+            //                   select new UserVM { Name = user.UserName, Email = user.Email }).ToList();
+            var users = query.Select(p => new UserVM
+            {
+                Id = p.Id,
+                Name = p.UserName,
+                Email = p.Email
+
+            }).ToList();
+            return Ok(users);
         }
 
         public IActionResult Delete([FromBody] UserDeleteVM duser)
@@ -94,7 +103,7 @@ namespace ShopCarApi.Controllers
             if (prod != null)
             {
                 prod.UserName = user.Name;
-                prod.Email = user.Email
+                prod.Email = user.Email;
                 _context.SaveChanges();
             }
             return Ok();
@@ -144,7 +153,7 @@ namespace ShopCarApi.Controllers
                 return BadRequest(new { invalid = "Email is exist!" });
             }
             var user = new DbUser
-            { 
+            {
                 Email = userEmail,
                 UserName = model.Name
             };
@@ -161,7 +170,7 @@ namespace ShopCarApi.Controllers
             });
         }
 
-      
+
         private string CreateTokenJwt(DbUser user)
         {
             var roles = _userManager.GetRolesAsync(user).Result;
