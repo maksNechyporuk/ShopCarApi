@@ -23,8 +23,6 @@ namespace ShopCarApi.Controllers
         private readonly IConfiguration _configuration;
         private readonly IHostingEnvironment _env;
 
-
-
         public CarsController(IHostingEnvironment env,
             IConfiguration configuration,
             EFDbContext context)
@@ -229,18 +227,6 @@ namespace ShopCarApi.Controllers
                 return BadRequest();
             }
 
-            //Car m = new Car
-            //{
-            //    Image=model.Image,
-            //    Price=model.Price,
-            //    ColorId=model.Color.Id,
-            //    FuelTypeId=model.Fuel_type.Id,
-            //    Date=model.Date,
-            //    ModelId=model.Model.Id,
-            //    TypeId=model.Type_car.Id             
-            //};
-            //_context.Cars.Add(m);
-            //_context.SaveChanges();
             return Ok();
         }
 

@@ -37,7 +37,39 @@ namespace ShopCarApi.Controllers
             //var list = GetCarsByFilter(new int[] { 1 }, filters);
             return Ok(filters);
         }
-
+        [HttpGet("GetModelsByMake")]
+        public IActionResult GetModelsByMake(int id)
+        {
+            var makeAndModels = (from g in _context.MakesAndModels
+                                 select g).AsQueryable();          
+            var valueFilters = (from g in _context.FilterValues
+                                select g).AsQueryable();
+            var make = (from g in _context.Makes
+                        select g).AsQueryable();
+            var nameFilters = (from g in _context.FilterNames
+                               select g).AsQueryable();
+            var filters = GetListFilters(_context);
+            var models = (from f in _context.MakesAndModels
+                          where f.FilterMakeId == id
+                          group f by new 
+                          {
+                              Id = f.FilterMakeId,
+                              Name = f.FilterMakeOf.Name,
+                          } into dot_g
+                          select new FNameViewModel
+                          {
+                              Id = dot_g.Key.Id,
+                              Name = dot_g.Key.Name,
+                              Children = (from filip in dot_g
+                                          select new FValueViewModel
+                                          {
+                                              Id = filip.FilterValueId,
+                                              Name = filip.FilterValueOf.Name
+                                          }) 
+                                         .OrderBy(l => l.Name).ToList()
+                          }).ToList();                       
+                return Ok(models);
+        }
         private List<FNameViewModel> GetListFilters(EFDbContext context)
         {
             var queryName = from f in context.FilterNames.AsQueryable()
@@ -85,46 +117,6 @@ namespace ShopCarApi.Controllers
                          };
 
             return result.ToList();
-        }
-
-        private List<CarVM> GetCarsByFilter(int[] values, List<FNameViewModel> filtersList)
-        {
-            int[] filterValueSearchList = values;
-            var query = _context
-                .Cars
-                .Include(f => f.Filtres)
-                .AsQueryable();
-            foreach (var fName in filtersList)
-            {
-                int count = 0; //Кількість співпадінь у даній групі фільрів
-                var predicate = PredicateBuilder.False<Car>();
-                foreach (var fValue in fName.Children)
-                {
-                    for (int i = 0; i < filterValueSearchList.Length; i++)
-                    {
-                        var idV = fValue.Id;
-                        if (filterValueSearchList[i] == idV)
-                        {
-                            predicate = predicate
-                                .Or(p => p.Filtres
-                                    .Any(f => f.FilterValueId == idV));
-                            count++;
-                        }
-                    }
-                }
-                if (count != 0)
-                    query = query.Where(predicate);
-            }
-            var listProductSearch = query.Select(p => new CarVM
-            {
-                Id = p.Id,
-                Price = p.Price,
-                Date =p.Date,
-                UniqueName=p.UniqueName,
-                Name=p.Name
-
-            }).ToList();
-            return listProductSearch;
-        }
+        }      
     }
 }
