@@ -94,7 +94,7 @@ namespace ShopCarApi.Controllers
             if (prod != null)
             {
                 prod.UserName = user.Name;
-                prod.Email = user.Email
+                prod.Email = user.Email;
                 _context.SaveChanges();
             }
             return Ok();

@@ -50,6 +50,5 @@ namespace ShopCarApi.Controllers
 
             return BadRequest();
         }
-
     }
 }
