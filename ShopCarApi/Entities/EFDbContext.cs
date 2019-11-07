@@ -15,11 +15,7 @@ namespace WebElectra.Entities
     DbUserRole, IdentityUserLogin<int>,
     IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
-        public DbSet<Colors> Colors { get; set; }
         public DbSet<Make> Makes { get; set; }
-        public DbSet<Model> Models { get; set; }
-        public DbSet<FuelType> FuelTypes { get; set; }
-        public DbSet<TypeCar> TypeCars { get; set; }
         public DbSet<Car> Cars { get; set; }
         public DbSet<Purchase> Purchases { get; set; }
         public DbSet<Client> Clients { get; set; }

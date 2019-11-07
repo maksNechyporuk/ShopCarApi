@@ -32,10 +32,7 @@ namespace ShopCarApi.ViewModels
     public class FilterAddVM
     {
         public DateTime Date { get; set; }
-        public ColorVM Color { get; set; }
         public ModelVM Model { get; set; }
-        public FuelTypeVM Fuel_type { get; set; }
-        public TypeVM Type_car { get; set; }
         public string Image { get; set; }
         public int Price { get; set; }
     }

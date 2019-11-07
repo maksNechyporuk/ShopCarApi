@@ -34,7 +34,6 @@ namespace ShopCarApi.Controllers
         public IActionResult FilterData()
         {
             var filters = GetListFilters(_context);
-            //var list = GetCarsByFilter(new int[] { 1 }, filters);
             return Ok(filters);
         }
         [HttpGet("GetModelsByMake")]
@@ -55,16 +54,16 @@ namespace ShopCarApi.Controllers
                           {
                               Id = f.FilterMakeId,
                               Name = f.FilterMakeOf.Name,
-                          } into dot_g
+                          } into g
                           select new FNameViewModel
                           {
-                              Id = dot_g.Key.Id,
-                              Name = dot_g.Key.Name,
-                              Children = (from filip in dot_g
+                              Id = g.Key.Id,
+                              Name = g.Key.Name,
+                              Children = (from value in g
                                           select new FValueViewModel
                                           {
-                                              Id = filip.FilterValueId,
-                                              Name = filip.FilterValueOf.Name
+                                              Id = value.FilterValueId,
+                                              Name = value.FilterValueOf.Name
                                           }) 
                                          .OrderBy(l => l.Name).ToList()
                           }).ToList();                       
