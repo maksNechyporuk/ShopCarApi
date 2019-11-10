@@ -92,7 +92,7 @@ namespace ShopCarApi
             app.UseMvc();
             //шлях на сервері
             var fileDestDir = env.ContentRootPath;
-            string dirName = this.Configuration.GetValue<string>("ImagesPath");
+            string dirName = "images";
             //Папка де зберігаються фотки
             string dirPathSave = Path.Combine(fileDestDir, dirName);
             if (!Directory.Exists(dirPathSave))
@@ -107,7 +107,7 @@ namespace ShopCarApi
             });
             app.UseMvc();
 
-            //SeederDB.SeedData(app.ApplicationServices, env, this.Configuration);
+            SeederDB.SeedData(app.ApplicationServices, env, this.Configuration);
         }
     }
 }
