@@ -33,7 +33,7 @@ namespace ShopCarApi.Controllers
         {
             var getImages = new List<string>();
             var fileDestDir = _env.ContentRootPath;
-            string dirName = _configuration.GetValue<string>("ImagesPath");
+            string dirName = "images";
             string dirPathSave = Path.Combine(fileDestDir, dirName, path);
             var imgs=Directory.GetFiles(dirPathSave);
 

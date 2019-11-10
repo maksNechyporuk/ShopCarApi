@@ -1,6 +1,7 @@
 ﻿using ShopCarApi.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using static ShopCarApi.ViewModels.CarComparer;
@@ -40,7 +41,7 @@ namespace ShopCarApi.ViewModels
         public int Id { get; set; }
         public DateTime Date { get; set; }
         public string Image { get; set; }
-        public int Price { get; set; }
+        public decimal Price { get; set; }
         public string UniqueName { get; set; }
         public string Name { get; set; }
         public List<FNameGetViewModel> filters { get; set; }
@@ -49,7 +50,7 @@ namespace ShopCarApi.ViewModels
     public class CarsByFilterVM
     {
         public int Id { get; set; }     
-        public int Price { get; set; }
+        public decimal Price { get; set; }
         public string Image { get; set; }
 
         public string UniqueName { get; set; }
@@ -58,10 +59,21 @@ namespace ShopCarApi.ViewModels
     
     public class CarAddVM
     {
+        [Required(ErrorMessage = "Поле не може бути пустим")]
         public DateTime Date { get; set; }
-        public ModelVM Model { get; set; }
-        public string Image { get; set; }
-        public int Price { get; set; }
+        [Required(ErrorMessage = "Поле не може бути пустим")]
+        public string MainImage { get; set; }
+        [Required(ErrorMessage = "Поле не може бути пустим")]
+        public List<string> AdditionalImage { get; set; }
+        [Required(ErrorMessage = "Поле не може бути пустим")]
+        public decimal Price { get; set; }
+        [Required(ErrorMessage = "Поле не може бути пустим")]
+        public int Count { get; set; }
+        [Required(ErrorMessage = "Поле не може бути пустим")]
+        public string UniqueName { get; set; }
+        [Required(ErrorMessage = "Поле не може бути пустим")]    
+        public string Name { get; set; }
+
     }
     public class CarDeleteVM
     {

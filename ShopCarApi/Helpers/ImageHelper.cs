@@ -17,7 +17,7 @@ namespace WebElectra.Helpers
                 using (MemoryStream memoryStream = new MemoryStream(byteBuffer))
                 {
                     memoryStream.Position = 0;
-                    using (Image imgReturn = Image.FromStream(memoryStream))
+                    using (System.Drawing.Image imgReturn = System.Drawing.Image.FromStream(memoryStream))
                     {
                         memoryStream.Close();
                         byteBuffer = null;

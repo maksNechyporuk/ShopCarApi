@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ShopCarApi.Migrations
 {
-    public partial class deletecarsimg : Migration
+    public partial class addtables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -58,7 +58,7 @@ namespace ShopCarApi.Migrations
                     Date = table.Column<DateTime>(nullable: false),
                     UniqueName = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
-                    Price = table.Column<int>(nullable: false),
+                    Price = table.Column<decimal>(nullable: false),
                     Count = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -81,23 +81,6 @@ namespace ShopCarApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tblClients", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "tblColors",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Name = table.Column<string>(nullable: false),
-                    A = table.Column<int>(nullable: false),
-                    R = table.Column<int>(nullable: false),
-                    G = table.Column<int>(nullable: false),
-                    B = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_tblColors", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -127,19 +110,6 @@ namespace ShopCarApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "tblFuelTypes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Type = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_tblFuelTypes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "tblMakes",
                 columns: table => new
                 {
@@ -150,32 +120,6 @@ namespace ShopCarApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tblMakes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "tblModels",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Name = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_tblModels", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "tblTypeCars",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Name = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_tblTypeCars", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -494,28 +438,16 @@ namespace ShopCarApi.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "tblColors");
-
-            migrationBuilder.DropTable(
                 name: "tblFilterNameGroups");
 
             migrationBuilder.DropTable(
                 name: "tblFilters");
 
             migrationBuilder.DropTable(
-                name: "tblFuelTypes");
-
-            migrationBuilder.DropTable(
                 name: "tblMakesAndModels");
 
             migrationBuilder.DropTable(
-                name: "tblModels");
-
-            migrationBuilder.DropTable(
                 name: "tblPurchase");
-
-            migrationBuilder.DropTable(
-                name: "tblTypeCars");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
