@@ -38,7 +38,7 @@ namespace ShopCarApi.Controllers
         }
         [HttpGet("CarsByName")]
         public IActionResult GetCarsByName(string Name)
-        {       
+        {
             var _filters = (from g in _context.Filters
                             select g);
             var valueFilters = (from g in _context.FilterValues
@@ -51,7 +51,7 @@ namespace ShopCarApi.Controllers
             string path = "images";
             var resultCar = (from c in cars
                              join g in _filters on c.Id equals g.CarId into ua
-                             from aEmp in ua.DefaultIfEmpty()                          
+                             from aEmp in ua.DefaultIfEmpty()
                              group ua by
                              new CarVM
                              {
@@ -59,7 +59,7 @@ namespace ShopCarApi.Controllers
                                  Date = c.Date,
                                  Image = $"{path}/{c.UniqueName}/Photo",
                                  Price = c.Price,
-                                 Name=c.Name,
+                                 Name = c.Name,
                                  UniqueName = c.UniqueName,
                                  filters = (from f in ua
                                             group f by new FNameGetViewModel
@@ -74,15 +74,15 @@ namespace ShopCarApi.Controllers
                              select b.Key).LastOrDefault();
 
             int i = resultCar.filters.Where(p => p.Name == "Модель").Select(p => p.Children.Id).SingleOrDefault();
-                    var m = GetMakes(i);
-                    if (m != null)
-                     resultCar.filters.Add(m);                        
+            var m = GetMakes(i);
+            if (m != null)
+                resultCar.filters.Add(m);
             //var GetCars = resultCar.Distinct(new CarComparer());
             return Ok(resultCar);
         }
 
         [HttpGet("CarsByFilter")]
-        public IActionResult FilterData(int [] value)
+        public IActionResult FilterData(int[] value)
         {
             var filters = GetListFilters(_context);
             var list = GetCarsByFilter(value, filters);
@@ -172,9 +172,9 @@ namespace ShopCarApi.Controllers
             {
                 Id = p.Id,
                 Price = p.Price,
-                UniqueName=p.UniqueName,
+                UniqueName = p.UniqueName,
                 Image = $"{path}/{p.UniqueName}/300_{p.UniqueName}.jpg",
-                Name=p.Name
+                Name = p.Name
             }).ToList();
             return listProductSearch;
 
@@ -191,24 +191,24 @@ namespace ShopCarApi.Controllers
             var valueFilters = (from g in _context.FilterValues
                                 select g).ToList();
             var make = (from g in _context.Makes
-                                select g).ToList();
+                        select g).ToList();
             var nameFilters = (from g in _context.FilterNames
                                select g).ToList();
             var makeAdnmodel = (from g in _context.MakesAndModels
                                 select g).ToList();
             var cars = (from g in _context.Cars
                         select g).ToList();
-            var resultCar = (from c in cars                            
-            select
-            new CarsByFilterVM
-            {
+            var resultCar = (from c in cars
+                             select
+                             new CarsByFilterVM
+                             {
                                  Id = c.Id,
                                  Image = $"{path}/{c.UniqueName}/300_{c.UniqueName}.jpg",
                                  Price = c.Price,
-                                 Name=c.Name,
-                                 UniqueName=c.UniqueName,
-                                                                                                                                    
-                             } ).ToList();                     
+                                 Name = c.Name,
+                                 UniqueName = c.UniqueName,
+
+                             }).ToList();
             return Ok(resultCar);
         }
 
@@ -217,11 +217,26 @@ namespace ShopCarApi.Controllers
             var make = _context.MakesAndModels.Where(p => p.FilterValueId == id).Select(f => new FNameGetViewModel
             {
                 Id = f.FilterMakeId, Name = "Марка",
-              Children = new FValueViewModel { Id = f.FilterMakeId, Name = f.FilterMakeOf.Name }
+                Children = new FValueViewModel { Id = f.FilterMakeId, Name = f.FilterMakeOf.Name }
             }).SingleOrDefault();
-            if(make!=null)
-            return make;
+            if (make != null)
+                return make;
             return null;
+        }
+        [HttpPost("CreateFilterWithCars")]
+        public IActionResult CreateFilterWithCars([FromBody]FilterAddWithCarVM model)
+        {
+            List<FilterNameGroup> l = new List<FilterNameGroup>() ;
+            foreach (var item in model.IdValue)
+            {
+                l.Add(_context.FilterNameGroups.Where(p => p.FilterValueId == item).SingleOrDefault());
+            }
+            foreach (var item in l)
+            {
+                _context.Filters.Add(new Filter {CarId=model.IdCar,FilterNameId=item.FilterNameId,FilterValueId=item.FilterValueId });
+                _context.SaveChanges();
+            }
+            return Ok();
         }
 
         [HttpPost]
@@ -302,7 +317,7 @@ namespace ShopCarApi.Controllers
                     };
                     _context.Cars.Add(car);
                     _context.SaveChanges();
-                    return Ok("Дані добалено");
+                    return Ok(car.Id);
                 }
                 return BadRequest(new { name = "Даний автомобіль вже добалений" });
                       
