@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Helpers;
 using Image.Help;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -79,6 +80,30 @@ namespace ShopCarApi.Controllers
                 resultCar.filters.Add(m);
             //var GetCars = resultCar.Distinct(new CarComparer());
             return Ok(resultCar);
+        }
+
+        [HttpGet("GetCarsForUpdate")]
+        public IActionResult GetCarsForUpdate(int CarId)
+        {
+            var Id = _context.Filters.Where(p => p.CarId == CarId).Select(p =>new Filter
+            {
+               FilterValueId=p.FilterValueId
+            });
+            var id = new List<int>();
+            foreach (var item in Id)
+            {
+                id.Add(item.FilterValueId);
+            }
+            var car = _context.Cars.Select(p =>new CarUpdateVM
+            {
+                Count=p.Count,
+                Date=p.Date,
+                FilterAdd=new FilterAddWithCarVM { IdCar=CarId,IdValue= id},
+                Name=p.Name,
+                Price=p.Price,
+                UniqueName=p.UniqueName               
+            }).FirstOrDefault();
+            return Ok(car);
         }
 
         [HttpGet("CarsByFilter")]
@@ -226,6 +251,11 @@ namespace ShopCarApi.Controllers
         [HttpPost("CreateFilterWithCars")]
         public IActionResult CreateFilterWithCars([FromBody]FilterAddWithCarVM model)
         {
+            if (!ModelState.IsValid)
+            {
+                var errors = CustomValidator.GetErrorsByModel(ModelState);
+                return BadRequest(errors);
+            }
             List<FilterNameGroup> l = new List<FilterNameGroup>() ;
             foreach (var item in model.IdValue)
             {
@@ -233,8 +263,13 @@ namespace ShopCarApi.Controllers
             }
             foreach (var item in l)
             {
-                _context.Filters.Add(new Filter {CarId=model.IdCar,FilterNameId=item.FilterNameId,FilterValueId=item.FilterValueId });
-                _context.SaveChanges();
+                Filter filter = new Filter { CarId = model.IdCar, FilterNameId = item.FilterNameId, FilterValueId = item.FilterValueId };
+                var f = _context.Filters.SingleOrDefault(p => p == filter);
+                if (f == null)
+                {
+                    _context.Filters.Add(f);
+                    _context.SaveChanges();
+                }
             }
             return Ok();
         }
@@ -244,7 +279,8 @@ namespace ShopCarApi.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                var errors = CustomValidator.GetErrorsByModel(ModelState);
+                return BadRequest(errors);
             }
             string dirName = "images";
             string dirPathSave = Path.Combine( dirName,model.UniqueName);
@@ -304,8 +340,8 @@ namespace ShopCarApi.Controllers
                     imageSaves[j].Save(imageSaveEnd, System.Drawing.Imaging.ImageFormat.Jpeg);
                 }
             }
-                var make = _context.Cars.SingleOrDefault(p => p.UniqueName == model.UniqueName);
-                if (make == null)
+                var cars = _context.Cars.SingleOrDefault(p => p.UniqueName == model.UniqueName);
+                if (cars == null)
                 {
                     Car car = new Car
                     {
@@ -319,8 +355,7 @@ namespace ShopCarApi.Controllers
                     _context.SaveChanges();
                     return Ok(car.Id);
                 }
-                return BadRequest(new { name = "Даний автомобіль вже добалений" });
-                      
+                return BadRequest(new { name = "Даний автомобіль вже добалений" });                    
         }
 
         [HttpDelete]
@@ -328,7 +363,8 @@ namespace ShopCarApi.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                var errors = CustomValidator.GetErrorsByModel(ModelState);
+                return BadRequest(errors);
             }
             var make = _context.Cars.SingleOrDefault(p => p.Id == model.Id);
             if (make != null)
@@ -343,7 +379,8 @@ namespace ShopCarApi.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                var errors = CustomValidator.GetErrorsByModel(ModelState);
+                return BadRequest(errors);
             }
             var car = _context.Cars.SingleOrDefault(p => p.Id == model.Id);
             if (car != null)
