@@ -44,6 +44,7 @@ namespace ShopCarApi.Controllers
             var _user = _context.Users.Select(
                 p => new UserVM
                 {
+                    Id = p.Id,
                     Name = p.UserName,
                     Email = p.Email
 
@@ -56,13 +57,13 @@ namespace ShopCarApi.Controllers
             var queryUsers = _context.Users.AsQueryable();
 
             var query = _context.Users.AsQueryable();
-            if(!String.IsNullOrEmpty(employee.Email))
+            if (!String.IsNullOrEmpty(employee.Email))
             {
                 query = query.Where(e => e.Email.Contains(employee.Email));
             }
             if (!String.IsNullOrEmpty(employee.Name))
             {
-                query= query.Where(e => e.UserName.Contains(employee.Name));
+                query = query.Where(e => e.UserName.Contains(employee.Name));
             }
             //var queryResult = (from user in query
             //                   where user.UserName.Contains(employee.Name)
@@ -77,12 +78,13 @@ namespace ShopCarApi.Controllers
             }).ToList();
             return Ok(users);
         }
-
+        [HttpDelete]
         public IActionResult Delete([FromBody] UserDeleteVM duser)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                var errors = CustomValidator.GetErrorsByModel(ModelState);
+                return BadRequest(errors);
             }
             var user = _context.Users.SingleOrDefault(p => p.Id == duser.Id);
             if (user != null)
@@ -97,16 +99,20 @@ namespace ShopCarApi.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                var errors = CustomValidator.GetErrorsByModel(ModelState);
+                return BadRequest(errors);
             }
-            var prod = _context.Users.SingleOrDefault(p => p.Id == user.Id);
-            if (prod != null)
+            var emp = _context.Users.SingleOrDefault(p => p.Id == user.Id);
+            if (emp != null)
             {
-                prod.UserName = user.Name;
-                prod.Email = user.Email;
+
+                emp.UserName = user.Name;
+                emp.Email = user.Email;
                 _context.SaveChanges();
+                return Ok("Дані оновлено");
+
             }
-            return Ok();
+            return BadRequest(new { Email = "Помилка оновлення" });
         }
 
         [HttpPost("login")]
@@ -146,21 +152,32 @@ namespace ShopCarApi.Controllers
             }
             string roleName = "Employee";
             var role = _roleManager.FindByNameAsync(roleName).Result;
+            if (role == null)
+            {
+                role = new DbRole { Name = roleName };
+            }
             var userEmail = model.Email;
             //var user = _userManager.FindByEmailAsync(userEmail).Result;
             if (_userManager.FindByEmailAsync(userEmail).Result != null)
             {
-                return BadRequest(new { invalid = "Email is exist!" });
+                return BadRequest(new { Email = "Така електронна пошта вже існує!" });
             }
             var user = new DbUser
             {
                 Email = userEmail,
                 UserName = model.Name
             };
+            //user.UserRoles = new List<DbRole>();
             var result = _userManager.CreateAsync(user, model.Password).Result;
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                result = _userManager.AddToRoleAsync(user, roleName).Result;
+                return BadRequest(new { Password = "Не правильно введені дані!" });
+            }
+            result = _userManager.AddToRoleAsync(user, roleName).Result;
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(new { Password = "Проблеми при створенні користувача!" });
             }
 
             return Ok(
