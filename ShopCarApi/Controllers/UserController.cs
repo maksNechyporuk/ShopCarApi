@@ -57,13 +57,13 @@ namespace ShopCarApi.Controllers
             var queryUsers = _context.Users.AsQueryable();
 
             var query = _context.Users.AsQueryable();
-            if(!String.IsNullOrEmpty(employee.Email))
+            if (!String.IsNullOrEmpty(employee.Email))
             {
                 query = query.Where(e => e.Email.Contains(employee.Email));
             }
             if (!String.IsNullOrEmpty(employee.Name))
             {
-                query= query.Where(e => e.UserName.Contains(employee.Name));
+                query = query.Where(e => e.UserName.Contains(employee.Name));
             }
             //var queryResult = (from user in query
             //                   where user.UserName.Contains(employee.Name)
@@ -78,7 +78,7 @@ namespace ShopCarApi.Controllers
             }).ToList();
             return Ok(users);
         }
-
+        [HttpDelete]
         public IActionResult Delete([FromBody] UserDeleteVM duser)
         {
             if (!ModelState.IsValid)
@@ -105,16 +105,14 @@ namespace ShopCarApi.Controllers
             var emp = _context.Users.SingleOrDefault(p => p.Id == user.Id);
             if (emp != null)
             {
-                emp = _context.Users.SingleOrDefault(p => p.UserName == user.Name);
-                if (emp == null)
-                {
-                    emp.UserName = user.Name;
-                    emp.Email = user.Email;
-                    _context.SaveChanges();
-                    return Ok("Дані оновлено");
-                }
+
+                emp.UserName = user.Name;
+                emp.Email = user.Email;
+                _context.SaveChanges();
+                return Ok("Дані оновлено");
+
             }
-            return BadRequest(new { delete = "Помилка оновлення" });
+            return BadRequest(new { Email = "Помилка оновлення" });
         }
 
         [HttpPost("login")]
@@ -154,21 +152,32 @@ namespace ShopCarApi.Controllers
             }
             string roleName = "Employee";
             var role = _roleManager.FindByNameAsync(roleName).Result;
+            if (role == null)
+            {
+                role = new DbRole { Name = roleName };
+            }
             var userEmail = model.Email;
             //var user = _userManager.FindByEmailAsync(userEmail).Result;
             if (_userManager.FindByEmailAsync(userEmail).Result != null)
             {
-                return BadRequest(new { invalid = "Email is exist!" });
+                return BadRequest(new { Email = "Така електронна пошта вже існує!" });
             }
             var user = new DbUser
             {
                 Email = userEmail,
                 UserName = model.Name
             };
+            //user.UserRoles = new List<DbRole>();
             var result = _userManager.CreateAsync(user, model.Password).Result;
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                result = _userManager.AddToRoleAsync(user, roleName).Result;
+                return BadRequest(new { Password = "Не правильно введені дані!" });
+            }
+            result = _userManager.AddToRoleAsync(user, roleName).Result;
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(new { Password = "Проблеми при створенні користувача!" });
             }
 
             return Ok(

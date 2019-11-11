@@ -28,10 +28,13 @@ namespace ShopCarApi.ViewModels
 
     public class UserRegisterVM
     {
+        [Required(ErrorMessage = "Поле не може бути пустим")]
         public string Name { get; set; }
 
+        [Required(ErrorMessage = "Поле не може бути пустим")]
         public string Email { get; set; }
 
+        [Required(ErrorMessage = "Поле не може бути пустим")]
         public string Password { get; set; }
     }
     public class UserUpdateVM
