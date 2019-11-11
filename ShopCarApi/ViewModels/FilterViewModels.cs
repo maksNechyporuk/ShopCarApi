@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,7 +20,9 @@ namespace ShopCarApi.ViewModels
 
     public class FilterAddWithCarVM
     {
+        [Required(ErrorMessage = "Поле не може бути пустим")]
         public int IdCar { get; set; }
+        [Required(ErrorMessage = "Поле не може бути пустим")]
         public List<int> IdValue { get; set; }
     }
 
