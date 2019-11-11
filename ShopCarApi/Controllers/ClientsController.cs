@@ -110,6 +110,16 @@ namespace ShopCarApi.Controllers
                 return BadRequest(new { Email = "issue" });
             }
 
+            var cl = _context.Clients.SingleOrDefault(p => p.Email == client.Email);           
+            if (cl != null)
+            {                        
+                return BadRequest(new { Email = "Такий email вже існує!" });
+            }
+            var cli = _context.Clients.SingleOrDefault(p => p.Phone == client.Phone);
+            if (cli != null)
+            {
+                return BadRequest(new { Phone = "Такий номер вже існує!" });
+            }
             //var fileDestDir = _env.ContentRootPath;
             //string dirName = _configuration.GetValue<string>("ImagesPath");
             ////Папка де зберігаються фотки
