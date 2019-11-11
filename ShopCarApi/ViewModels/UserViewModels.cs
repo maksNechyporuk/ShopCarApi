@@ -36,14 +36,18 @@ namespace ShopCarApi.ViewModels
     }
     public class UserUpdateVM
     {
+        [Required(ErrorMessage = "Поле не може бути пустим")]
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Поле не може бути пустим")]
         public string Name { get; set; }
 
+        [Required(ErrorMessage = "Поле не може бути пустим")]
         public string Email { get; set; }
     }
     public class UserDeleteVM
     {
+        [Required(ErrorMessage = "Поле не може бути пустим")]
         public int Id { get; set; }
     }
 }

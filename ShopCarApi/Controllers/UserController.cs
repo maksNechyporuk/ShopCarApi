@@ -44,6 +44,7 @@ namespace ShopCarApi.Controllers
             var _user = _context.Users.Select(
                 p => new UserVM
                 {
+                    Id = p.Id,
                     Name = p.UserName,
                     Email = p.Email
 
@@ -82,7 +83,8 @@ namespace ShopCarApi.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                var errors = CustomValidator.GetErrorsByModel(ModelState);
+                return BadRequest(errors);
             }
             var user = _context.Users.SingleOrDefault(p => p.Id == duser.Id);
             if (user != null)
@@ -97,16 +99,22 @@ namespace ShopCarApi.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                var errors = CustomValidator.GetErrorsByModel(ModelState);
+                return BadRequest(errors);
             }
-            var prod = _context.Users.SingleOrDefault(p => p.Id == user.Id);
-            if (prod != null)
+            var emp = _context.Users.SingleOrDefault(p => p.Id == user.Id);
+            if (emp != null)
             {
-                prod.UserName = user.Name;
-                prod.Email = user.Email;
-                _context.SaveChanges();
+                emp = _context.Users.SingleOrDefault(p => p.UserName == user.Name);
+                if (emp == null)
+                {
+                    emp.UserName = user.Name;
+                    emp.Email = user.Email;
+                    _context.SaveChanges();
+                    return Ok("Дані оновлено");
+                }
             }
-            return Ok();
+            return BadRequest(new { delete = "Помилка оновлення" });
         }
 
         [HttpPost("login")]
