@@ -47,7 +47,38 @@ namespace ShopCarApi.Controllers
                 }).ToList();
             return Ok(client);
         }
+        [HttpGet("search")]
+        public IActionResult ClientList(ClientVM client)
+        {
+            var queryUsers = _context.Clients.AsQueryable();
 
+            var query = _context.Clients.AsQueryable();
+            if (!String.IsNullOrEmpty(client.Email))
+            {
+                query = query.Where(e => e.Email.Contains(client.Email));
+            }
+            if (!String.IsNullOrEmpty(client.Name))
+            {
+                query = query.Where(e => e.Name.Contains(client.Name));
+            }
+            if (!String.IsNullOrEmpty(client.Phone))
+            {
+                query = query.Where(e => e.Phone.Contains(client.Phone));
+            }
+            //var queryResult = (from user in query
+            //                   where user.UserName.Contains(employee.Name)
+            //                   where user.Email.Contains(employee.Email)
+            //                   select new UserVM { Name = user.UserName, Email = user.Email }).ToList();
+            var clients = query.Select(p => new ClientVM
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Email = p.Email,
+                Phone = p.Phone
+
+            }).ToList();
+            return Ok(clients);
+        }
 
         [HttpPost]
         public IActionResult Create([FromBody]ClientAddVM client)
@@ -157,6 +188,8 @@ namespace ShopCarApi.Controllers
             if (prod != null)
             {
                 prod.Name = client.Name;
+                prod.Email = client.Email;
+                prod.Phone = client.Phone;
                 _context.SaveChanges();
             }
             return Ok();
