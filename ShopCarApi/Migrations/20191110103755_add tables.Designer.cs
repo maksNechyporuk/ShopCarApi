@@ -10,8 +10,8 @@ using WebElectra.Entities;
 namespace ShopCarApi.Migrations
 {
     [DbContext(typeof(EFDbContext))]
-    [Migration("20191106160548_delete cars img")]
-    partial class deletecarsimg
+    [Migration("20191110103755_add tables")]
+    partial class addtables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -105,7 +105,7 @@ namespace ShopCarApi.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<int>("Price");
+                    b.Property<decimal>("Price");
 
                     b.Property<string>("UniqueName")
                         .IsRequired();
@@ -136,27 +136,6 @@ namespace ShopCarApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("tblClients");
-                });
-
-            modelBuilder.Entity("ShopCarApi.Entities.Colors", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("A");
-
-                    b.Property<int>("B");
-
-                    b.Property<int>("G");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.Property<int>("R");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("tblColors");
                 });
 
             modelBuilder.Entity("ShopCarApi.Entities.DbRole", b =>
@@ -305,19 +284,6 @@ namespace ShopCarApi.Migrations
                     b.ToTable("tblFilterValues");
                 });
 
-            modelBuilder.Entity("ShopCarApi.Entities.FuelType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Type")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.ToTable("tblFuelTypes");
-                });
-
             modelBuilder.Entity("ShopCarApi.Entities.Make", b =>
                 {
                     b.Property<int>("Id")
@@ -342,19 +308,6 @@ namespace ShopCarApi.Migrations
                     b.HasAlternateKey("FilterMakeId", "FilterValueId");
 
                     b.ToTable("tblMakesAndModels");
-                });
-
-            modelBuilder.Entity("ShopCarApi.Entities.Model", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.ToTable("tblModels");
                 });
 
             modelBuilder.Entity("ShopCarApi.Entities.Order", b =>
@@ -391,19 +344,6 @@ namespace ShopCarApi.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("tblPurchase");
-                });
-
-            modelBuilder.Entity("ShopCarApi.Entities.TypeCar", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.ToTable("tblTypeCars");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
