@@ -46,7 +46,17 @@ namespace ShopCarApi.ViewModels
         public string Name { get; set; }
         public List<FNameGetViewModel> filters { get; set; }
     }
-
+    public class CarUpdateVM
+    {
+        public DateTime Date { get; set; }
+        public string MainImage { get; set; }
+        public List<string> AdditionalImage { get; set; }
+        public decimal Price { get; set; }
+        public int Count { get; set; }
+        public string UniqueName { get; set; }
+        public string Name { get; set; }
+        public FilterAddWithCarVM FilterAdd { get; set; }
+    }
     public class CarsByFilterVM
     {
         public int Id { get; set; }     
@@ -73,7 +83,6 @@ namespace ShopCarApi.ViewModels
         public string UniqueName { get; set; }
         [Required(ErrorMessage = "Поле не може бути пустим")]    
         public string Name { get; set; }
-
     }
     public class CarDeleteVM
     {
