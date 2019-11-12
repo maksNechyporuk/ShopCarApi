@@ -32,9 +32,8 @@ namespace ShopCarApi.Controllers
         public IActionResult GetImagesBySize(string path, string size)
         {
             var getImages = new List<string>();
-            var fileDestDir = _env.ContentRootPath;
             string dirName = "images";
-            string dirPathSave = Path.Combine(fileDestDir, dirName, path);
+            string dirPathSave = Path.Combine(dirName, path);
             var imgs=Directory.GetFiles(dirPathSave);
 
             foreach (var item in imgs)
