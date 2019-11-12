@@ -110,12 +110,12 @@ namespace ShopCarApi.Controllers
                 return BadRequest(new { Email = "issue" });
             }
 
-            var cl = _context.Clients.SingleOrDefault(p => p.Email == client.Email);           
+            var cl = _context.Clients.FirstOrDefault(p => p.Email == client.Email);           
             if (cl != null)
             {                        
                 return BadRequest(new { Email = "Такий email вже існує!" });
             }
-            var cli = _context.Clients.SingleOrDefault(p => p.Phone == client.Phone);
+            var cli = _context.Clients.FirstOrDefault(p => p.Phone == client.Phone);
             if (cli != null)
             {
                 return BadRequest(new { Phone = "Такий номер вже існує!" });
@@ -193,6 +193,16 @@ namespace ShopCarApi.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest();
+            }
+            var cl = _context.Clients.FirstOrDefault(p => p.Email == client.Email);
+            if (cl != null)
+            {
+                return BadRequest(new { Email = "Такий email вже існує!" });
+            }
+            var cli = _context.Clients.FirstOrDefault(p => p.Phone == client.Phone);
+            if (cli != null)
+            {
+                return BadRequest(new { Phone = "Такий номер вже існує!" });
             }
             var prod = _context.Clients.SingleOrDefault(p => p.Id == client.Id);
             if (prod != null)
