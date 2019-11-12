@@ -48,14 +48,7 @@ namespace ShopCarApi.Controllers
                 var queryResult = (from make in query
                                    where make.Name.Contains(Name)
                                    select new MakeVM { Id = make.Id, Name = make.Name }).ToList();
-                //var makes = query
-                //    .Where(m => m.Name.Contains(Name))
-                //    .Select(
-                //    p => new MakeVM
-                //    {
-                //        Id = p.Id,
-                //        Name = p.Name
-                //    }).ToList();
+       
                 return Ok(queryResult);
             }
         }       
