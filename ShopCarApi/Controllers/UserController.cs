@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Helpers;
 using Microsoft.AspNetCore.Hosting;
@@ -51,6 +52,7 @@ namespace ShopCarApi.Controllers
                 }).ToList();
             return Ok(_user);
         }
+
         [HttpGet("search")]
         public IActionResult UserList(UserVM employee)
         {
@@ -78,6 +80,7 @@ namespace ShopCarApi.Controllers
             }).ToList();
             return Ok(users);
         }
+
         [HttpDelete]
         public IActionResult Delete([FromBody] UserDeleteVM duser)
         {
@@ -95,6 +98,7 @@ namespace ShopCarApi.Controllers
             return Ok();
         }
 
+        [HttpPut]
         public IActionResult Update([FromBody] UserUpdateVM user)
         {
             if (!ModelState.IsValid)
@@ -102,6 +106,27 @@ namespace ShopCarApi.Controllers
                 var errors = CustomValidator.GetErrorsByModel(ModelState);
                 return BadRequest(errors);
             }
+
+            var str_name = user.Name;
+            var name_regex = @"^[A-Za-z-а-яА-Я]+$";
+
+            var str_email = user.Email;
+            var email_regex = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+
+            var match_name = Regex.Match(str_name, name_regex);
+
+            var match_email = Regex.Match(str_email, email_regex);
+
+            if (!match_name.Success)
+            {
+                return BadRequest(new { Name = "Неправильний формат поля." });
+            }
+
+            if (!match_email.Success)
+            {
+                return BadRequest(new { Email = "Неправильний формат поля." });
+            }
+
             var emp = _context.Users.SingleOrDefault(p => p.Id == user.Id);
             if (emp != null)
             {
@@ -150,6 +175,26 @@ namespace ShopCarApi.Controllers
                 var errors = CustomValidator.GetErrorsByModel(ModelState);
                 return BadRequest(errors);
             }
+            var str_name = model.Name;
+            var name_regex = @"^[A-Za-z-а-яА-Я]+$";
+
+            var str_email = model.Email;
+            var email_regex = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+
+            var match_name = Regex.Match(str_name, name_regex);
+
+            var match_email = Regex.Match(str_email, email_regex);
+
+            if (!match_name.Success)
+            {
+                return BadRequest(new { Name = "Неправильний формат поля." });
+            }
+
+            if (!match_email.Success)
+            {
+                return BadRequest(new { Email = "Неправильний формат поля." });
+            }
+
             string roleName = "Employee";
             var role = _roleManager.FindByNameAsync(roleName).Result;
             if (role == null)
