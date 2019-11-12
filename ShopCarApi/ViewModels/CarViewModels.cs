@@ -48,6 +48,7 @@ namespace ShopCarApi.ViewModels
     }
     public class CarUpdateVM
     {
+        public int Id { get; set; }
         public DateTime Date { get; set; }
         public string MainImage { get; set; }
         public List<string> AdditionalImage { get; set; }
@@ -69,6 +70,7 @@ namespace ShopCarApi.ViewModels
     
     public class CarAddVM
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Поле не може бути пустим")]
         public DateTime Date { get; set; }
         [Required(ErrorMessage = "Поле не може бути пустим")]

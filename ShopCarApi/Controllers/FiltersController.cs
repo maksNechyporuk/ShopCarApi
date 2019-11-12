@@ -36,6 +36,16 @@ namespace ShopCarApi.Controllers
             var filters = GetListFilters(_context);
             return Ok(filters);
         }
+        [HttpGet("GetMakeByModels")]
+        public IActionResult GetMakeByModels(int id)
+        {
+            var makeAndModels = (from g in _context.MakesAndModels
+                                 select g).Where(g=>g.FilterValueId==id).LastOrDefault();
+            if(makeAndModels!=null)
+            return Ok(makeAndModels.FilterMakeId);
+            return Ok();
+        }
+
         [HttpGet("GetModelsByMake")]
         public IActionResult GetModelsByMake(int id)
         {

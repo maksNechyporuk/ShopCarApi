@@ -70,15 +70,13 @@ namespace ShopCarApi.Controllers
                                                 Children = new FValueViewModel { Id = f.FilterValueId, Name = f.FilterValueOf.Name }
                                             } into b
                                             select b.Key)
-                                                            .ToList()
+                                            .ToList()
                              } into b
                              select b.Key).LastOrDefault();
-
             int i = resultCar.filters.Where(p => p.Name == "Модель").Select(p => p.Children.Id).SingleOrDefault();
             var m = GetMakes(i);
             if (m != null)
                 resultCar.filters.Add(m);
-            //var GetCars = resultCar.Distinct(new CarComparer());
             return Ok(resultCar);
         }
 
@@ -96,6 +94,7 @@ namespace ShopCarApi.Controllers
             }
             var car = _context.Cars.Select(p =>new CarUpdateVM
             {
+                Id=p.Id,
                 Count=p.Count,
                 Date=p.Date,
                 FilterAdd=new FilterAddWithCarVM { IdCar=CarId,IdValue= id},
@@ -248,6 +247,38 @@ namespace ShopCarApi.Controllers
                 return make;
             return null;
         }
+        [HttpPost("UpdateFilterWithCars")]
+        public IActionResult UpdateFilterWithCars([FromBody]FilterAddWithCarVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = CustomValidator.GetErrorsByModel(ModelState);
+                return BadRequest(errors);
+            }
+            var filters = _context.Filters.Where(p => p.CarId == model.IdCar).ToList();
+            foreach (var item in filters)
+            {
+                _context.Filters.Remove(item);
+                _context.SaveChanges();
+            }
+            List<FilterNameGroup> l = new List<FilterNameGroup>();
+            foreach (var item in model.IdValue)
+            {
+                l.Add(_context.FilterNameGroups.Where(p => p.FilterValueId == item).SingleOrDefault());
+            }
+            foreach (var item in l)
+            {
+                Filter filter = new Filter { CarId = model.IdCar, FilterNameId = item.FilterNameId, FilterValueId = item.FilterValueId };
+                var f = _context.Filters.SingleOrDefault(p => p == filter);
+                if (f == null)
+                {
+                    _context.Filters.Add(filter);
+                    _context.SaveChanges();
+                }
+            }
+            return Ok();
+        }
+
         [HttpPost("CreateFilterWithCars")]
         public IActionResult CreateFilterWithCars([FromBody]FilterAddWithCarVM model)
         {
@@ -267,7 +298,7 @@ namespace ShopCarApi.Controllers
                 var f = _context.Filters.SingleOrDefault(p => p == filter);
                 if (f == null)
                 {
-                    _context.Filters.Add(f);
+                    _context.Filters.Add(filter);
                     _context.SaveChanges();
                 }
             }
@@ -357,7 +388,6 @@ namespace ShopCarApi.Controllers
                 }
                 return BadRequest(new { name = "Даний автомобіль вже добалений" });                    
         }
-
         [HttpDelete]
         public IActionResult Delete([FromBody]CarDeleteVM model)
         {
@@ -375,29 +405,94 @@ namespace ShopCarApi.Controllers
             return Ok();
         }
         [HttpPut]
-        public IActionResult Update([FromBody]CarVM model)
+        public IActionResult Update([FromBody]CarUpdateVM model)
         {
             if (!ModelState.IsValid)
             {
                 var errors = CustomValidator.GetErrorsByModel(ModelState);
                 return BadRequest(errors);
             }
-            var car = _context.Cars.SingleOrDefault(p => p.Id == model.Id);
+
+            //string dirName = "images";
+            //string dirPathSave = Path.Combine(dirName, model.UniqueName);
+            //if (Directory.Exists(dirPathSave))
+            //{
+            //    Directory.Delete(dirPathSave, true);
+
+            //    Directory.CreateDirectory(dirPathSave);
+            //}
+            //else
+            //{
+            //    System.GC.Collect();
+            //    System.GC.WaitForPendingFinalizers();
+            //}
+            //var bmp = model.MainImage.FromBase64StringToImage();
+            //var imageName = model.UniqueName;
+            //string fileSave = Path.Combine(dirPathSave, $"{imageName}");
+
+            //var bmpOrigin = new System.Drawing.Bitmap(bmp);
+            //string[] imageNames = {$"50_"+ imageName + ".jpg" ,
+            //        $"100_" + imageName + ".jpg",
+            //        $"300_" + imageName + ".jpg",
+            //        $"600_" + imageName + ".jpg",
+            //        $"1280_"+ imageName + ".jpg"};
+
+            //        Bitmap[] imageSave = { ImageWorker.CreateImage(bmpOrigin, 50, 50),
+            //        ImageWorker.CreateImage(bmpOrigin, 100, 100),
+            //        ImageWorker.CreateImage(bmpOrigin, 300, 300),
+            //        ImageWorker.CreateImage(bmpOrigin, 600, 600),
+            //        ImageWorker.CreateImage(bmpOrigin, 1280, 1280)};
+
+            //for (int i = 0; i < imageNames.Count(); i++)
+            //{
+            //    var imageSaveEnd = System.IO.Path.Combine(dirPathSave, imageNames[i]);
+            //    imageSave[i].Save(imageSaveEnd, System.Drawing.Imaging.ImageFormat.Jpeg);
+            //}
+
+            //dirPathSave = Path.Combine(dirName, model.UniqueName, "Photo");
+            //if (!Directory.Exists(dirPathSave))
+            //{
+            //    Directory.CreateDirectory(dirPathSave);
+            //}
+            //for (int i = 0; i < model.AdditionalImage.Count; i++)
+            //{
+            //    bmp = model.AdditionalImage[i].FromBase64StringToImage();
+            //    fileSave = Path.Combine(dirPathSave);
+
+            //    bmpOrigin = new System.Drawing.Bitmap(bmp);
+            //    string[] imageNamess = {$"50_{i+1}_"+ imageName + ".jpg" ,
+            //        $"100_{i+1}_" + imageName + ".jpg",
+            //         $"300_{i+1}_" + imageName + ".jpg",
+            //       $"600_{i+1}_" + imageName + ".jpg",
+            //        $"1280_{i+1}_"+ imageName + ".jpg"};
+
+            //    Bitmap[] imageSaves = { ImageWorker.CreateImage(bmpOrigin, 50, 50),
+            //        ImageWorker.CreateImage(bmpOrigin, 100, 100),
+            //        ImageWorker.CreateImage(bmpOrigin, 300, 300),
+            //        ImageWorker.CreateImage(bmpOrigin, 600, 600),
+            //        ImageWorker.CreateImage(bmpOrigin, 1280, 1280)};
+
+            //    for (int j = 0; j < imageNamess.Count(); j++)
+            //    {
+            //        var imageSaveEnd = System.IO.Path.Combine(dirPathSave, imageNamess[j]);
+            //        imageSaves[j].Save(imageSaveEnd, System.Drawing.Imaging.ImageFormat.Jpeg);
+            //    }
+            //}
+             var car = _context.Cars.SingleOrDefault(p => p.Id==model.Id);
             if (car != null)
             {
-                //car=new Car
-                //{
-                //    Image = model.Image,
-                //    Price = model.Price,
-                //    ColorId = model.Color.Id,
-                //    FuelTypeId = model.Fuel_type.Id,
-                //    Date = model.Date,
-                //    ModelId = model.Model.Id,
-                //    TypeId = model.Type_car.Id
-                //};
+
+                car.Price = model.Price;
+                car.Date = model.Date;
+                car.Name = model.Name;
+                car.Count = model.Count;
+                car.UniqueName = model.UniqueName;
+               
                 _context.SaveChanges();
+                return Ok(car.Id);
             }
-            return Ok();
+            return BadRequest();
+
         }
     }
 }

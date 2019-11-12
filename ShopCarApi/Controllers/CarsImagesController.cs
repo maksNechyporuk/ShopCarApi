@@ -47,7 +47,6 @@ namespace ShopCarApi.Controllers
             }
             if(getImages.Count!=0)
             return Ok(getImages);
-
             return BadRequest();
         }
     }
