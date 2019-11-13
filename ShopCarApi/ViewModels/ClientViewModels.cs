@@ -15,17 +15,22 @@ namespace ShopCarApi.ViewModels
         public string Name { get; set; }
         [Required(ErrorMessage = "Поле не може бути пустим")]
         public string Phone { get; set; }
+        [Required(ErrorMessage = "Поле не може бути пустим")]
+        public string UniqueName { get; set; }
         public string Image { get; set; }
         [Required(ErrorMessage = "Поле не може бути пустим")]
         public string Email { get; set; }
 
     }
+
     public class ClientAddVM
     {
         [Required(ErrorMessage = "Поле не може бути пустим")]
         public string Name { get; set; }
         [Required(ErrorMessage = "Поле не може бути пустим")]
         public string Phone { get; set; }
+        [Required(ErrorMessage = "Поле не може бути пустим")]
+        public string UniqueName { get; set; }
         public string Image { get; set; }
         [Required(ErrorMessage = "Поле не може бути пустим")]
         public string Email { get; set; }
