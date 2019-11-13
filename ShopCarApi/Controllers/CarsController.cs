@@ -396,10 +396,20 @@ namespace ShopCarApi.Controllers
                 var errors = CustomValidator.GetErrorsByModel(ModelState);
                 return BadRequest(errors);
             }
-            var make = _context.Cars.SingleOrDefault(p => p.Id == model.Id);
-            if (make != null)
+
+            var car = _context.Cars.SingleOrDefault(p => p.Id == model.Id);
+            if (car != null)
             {
-                _context.Cars.Remove(make);
+               
+
+                string dirName = "images";
+                string dirPathSave = Path.Combine(dirName, car.UniqueName);
+                if (!Directory.Exists(dirPathSave))
+                {
+
+                    Directory.Delete(dirPathSave, true);
+                }               
+                _context.Cars.Remove(car);
                 _context.SaveChanges();
             }
             return Ok();
@@ -412,71 +422,75 @@ namespace ShopCarApi.Controllers
                 var errors = CustomValidator.GetErrorsByModel(ModelState);
                 return BadRequest(errors);
             }
-
-            string dirName = "images";
-            string dirPathSave = Path.Combine(dirName, model.UniqueName);
-            if (!Directory.Exists(dirPathSave))
+            if (model.MainImage != null)
             {
+                string dirName = "images";
+                string dirPathSave = Path.Combine(dirName, model.UniqueName);
+                if (!Directory.Exists(dirPathSave))
+                {
 
-                Directory.CreateDirectory(dirPathSave);
-            }
-            else
-            {
-                Directory.Delete(dirPathSave,true);
-                Directory.CreateDirectory(dirPathSave);
-                System.GC.Collect();
-                System.GC.WaitForPendingFinalizers();
-            }
-            var bmp = model.MainImage.FromBase64StringToImage();
-            var imageName = model.UniqueName;
-            string fileSave = Path.Combine(dirPathSave, $"{imageName}");
+                    Directory.CreateDirectory(dirPathSave);
+                }
+                else
+                {
+                    Directory.Delete(dirPathSave, true);
+                    Directory.CreateDirectory(dirPathSave);
+                    System.GC.Collect();
+                    System.GC.WaitForPendingFinalizers();
+                }
+                var bmp = model.MainImage.FromBase64StringToImage();
+                var imageName = model.UniqueName;
+                string fileSave = Path.Combine(dirPathSave, $"{imageName}");
 
-            var bmpOrigin = new System.Drawing.Bitmap(bmp);
-            string[] imageNames = {$"50_"+ imageName + ".jpg" ,
+                var bmpOrigin = new System.Drawing.Bitmap(bmp);
+                string[] imageNames = {$"50_"+ imageName + ".jpg" ,
                     $"100_" + imageName + ".jpg",
                     $"300_" + imageName + ".jpg",
                     $"600_" + imageName + ".jpg",
                     $"1280_"+ imageName + ".jpg"};
 
-            Bitmap[] imageSave = { ImageWorker.CreateImage(bmpOrigin, 50, 50),
+                Bitmap[] imageSave = { ImageWorker.CreateImage(bmpOrigin, 50, 50),
                     ImageWorker.CreateImage(bmpOrigin, 100, 100),
                     ImageWorker.CreateImage(bmpOrigin, 300, 300),
                     ImageWorker.CreateImage(bmpOrigin, 600, 600),
                     ImageWorker.CreateImage(bmpOrigin, 1280, 1280)};
 
-            for (int i = 0; i < imageNames.Count(); i++)
-            {
-                var imageSaveEnd = System.IO.Path.Combine(dirPathSave, imageNames[i]);
-                imageSave[i].Save(imageSaveEnd, System.Drawing.Imaging.ImageFormat.Jpeg);
-            }
+                for (int i = 0; i < imageNames.Count(); i++)
+                {
+                    var imageSaveEnd = System.IO.Path.Combine(dirPathSave, imageNames[i]);
+                    imageSave[i].Save(imageSaveEnd, System.Drawing.Imaging.ImageFormat.Jpeg);
+                }
+                if (model.AdditionalImage != null)
+                {
+                    dirPathSave = Path.Combine(dirName, model.UniqueName, "Photo");
+                    if (!Directory.Exists(dirPathSave))
+                    {
+                        Directory.CreateDirectory(dirPathSave);
+                    }
+                    for (int i = 0; i < model.AdditionalImage.Count; i++)
+                    {
+                        bmp = model.AdditionalImage[i].FromBase64StringToImage();
+                        fileSave = Path.Combine(dirPathSave);
 
-            dirPathSave = Path.Combine(dirName, model.UniqueName, "Photo");
-            if (!Directory.Exists(dirPathSave))
-            {
-                Directory.CreateDirectory(dirPathSave);
-            }
-            for (int i = 0; i < model.AdditionalImage.Count; i++)
-            {
-                bmp = model.AdditionalImage[i].FromBase64StringToImage();
-                fileSave = Path.Combine(dirPathSave);
-
-                bmpOrigin = new System.Drawing.Bitmap(bmp);
-                string[] imageNamess = {$"50_{i+1}_"+ imageName + ".jpg" ,
+                        bmpOrigin = new System.Drawing.Bitmap(bmp);
+                        string[] imageNamess = {$"50_{i+1}_"+ imageName + ".jpg" ,
                     $"100_{i+1}_" + imageName + ".jpg",
                      $"300_{i+1}_" + imageName + ".jpg",
                    $"600_{i+1}_" + imageName + ".jpg",
                     $"1280_{i+1}_"+ imageName + ".jpg"};
 
-                Bitmap[] imageSaves = { ImageWorker.CreateImage(bmpOrigin, 50, 50),
+                        Bitmap[] imageSaves = { ImageWorker.CreateImage(bmpOrigin, 50, 50),
                     ImageWorker.CreateImage(bmpOrigin, 100, 100),
                     ImageWorker.CreateImage(bmpOrigin, 300, 300),
                     ImageWorker.CreateImage(bmpOrigin, 600, 600),
                     ImageWorker.CreateImage(bmpOrigin, 1280, 1280)};
 
-                for (int j = 0; j < imageNamess.Count(); j++)
-                {
-                    var imageSaveEnd = System.IO.Path.Combine(dirPathSave, imageNamess[j]);
-                    imageSaves[j].Save(imageSaveEnd, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        for (int j = 0; j < imageNamess.Count(); j++)
+                        {
+                            var imageSaveEnd = System.IO.Path.Combine(dirPathSave, imageNamess[j]);
+                            imageSaves[j].Save(imageSaveEnd, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        }
+                    }
                 }
             }
             var car = _context.Cars.SingleOrDefault(p => p.Id==model.Id);
@@ -485,6 +499,7 @@ namespace ShopCarApi.Controllers
 
                 car.Price = model.Price;
                 car.Date = model.Date;
+                if(model.Name!="")
                 car.Name = model.Name;
                 car.Count = model.Count;
                 car.UniqueName = model.UniqueName;
