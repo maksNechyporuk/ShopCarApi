@@ -310,19 +310,23 @@ namespace ShopCarApi.Entities
                 context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
                 List<Client> listClient = new List<Client>
                 {
-                    new Client{Name = "Zahar",Phone = "+380(68)238-80-01",Email="bomba@gmail.com"},
-                    new Client{Name = "Yuri",Phone = "+380(68)278-55-22",Email="bomba@gmail.com"},
-                    new Client{Name = "Maxim", Phone = "+380(97)888-15-97",Email="bomba@gmail.com"}
+                    new Client{Name = "Zahar",Phone = "+380(68)238-80-01",Email="antisocial@ukr.net",UniqueName=Guid.NewGuid().ToString()},
+                    new Client{Name = "Yuri",Phone = "+380(68)278-55-22",Email="yura1257@gmail.com",UniqueName=Guid.NewGuid().ToString()},
+                    new Client{Name = "Maxim", Phone = "+380(97)888-15-97",Email="boss007@gmail.com",UniqueName=Guid.NewGuid().ToString()}
                 };
                 foreach (var item in listClient)
                 {
-                    var client = context.Clients.SingleOrDefault(c => c.Name == item.Name);
-                    if (client == null)
+                    string path = Path.Combine("images", item.UniqueName);
+
+                    if (context.Clients.SingleOrDefault(f => f.UniqueName == item.UniqueName) == null)
                     {
-                        context.Clients.Add(item);
-                        context.SaveChanges();
+                        if (!Directory.Exists(path))
+                            Directory.CreateDirectory(path);                     
+                            context.Clients.Add(item);
+                            context.SaveChanges();                    
                     }
                 }
+               
                 #endregion
 
                 SeedUsers(managerUser, managerRole);
@@ -362,7 +366,7 @@ namespace ShopCarApi.Entities
                 var result = userManager.CreateAsync(user, "Qwerty1-").Result;
                 if (result.Succeeded)
                 {
-                    result = userManager.AddToRoleAsync(user, roleName).Result;
+                    result = userManager.AddToRoleAsync(user, "Admin").Result;
                 }
             }
             userEmail = "maks123@gmail.com";
