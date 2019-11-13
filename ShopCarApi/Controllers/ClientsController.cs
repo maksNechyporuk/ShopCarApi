@@ -42,7 +42,6 @@ namespace ShopCarApi.Controllers
                     Id = p.Id,
                     Name = p.Name,
                     Phone = p.Phone,
-                    Image = p.Image,
                     Email = p.Email                 
                 }).ToList();
             return Ok(client);
@@ -138,7 +137,6 @@ namespace ShopCarApi.Controllers
             {
                 Name = client.Name,
                 Phone = client.Phone,
-                Image = client.Image,
                 Email = client.Email
             };
             _context.Clients.Add(c);

@@ -31,5 +31,10 @@ namespace  ShopCarApi.Entities
         public int ClientId { get; set; }
 
         public virtual Client Client { get; set; }
+
+        [ForeignKey("DbUser")]
+        public int DbUserId { get; set; }
+
+        public virtual DbUser DbUser { get; set; }
     }
 }
