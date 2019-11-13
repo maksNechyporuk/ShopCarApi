@@ -106,10 +106,14 @@ namespace ShopCarApi.Controllers
         }
 
         [HttpGet("CarsByFilter")]
-        public IActionResult FilterData(int[] value)
+        public IActionResult FilterData(int[] value, string name)
         {
             var filters = GetListFilters(_context);
-            var list = GetCarsByFilter(value, filters);
+            var list = GetCarsByFilter(value, filters).AsQueryable();
+            if (!String.IsNullOrEmpty(name))
+            {
+                list = list.Where(e => e.Name.Contains(name));
+            }
             return Ok(list);
         }
         private List<FNameViewModel> GetListFilters(EFDbContext context)
