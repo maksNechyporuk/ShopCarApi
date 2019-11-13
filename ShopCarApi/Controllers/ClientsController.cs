@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Helpers;
+using Image.Help;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using ShopCarApi.Entities;
 using ShopCarApi.ViewModels;
 using WebElectra.Entities;
+using WebElectra.Helpers;
 
 namespace ShopCarApi.Controllers
 {
@@ -36,15 +40,20 @@ namespace ShopCarApi.Controllers
         [HttpGet]
         public IActionResult ClientList()
         {
-            var client = _context.Clients.Select(
-                p => new ClientVM
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Phone = p.Phone,
-                    Email = p.Email                 
-                }).ToList();
-            return Ok(client);
+            var query = _context.Clients.AsQueryable();
+
+            string path = "images";
+            var clients = query.Select(p => new ClientVM
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Email = p.Email,
+                Phone = p.Phone,
+                UniqueName = p.UniqueName,
+                Image = $"{path}/{p.UniqueName}/300_{p.UniqueName}.jpg"
+
+            }).ToList();
+            return Ok(clients);
         }
         [HttpGet("search")]
         public IActionResult ClientList(ClientVM client)
@@ -68,12 +77,16 @@ namespace ShopCarApi.Controllers
             //                   where user.UserName.Contains(employee.Name)
             //                   where user.Email.Contains(employee.Email)
             //                   select new UserVM { Name = user.UserName, Email = user.Email }).ToList();
+            string path = "images";
+            string dirPathSave = Path.Combine(path, client.UniqueName);
             var clients = query.Select(p => new ClientVM
             {
                 Id = p.Id,
                 Name = p.Name,
                 Email = p.Email,
-                Phone = p.Phone
+                Phone = p.Phone,
+                UniqueName=p.UniqueName,
+                Image = $"{path}/{p.UniqueName}/300_{p.UniqueName}.jpg"
 
             }).ToList();
             return Ok(clients);
@@ -82,10 +95,39 @@ namespace ShopCarApi.Controllers
         [HttpPost]
         public IActionResult Create([FromBody]ClientAddVM client)
         {
+            
             if (!ModelState.IsValid)
             {
                 var errors = CustomValidator.GetErrorsByModel(ModelState);
                 return BadRequest(errors);
+            }
+            string dirName = "images";
+            string dirPathSave = Path.Combine(dirName, client.UniqueName);
+            if (!Directory.Exists(dirPathSave))
+            {
+                Directory.CreateDirectory(dirPathSave);
+            }
+            var bmp = client.Image.FromBase64StringToImage();
+            var imageName = client.UniqueName;
+            string fileSave = Path.Combine(dirPathSave, $"{imageName}");
+
+            var bmpOrigin = new System.Drawing.Bitmap(bmp);
+            string[] imageNames = {$"50_"+ imageName + ".jpg" ,
+                    $"100_" + imageName + ".jpg",
+                     $"300_" + imageName + ".jpg",
+                   $"600_" + imageName + ".jpg",
+                    $"1280_"+ imageName + ".jpg"};
+
+            Bitmap[] imageSave = { ImageWorker.CreateImage(bmpOrigin, 50, 50),
+                    ImageWorker.CreateImage(bmpOrigin, 100, 100),
+                    ImageWorker.CreateImage(bmpOrigin, 300, 300),
+                    ImageWorker.CreateImage(bmpOrigin, 600, 600),
+                    ImageWorker.CreateImage(bmpOrigin, 1280, 1280)};
+
+            for (int i = 0; i < imageNames.Count(); i++)
+            {
+                var imageSaveEnd = System.IO.Path.Combine(dirPathSave, imageNames[i]);
+                imageSave[i].Save(imageSaveEnd, System.Drawing.Imaging.ImageFormat.Jpeg);
             }
             var str = client.Phone;
             var regex = @"\+38\d{1}\(\d{2}\)\d{3}\-\d{2}\-\d{2}";
@@ -137,7 +179,8 @@ namespace ShopCarApi.Controllers
             {
                 Name = client.Name,
                 Phone = client.Phone,
-                Email = client.Email
+                Email = client.Email,
+                UniqueName = client.UniqueName
             };
             _context.Clients.Add(c);
             _context.SaveChanges();

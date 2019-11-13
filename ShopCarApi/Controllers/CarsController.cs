@@ -312,7 +312,7 @@ namespace ShopCarApi.Controllers
             {
                 var errors = CustomValidator.GetErrorsByModel(ModelState);
                 return BadRequest(errors);
-            }
+            }          
             string dirName = "images";
             string dirPathSave = Path.Combine( dirName,model.UniqueName);
             if (!Directory.Exists(dirPathSave))
