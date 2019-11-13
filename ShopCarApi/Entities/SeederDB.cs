@@ -310,9 +310,9 @@ namespace ShopCarApi.Entities
                 context = scope.ServiceProvider.GetRequiredService<EFDbContext>();
                 List<Client> listClient = new List<Client>
                 {
-                    new Client{Name = "Zahar",Phone = "+380(68)238-80-01",Email="bomba@gmail.com"},
-                    new Client{Name = "Yuri",Phone = "+380(68)278-55-22",Email="bomba@gmail.com"},
-                    new Client{Name = "Maxim", Phone = "+380(97)888-15-97",Email="bomba@gmail.com"}
+                    new Client{Name = "Zahar",Phone = "+380(68)238-80-01",Email="antisocial@ukr.net"},
+                    new Client{Name = "Yuri",Phone = "+380(68)278-55-22",Email="yura1257@gmail.com"},
+                    new Client{Name = "Maxim", Phone = "+380(97)888-15-97",Email="boss007@gmail.com"}
                 };
                 foreach (var item in listClient)
                 {
@@ -362,7 +362,7 @@ namespace ShopCarApi.Entities
                 var result = userManager.CreateAsync(user, "Qwerty1-").Result;
                 if (result.Succeeded)
                 {
-                    result = userManager.AddToRoleAsync(user, roleName).Result;
+                    result = userManager.AddToRoleAsync(user, "Admin").Result;
                 }
             }
             userEmail = "maks123@gmail.com";
