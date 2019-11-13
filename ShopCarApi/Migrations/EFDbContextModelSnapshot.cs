@@ -320,8 +320,6 @@ namespace ShopCarApi.Migrations
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<int>("DbUserId");
-
                     b.Property<float>("Price");
 
                     b.HasKey("Id");
@@ -329,8 +327,6 @@ namespace ShopCarApi.Migrations
                     b.HasIndex("CarId");
 
                     b.HasIndex("ClientId");
-
-                    b.HasIndex("DbUserId");
 
                     b.ToTable("tblOrders");
                 });
@@ -448,11 +444,6 @@ namespace ShopCarApi.Migrations
                     b.HasOne("ShopCarApi.Entities.Client", "Client")
                         .WithMany()
                         .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ShopCarApi.Entities.DbUser", "DbUser")
-                        .WithMany()
-                        .HasForeignKey("DbUserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

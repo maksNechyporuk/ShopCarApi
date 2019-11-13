@@ -312,13 +312,13 @@ namespace ShopCarApi.Entities
                 {
                     new Client{Name = "Zahar",Phone = "+380(68)238-80-01",Email="antisocial@ukr.net",UniqueName=Guid.NewGuid().ToString()},
                     new Client{Name = "Yuri",Phone = "+380(68)278-55-22",Email="yura1257@gmail.com",UniqueName=Guid.NewGuid().ToString()},
-                    new Client{Name = "Maxim", Phone = "+380(97)888-15-97",Email="boss007@gmail.com",UniqueName=Guid.NewGuid().ToString()}
+                    new Client{Name = "Maxim", Phone = "+380(97)888-15-97",Email="maksum.nec@gmail.com",UniqueName=Guid.NewGuid().ToString()}
                 };
                 foreach (var item in listClient)
                 {
                     string path = Path.Combine("images", item.UniqueName);
 
-                    if (context.Clients.SingleOrDefault(f => f.UniqueName == item.UniqueName) == null)
+                    if (context.Clients.SingleOrDefault(f => f.Name == item.Name) == null)
                     {
                         if (!Directory.Exists(path))
                             Directory.CreateDirectory(path);                     
