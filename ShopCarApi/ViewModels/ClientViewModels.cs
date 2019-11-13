@@ -31,6 +31,7 @@ namespace ShopCarApi.ViewModels
         public string Phone { get; set; }
         [Required(ErrorMessage = "Поле не може бути пустим")]
         public string UniqueName { get; set; }
+        [Required(ErrorMessage = "Виберіть фото клієнта!")]
         public string Image { get; set; }
         [Required(ErrorMessage = "Поле не може бути пустим")]
         public string Email { get; set; }
