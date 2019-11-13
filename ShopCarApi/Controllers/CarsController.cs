@@ -400,23 +400,23 @@ namespace ShopCarApi.Controllers
                 var errors = CustomValidator.GetErrorsByModel(ModelState);
                 return BadRequest(errors);
             }
-
             var car = _context.Cars.SingleOrDefault(p => p.Id == model.Id);
             if (car != null)
             {
-               
-
-                string dirName = "images";
-                string dirPathSave = Path.Combine(dirName, car.UniqueName);
-                if (!Directory.Exists(dirPathSave))
-                {
-
-                    Directory.Delete(dirPathSave, true);
-                }               
+                DeleteValue(car.Id);
                 _context.Cars.Remove(car);
                 _context.SaveChanges();
             }
             return Ok();
+        }
+        private void DeleteValue(int id)
+        {
+            var filters = _context.Filters.Where(p => p.CarId == id).ToList();
+            foreach (var item in filters)
+            {
+                _context.Filters.Remove(item);
+                _context.SaveChanges();
+            }
         }
         [HttpPut]
         public IActionResult Update([FromBody]CarUpdateVM model)
@@ -497,17 +497,17 @@ namespace ShopCarApi.Controllers
                     }
                 }
             }
-            var car = _context.Cars.SingleOrDefault(p => p.Id==model.Id);
+            var car = _context.Cars.SingleOrDefault(p => p.Id == model.Id);
             if (car != null)
             {
 
                 car.Price = model.Price;
                 car.Date = model.Date;
-                if(model.Name!="")
-                car.Name = model.Name;
+                if (model.Name != "")
+                    car.Name = model.Name;
                 car.Count = model.Count;
                 car.UniqueName = model.UniqueName;
-               
+
                 _context.SaveChanges();
                 return Ok(car.Id);
             }
