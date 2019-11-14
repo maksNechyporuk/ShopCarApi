@@ -56,8 +56,6 @@ namespace ShopCarApi.Controllers
         [HttpGet("search")]
         public IActionResult UserList(UserVM employee)
         {
-            var queryUsers = _context.Users.AsQueryable();
-
             var query = _context.Users.AsQueryable();
             if (!String.IsNullOrEmpty(employee.Email))
             {
@@ -67,10 +65,7 @@ namespace ShopCarApi.Controllers
             {
                 query = query.Where(e => e.UserName.Contains(employee.Name));
             }
-            //var queryResult = (from user in query
-            //                   where user.UserName.Contains(employee.Name)
-            //                   where user.Email.Contains(employee.Email)
-            //                   select new UserVM { Name = user.UserName, Email = user.Email }).ToList();
+
             var users = query.Select(p => new UserVM
             {
                 Id = p.Id,
