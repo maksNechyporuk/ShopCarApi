@@ -73,22 +73,24 @@ namespace ShopCarApi.Controllers
             {
                 query = query.Where(e => e.Phone.Contains(client.Phone));
             }
+
             //var queryResult = (from user in query
             //                   where user.UserName.Contains(employee.Name)
             //                   where user.Email.Contains(employee.Email)
             //                   select new UserVM { Name = user.UserName, Email = user.Email }).ToList();
             string path = "images";
-            string dirPathSave = Path.Combine(path, client.UniqueName);
-            var clients = query.Select(p => new ClientVM
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Email = p.Email,
-                Phone = p.Phone,
-                UniqueName=p.UniqueName,
-                Image = $"{path}/{p.UniqueName}/300_{p.UniqueName}.jpg"
-
-            }).ToList();
+            var resultClients = (from c in query
+                             select
+                             new ClientVM
+                             {
+                                 Id = c.Id,
+                                 Image = $"{path}/{c.UniqueName}/300_{c.UniqueName}.jpg",
+                                 Email = c.Email,
+                                 Phone = c.Phone,
+                                 Name = c.Name,
+                                 UniqueName = c.UniqueName,
+                             }).ToList();
+            var clients = resultClients.ToList();
             return Ok(clients);
         }
 
