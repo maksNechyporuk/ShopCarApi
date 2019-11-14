@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ShopCarApi.Migrations
 {
-    public partial class addnewvalue : Migration
+    public partial class addtables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -237,8 +237,7 @@ namespace ShopCarApi.Migrations
                     Date = table.Column<DateTime>(nullable: false),
                     Price = table.Column<float>(nullable: false),
                     CarId = table.Column<int>(nullable: false),
-                    ClientId = table.Column<int>(nullable: false),
-                    DbUserId = table.Column<int>(nullable: false)
+                    ClientId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -253,12 +252,6 @@ namespace ShopCarApi.Migrations
                         name: "FK_tblOrders_tblClients_ClientId",
                         column: x => x.ClientId,
                         principalTable: "tblClients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_tblOrders_AspNetUsers_DbUserId",
-                        column: x => x.DbUserId,
-                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -422,11 +415,6 @@ namespace ShopCarApi.Migrations
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_tblOrders_DbUserId",
-                table: "tblOrders",
-                column: "DbUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_tblPurchase_OrderId",
                 table: "tblPurchase",
                 column: "OrderId");
@@ -465,6 +453,9 @@ namespace ShopCarApi.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
                 name: "tblFilterNames");
 
             migrationBuilder.DropTable(
@@ -481,9 +472,6 @@ namespace ShopCarApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "tblClients");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
         }
     }
 }

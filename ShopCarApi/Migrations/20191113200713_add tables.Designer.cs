@@ -10,8 +10,8 @@ using WebElectra.Entities;
 namespace ShopCarApi.Migrations
 {
     [DbContext(typeof(EFDbContext))]
-    [Migration("20191113074641_add new value")]
-    partial class addnewvalue
+    [Migration("20191113200713_add tables")]
+    partial class addtables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -322,8 +322,6 @@ namespace ShopCarApi.Migrations
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<int>("DbUserId");
-
                     b.Property<float>("Price");
 
                     b.HasKey("Id");
@@ -331,8 +329,6 @@ namespace ShopCarApi.Migrations
                     b.HasIndex("CarId");
 
                     b.HasIndex("ClientId");
-
-                    b.HasIndex("DbUserId");
 
                     b.ToTable("tblOrders");
                 });
@@ -450,11 +446,6 @@ namespace ShopCarApi.Migrations
                     b.HasOne("ShopCarApi.Entities.Client", "Client")
                         .WithMany()
                         .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ShopCarApi.Entities.DbUser", "DbUser")
-                        .WithMany()
-                        .HasForeignKey("DbUserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
